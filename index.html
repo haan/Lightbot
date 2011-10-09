@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LightBot v0.5.1</title>
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link type="text/css" href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+    <link type="text/css" href="css/jplayer.css" rel="stylesheet"  />
+    <link type="text/css" href="css/lightbot.css" rel="stylesheet" /> 
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/achievements.js"></script>
+    <script type="text/javascript" src="js/ui.js"></script>
+    <script type="text/javascript" src="js/lightbot.js"></script>
+
+    <script type="text/javascript">
+      var field = null, lightBot = null, audioPlayer = null, videoPlayer = null;
+
+      var media = {
+        audio: {
+          menu: {
+            mp3: "media/audio/menu.mp3"
+          },
+          game: {
+            mp3: "media/audio/game.mp3"
+          }
+        },
+        video: [
+          {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
+          {webmv: "media/video/howto.webm", m4v: "media/video/howto.mp4", ogv: "media/video/howto.ogv"},
+          {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
+          {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
+          {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
+          {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
+          {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
+          {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
+          {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"}
+        ]
+      };
+
+      // this function makes "repeat" instructions a droppable area
+      function makeDroppable() {
+        $("#programContainer ul").droppable({
+          greedy: "true",
+          activeClass: "ui-state-droppable",
+          hoverClass: "ui-state-droppable-hover",
+          accept: ":not(.ui-sortable-helper)",
+          drop: function( event, ui ) {
+            $( this ).children( ".placeholder" ).remove();
+            var clone = $(ui.draggable.clone()).removeClass("ui-draggable");
+            clone.appendTo( this );
+            // make the area within repeat instructions droppable
+            if (clone.children("div").hasClass("droppable")) {
+              makeDroppable();
+            }
+
+            // if the target area was the "main" programContainer ul, scroll to the bottom
+            var tmp = $(this).parent();
+            if (tmp.hasClass('ui-widget-content')) {
+              tmp.animate({ scrollTop: tmp.height() }, "slow");
+            }
+          }
+        }).sortable({
+          items: "li:not(.placeholder)",
+          placeholder: "ui-state-highlight",
+          cursor: "move",
+          sort: function() {
+            // gets added unintentionally by droppable interacting with sortable
+            // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
+            $("#programContainer ul").removeClass( "ui-state-droppable" );
+          }
+        });
+      }
+
+      $(document).ready(function() {
+
+        // dialogs
+        $("div#levelCompleteDialog").dialog({
+          draggable: false,
+          autoOpen: false,
+          modal: true,
+          width: 400,
+          height: 200,
+          stack: false,
+          resizable: false,
+          close: function() {
+            showLevelSelectScreen();
+          },
+          buttons: {
+            Ok: function() {
+              $( this ).dialog( "close" );
+              showLevelSelectScreen();
+            }
+          }
+        });
+
+        $("div#achievementDialog").dialog({
+          draggable: false,
+          autoOpen: false,
+          modal: true,
+          width: 400,
+          height: 200,
+          stack: true,
+          resizable: false,
+          close: function() {
+            lightBot.showAchievementsDialog();
+          },
+          buttons: {
+            Ok: function() {
+              $( this ).dialog( "close" );
+            }
+          }
+        });
+
+        // delete icon for instructions in the program
+        $("#programContainer ul").delegate("span.icon-delete", "click", function() {
+          $(this).parent().parent().remove();
+        });
+
+        // make instructions in the instruction set draggable
+        $("#instructionsContainer li").draggable({
+          revert: "invalid",
+          appendTo: "body",
+          helper: "clone",
+          cursor: "move"
+        }).addClass('ui-state-default');
+
+        // hover effect for instructions
+        $('#instructionsContainer, #programContainer').delegate('li', 'hover', function() {
+          $(this).toggleClass('ui-state-hover');
+        });
+
+        // make instructions droppable and sortable
+        makeDroppable();
+
+        // recursively get all the instructions within a repeat instruction
+        function getInstructions(source) {
+          var instructions = [];
+
+          source.each(function(index) {
+            var tmp = $(this);
+            var instruction = {
+              name: tmp.children('p').attr('class'),
+              argument: null,
+              body: null
+            };
+            switch (instruction.name) {
+              case 'repeat':
+                instruction.argument = tmp.children('p').children('span').children('input').val();
+                instruction.body = getInstructions(tmp.children('div').children('div').children('ul').children('li'));
+                break;
+            }
+            if (instruction.name != 'placeholder') {
+              instructions.push(instruction);
+            }
+          });
+          return instructions;
+        }
+
+        // toggle audio on/off button
+        $('#audioToggleButton').click(function() {
+          if ($(this).hasClass('ui-state-active')) {
+            audioPlayer.jPlayer('play');
+          } else {
+            audioPlayer.jPlayer('pause');
+          }
+          $(this).children('span.ui-button-icon-primary').toggleClass('ui-icon-volume-off ui-icon-volume-on'); 
+          $(this).toggleClass('ui-state-active'); 
+        });
+
+        // run button
+        $('#runButton').click(function() {
+          if ($(this).hasClass('ui-state-active')) {
+            $(this).children('span.ui-button-text').text('Run');
+            lightBot.resetMap();
+            $(this).toggleClass('ui-state-active');
+          } else {
+            // only do something if the bot is not still resetting
+            if (lightBot.getBot().isReadyForNextInstruction()) {
+              $(this).children('span.ui-button-text').text('Reset');
+              lightBot.getBot().clearInstructions(); // clear the current bot instruction queue
+              lightBot.getBot().setNumberOfInstructions($('#programContainer li').length); // determine the numbers of instructions used in the program
+              instructions = getInstructions($('#programContainer > div > ul > li'));
+              for (var i = 0; i < instructions.length; i++) {
+                lightBot.getBot().queueInstruction(instructions[i]);
+              }
+              lightBot.getBot().run();
+            $(this).toggleClass('ui-state-active');
+            }
+          }
+        });
+
+        // help button
+        $('.helpButton').click(function() {
+          showHelpScreen();
+        });
+
+        // achievements button
+        $('.achievementsButton').click(function() {
+          showAchievementsScreen();
+        });
+
+        // level select button
+        $('.levelSelectButton').click(function() {
+          showLevelSelectScreen();
+        });
+
+        // back to main menu button
+        $('.mainMenuButton').click(function() {
+          showWelcomeScreen();
+        });
+
+        // level list buttons
+        $('#levelList li').live({
+          'mouseover':  function() {$(this).addClass('ui-state-hover')},
+          'mouseout': function() {$(this).removeClass('ui-state-hover')},
+          'click': function () {showGameScreen($(this).text())}
+        });
+
+        // hover effect for game buttons
+        $('button').hover(function (){
+          $(this).addClass('ui-state-hover');
+        }, function() {
+          $(this).removeClass('ui-state-hover');
+        });
+
+        // help screen accordion
+        $('#helpScreenAccordion').accordion({
+          autoHeight: false,
+          navigation: true,
+          icons: false,
+          change: function(event, ui) {
+            videoPlayer.jPlayer("setMedia", media.video[$('#helpScreenAccordion h3').index(ui.newHeader)]);
+          }
+        });
+
+        // audio player
+        $("#audioPlayer").jPlayer({
+          ready: function () {
+           $(this).jPlayer("setMedia", media.audio.menu).jPlayer("play"); // attempt to auto-play
+          },
+          swfPath: "js",
+          supplied: "mp3",
+          loop: true,
+          solution: "flash, html",
+          cssSelectorAncestor: '#audioContainer'
+        });
+
+        // load video container
+        $("#videoPlayer").jPlayer({
+          ready: function () {
+           $(this).jPlayer("setMedia", media.video[0]); // attempt to auto-play
+          },
+          swfPath: "js",
+          supplied: "webmv, ogv, m4v",
+          preload: 'metadata',
+          cssSelectorAncestor: '#videoContainer',
+          backgroundColor: '#000000',
+          size: {
+            width: "400px",
+            height: "300px",
+            cssClass: "jp-video-300p"
+          }
+         });
+
+        audioPlayer = $('#audioPlayer');
+        videoPlayer = $('#videoPlayer');
+
+        field = $('#gameCanvas');
+        lightBot = new LightBot(field);
+        lightBot.init();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="audioContainer">
+      <div id="audioPlayer"></div>
+    </div>
+    <div id="lightbot">
+
+      <div id="credits">Original concept by <a href="http://coolio-niato.newgrounds.com/" target="_blank">coolio niato</a>. Development by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Sprite by <a href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Interface by <a href="http://zenobiahoman.daportfolio.com/">Zenobia Homan</a>. Music by <a href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>.</div>
+
+      <div id="welcomeScreen" class="ui-screen">
+        <h1>Welcome</h1>
+        <button class="helpButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-help"></span><span class="ui-button-text">Help</span>
+        </button>
+        <button class="achievementsButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-notice"></span><span class="ui-button-text">Achievements</span>
+        </button>
+        <button class="levelSelectButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-power"></span><span class="ui-button-text">Start Game</span>
+        </button>
+      </div>
+
+      <div id="achievementsScreen" class="ui-screen ui-helper-hidden">
+        <h1>Achievements</h1>
+        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Main Menu</span>
+        </button>
+        <ul id="achievementsList">
+        </ul>
+      </div>
+
+      <div id="helpScreen" class="ui-screen ui-helper-hidden">
+        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+          <span class="ui-button-text">Main Menu</span>
+        </button>
+        <div id="helpScreenAccordionContainer">
+          <div id="helpScreenAccordion">
+            <h3><a href="#goal">Goal of the game</a></h3>
+            <div>
+              <p>
+              Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+              ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+              amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+              odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+              </p>
+            </div>
+            <h3><a href="#howto">How to play the game</a></h3>
+            <div>
+              <p>
+              Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+              purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+              velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+              suscipit faucibus urna.
+              </p>
+            </div>
+            <h3><a href="#objects">Game objects</a></h3>
+            <div>
+              <p>
+              Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+              purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+              velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+              suscipit faucibus urna.
+              </p>
+            </div>
+            <h3><a href="#walk_forward">Instruction: walk forward</a></h3>
+            <div>
+              <p>
+              Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+              Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+              ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+              lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+              </p>
+            </div>
+            <h3><a href="#turn_right">Instruction: Turn 90&deg; to the right</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+            <h3><a href="#turn_left">Instruction: Turn 90&deg; to the left</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+            <h3><a href="#jump">Instruction: Jump</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+            <h3><a href="#jump">Instruction: Light</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+            <h3><a href="#jump">Instruction: Repeat</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="helpScreenVerticalBar"></div>
+        <div id="videoContainer" class="jp-video jp-video-300p">
+          <div class="jp-type-single">
+            <div id="videoPlayer" class="jp-jplayer"></div>
+            <div class="jp-gui">
+              <div class="jp-video-play">
+                <a href="javascript:;" class="jp-video-play-icon" tabindex="1">play</a>
+              </div>
+              <div class="jp-interface">
+                <div class="jp-progress">
+                  <div class="jp-seek-bar">
+                    <div class="jp-play-bar"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="levelSelectScreen" class="ui-screen ui-helper-hidden">
+        <h1>Level select</h1>
+        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Main Menu</span>
+        </button>
+        <ul id="levelList">
+        </ul>
+      </div>
+
+      <div id="gameScreen" class="ui-screen ui-helper-hidden">
+        <div id="canvasContainer">
+          <canvas id="gameCanvas" width="690" height="655">
+        </div>
+        <div id="buttonContainer">
+          <button class="levelSelectButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Back</span>
+          </button>
+
+          <button id="audioToggleButton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-volume-on"></span><span class="ui-button-text">Toggle Audio</span>
+          </button>
+
+          <button id="runButton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary ui-priority-primary" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-notice"></span><span class="ui-button-text">Run</span>
+          </button>
+        </div>
+        <div id="instructionsContainer">
+          <h1 class="ui-widget-header">Instructions</h1>
+          <div class="ui-widget-content">
+            <ul>
+                <li><p class="walk"><span class="icon icon-walk" style="float: left;"></span>Walk forward<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="turnRight"><span class="icon icon-turn-right" style="float: left;"></span>Turn 90&deg; to the right<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="turnLeft"><span class="icon icon-turn-left" style="float: left;"></span>Turn 90&deg; to the left<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="jump"><span class="icon icon-jump" style="float: left;"></span>Jump<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="light"><span class="icon icon-light" style="float: left;"></span>Light<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="repeat"><span class="icon icon-repeat" style="float: left;"></span>Repeat <span><input type="number" min="1" max="99" step="1" value="2"> times</span><span class="icon icon-delete" style="float: right;"></span></p>
+                  <div class="droppable">
+                    <div class="ui-widget-content">
+                      <ul>
+                        <li class="placeholder"><p class="placeholder">Drop your instructions here</p></li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+            </ul>
+          </div>
+        </div>
+        <div id="programContainer">
+          <h1 class="ui-widget-header">Program</h1>
+          <div class="ui-widget-content" class="droppable">
+            <ul>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="levelCompleteDialog" title="Level complete">
+      <p>
+        <span class="medal" style="float:left; margin:0 7px 50px 0;"></span>
+        Congratulations! You have completed this level using <span class="nbrOfInstructions"></span> instructions!
+      </p>
+      <p class="message" style="margin-top: 10px"></p>
+    </div>
+
+    <div id="achievementDialog" title="Achievement unlocked!">
+      <p>
+        <span class="achievement" style="float:left; margin:0 7px 50px 0;"></span>
+        <span class="message"></span>
+      </p>
+    </div>
+  </body>
+</html>
