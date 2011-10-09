@@ -1,0 +1,113 @@
+/*
+ * Skin for jPlayer Plugin (jQuery JavaScript Library)
+ * http://www.happyworm.com/jquery/jplayer
+ *
+ * Skin Name: Blue Monday
+ *
+ * Copyright (c) 2010-2011 Happyworm Ltd
+ * Dual licensed under the MIT and GPL licenses.
+ *  - http://www.opensource.org/licenses/mit-license.php
+ *  - http://www.gnu.org/copyleft/gpl.html
+ *
+ * Author: Silvia Benvenuti
+ * Skin Version: 4.0 (jPlayer 2.1.0)
+ * Date: 1st September 2011
+ */
+
+div.jp-audio,
+div.jp-video {
+
+	/* Edit the font-size to counteract inherited font sizing.
+	 * Eg. 1.25em = 1 / 0.8em
+	 */
+
+	font-size:1em; /* 1.25em for testing in site pages */ /* No parent CSS that can effect the size in the demos ZIP */
+
+	font-family:Verdana, Arial, sans-serif;
+	line-height:1.6;
+	color: #666;
+	border: 1px solid #dbf7d6;
+	background-color:#eee;
+	position:relative;
+}
+div.jp-video-300p {
+	width:400px;
+}
+div.jp-interface {
+	position: relative;
+	background-color:#eee;
+	width:100%;
+}
+
+/* @group progress bar */
+
+div.jp-progress {
+	overflow:hidden;
+	background-color: #ddd;
+}
+div.jp-video div.jp-progress {
+	top:0px;
+	left:0px;
+	width:100%;
+	height:5px;
+}
+div.jp-seek-bar {
+	/*background: url("jplayer.blue.monday.jpg") 0 -202px repeat-x;*/
+	background-color: #000;
+	width:0px;
+	height:100%;
+	cursor: pointer;
+}
+div.jp-play-bar {
+	/*background: url("jplayer.blue.monday.jpg") 0 -218px repeat-x ;*/
+	background-color: #dbf7d6;
+	width:0px;
+	height:100%;
+	z-index: 2;
+}
+
+/* The seeking class is added/removed inside jPlayer */
+div.jp-seeking-bg {
+	/*background: url("jplayer.blue.monday.seeking.gif");*/
+}
+
+/* @end */
+
+div.jp-video-play {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	cursor:pointer;
+	background-color:rgba(0,0,0,0); /* Makes IE9 work with the active area over the whole video area. IE6/7/8 only have the button as active area. */
+}
+div.jp-video-300p div.jp-video-play {
+	height:300px;
+}
+a.jp-video-play-icon {
+	position:relative;
+	display:block;
+	width: 50px;
+	height: 50px;
+
+	margin-left:-25px;
+	margin-top:-25px;
+	left:50%;
+	top:50%;
+
+	background: url("../img/video_play_button.png") 0 0 no-repeat;
+	text-indent:-9999px;
+}
+div.jp-video-play:hover a.jp-video-play-icon {
+	background: url("../img/video_play_button.png") 0 -50px no-repeat;
+}
+
+div.jp-jplayer audio,
+div.jp-jplayer {
+	width:0px;
+	height:0px;
+}
+
+div.jp-jplayer {
+	background-color: #000000;
+}
