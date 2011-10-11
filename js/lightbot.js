@@ -533,6 +533,15 @@ function LightBot(drawCanvas) {
           offset.x = currentMovementStep / animation.duration * movement.dX;
           offset.y = currentMovementStep / animation.duration * movement.dY;
           offset.z = currentMovementStep / animation.duration * movement.dZ;
+
+          if (animation.name === "jumpUp") {
+            var tempUpMovement = (animation.duration * animation.duration - (currentMovementStep - animation.duration) * (currentMovementStep - animation.duration)) / animation.duration * 1.5;
+            offset.y = tempUpMovement / animation.duration * movement.dY;
+          }
+          if (animation.name === "jumpDown") {
+            var tempDownMovement = (currentMovementStep * currentMovementStep) / animation.duration * 1.5;
+            offset.y = tempDownMovement / animation.duration * movement.dY;
+          }
         }
         // add 0.5 to x and y because bot is in the middle of the tile
         var p = IsometricProjection.project((currentPos.x) * map.getEdgeLength(currentPos.x, currentPos.y) + offset.x,
