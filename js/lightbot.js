@@ -534,6 +534,7 @@ function LightBot(drawCanvas) {
           offset.y = currentMovementStep / animation.duration * movement.dY;
           offset.z = currentMovementStep / animation.duration * movement.dZ;
 
+          // modify y offset to change the linear into a parabolic movement
           if (animation.name === "jumpUp") {
             var tempUpMovement = (animation.duration * animation.duration - (currentMovementStep - animation.duration) * (currentMovementStep - animation.duration)) / animation.duration * 1.5;
             offset.y = tempUpMovement / animation.duration * movement.dY;
@@ -543,7 +544,7 @@ function LightBot(drawCanvas) {
             offset.y = tempDownMovement / animation.duration * movement.dY;
           }
         }
-        // add 0.5 to x and y because bot is in the middle of the tile
+
         var p = IsometricProjection.project((currentPos.x) * map.getEdgeLength(currentPos.x, currentPos.y) + offset.x,
                                             map.getHeight(currentPos.x, currentPos.y) * map.getEdgeLength(currentPos.x, currentPos.y) + offset.y,
                                             (currentPos.y) * map.getEdgeLength(currentPos.x, currentPos.y) + offset.z);
@@ -553,6 +554,7 @@ function LightBot(drawCanvas) {
         var dX = p.x - animation.width / 2; // center image horizontally
         var dY = p.y - animation.height;
 
+        // round dX and dY down to avoid anti-aliasing when drawing the sprite
         ctx.drawImage(image, srcX, srcY, animation.width, animation.height, Math.floor(dX), Math.floor(dY), animation.width, animation.height);
       }
     }
