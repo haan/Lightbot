@@ -530,18 +530,20 @@ function LightBot(drawCanvas) {
 
         var offset = {'x': 0, 'y': 0, 'z': 0};
         if (movement.enabled) {
+          console.log(movement.dX, movement.dY, movement.dZ);
           offset.x = currentMovementStep / animation.duration * movement.dX;
           offset.y = currentMovementStep / animation.duration * movement.dY;
           offset.z = currentMovementStep / animation.duration * movement.dZ;
 
-          // modify y offset to change the linear into a parabolic movement
+          // modify y offset during jump animations for a more natural movement
           if (animation.name === "jumpUp") {
-            var tempUpMovement = (animation.duration * animation.duration - (currentMovementStep - animation.duration) * (currentMovementStep - animation.duration)) / animation.duration * 1.5;
-            offset.y = tempUpMovement / animation.duration * movement.dY;
+            // jump up y movement is defined by f(x) = sin(x) from 0 to pi/2: http://www.wolframalpha.com/input/?i=f%28x%29+%3Dsin%28x%29+from+0+to+pi%2F2
+            offset.y = Math.sin(currentMovementStep / animation.duration * Math.PI/2) * movement.dY;
+
           }
           if (animation.name === "jumpDown") {
-            var tempDownMovement = (currentMovementStep * currentMovementStep) / animation.duration * 1.5;
-            offset.y = tempDownMovement / animation.duration * movement.dY;
+            // jump down y movement is defined by f(x) = x^3 from 0 to 1: http://www.wolframalpha.com/input/?i=f%28x%29+%3D+x%5E3+from+0+to+1
+            offset.y = Math.pow(currentMovementStep / animation.duration, 3) * movement.dY;
           }
         }
 
