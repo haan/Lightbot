@@ -524,7 +524,7 @@ function LightBot(drawCanvas) {
       map.toggleLight(currentPos.x, currentPos.y);
     }
 
-    // draw the bot
+    // draw the bot 22
     this.draw = function() {
       if (botReady) {
 
