@@ -64,7 +64,7 @@ function LightBot(drawCanvas) {
     project: function(x,y,z) {
       /*
         Math: http://en.wikipedia.org/wiki/Isometric_projection#Overview
-        More Theoiry: http://www.compuphase.com/axometr.htm
+        More Theory: http://www.compuphase.com/axometr.htm
         Angles used: vertical rotation=45°, horizontal rotation=arctan(0,5)
         projection matrix:
         | 0,707  0     -0,707 |
@@ -530,7 +530,6 @@ function LightBot(drawCanvas) {
 
         var offset = {'x': 0, 'y': 0, 'z': 0};
         if (movement.enabled) {
-          console.log(movement.dX, movement.dY, movement.dZ);
           offset.x = currentMovementStep / animation.duration * movement.dX;
           offset.y = currentMovementStep / animation.duration * movement.dY;
           offset.z = currentMovementStep / animation.duration * movement.dZ;
