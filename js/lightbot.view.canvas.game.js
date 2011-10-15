@@ -1,4 +1,4 @@
-var canvasView = function(lightbot, canvas) {
+var canvasView = function(canvas) {
   // set the rendering context
   lightBot.ctx = canvas.get(0).getContext('2d');
   
@@ -13,7 +13,7 @@ var canvasView = function(lightbot, canvas) {
   // create projection
   lightBot.projection = new lightBot.Projection(canvas.get(0).height, canvas.get(0).width / 2, offsetY);
 
-  // create canvas background
+  // create canvas background pattern
   var bg = null;
 
   var tmp = new Image();
@@ -30,7 +30,7 @@ var canvasView = function(lightbot, canvas) {
   }
 
   function step() {
-    // step the robot here
+    lightBot.bot.step();
     lightBot.map.step();
   }
 

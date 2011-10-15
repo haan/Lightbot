@@ -9,35 +9,32 @@
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
     <script type="text/javascript" src="js/lightbot.model.game.js"></script>
-    <script type="text/javascript" src="js/lightbot.model.robot.js"></script>
+    <script type="text/javascript" src="js/lightbot.model.directions.js"></script>
+    <script type="text/javascript" src="js/lightbot.model.bot.js"></script>
     <script type="text/javascript" src="js/lightbot.model.map.js"></script>
     <script type="text/javascript" src="js/lightbot.model.box.js"></script>
     <script type="text/javascript" src="js/lightbot.model.lightbox.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.game.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.map.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.box.js"></script>
+    <script type="text/javascript" src="js/lightbot.view.canvas.bot.animations.js"></script>
+    <script type="text/javascript" src="js/lightbot.view.canvas.bot.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.projection.js"></script>
 
     <script type="text/javascript">
       $(document).ready(function() {
         var lvl = {
+          'direction': 0,
+          'position': {x: 0, y: 0},
           'map': [
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":5, "t":"l"},{"h":4, "t":"l"}, {"h":3, "t":"l"},{"h":2, "t":"l"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":4, "t":"l"},{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":3, "t":"l"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"l"},{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":4, "t":"l"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":2, "t":"l"},{"h":3, "t":"l"}, {"h":4, "t":"l"},{"h":5, "t":"l"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"l"},{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":4, "t":"l"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":4, "t":"l"},{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":3, "t":"l"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":5, "t":"l"},{"h":4, "t":"l"}, {"h":3, "t":"l"},{"h":2, "t":"l"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}]
+            [{"h":1, "t":"b"}, {"h":1, "t":"b"}],
+            [{"h":1, "t":"l"}, {"h":1, "t":"l"}],
           ]
         };
-        var lightbot = lightBot;
-        var view = canvasView(lightbot, $('#gameCanvas'));
+        var view = canvasView($('#gameCanvas'));
 
-        lightbot.map.loadMap(lvl);
-        //console.log(lightbot.map.getMapRef());
+        lightBot.map.loadMap(lvl);
+        //console.log(lightBot.map.getMapRef());
         //console.log(view);
         //lightbot.draw();
       });

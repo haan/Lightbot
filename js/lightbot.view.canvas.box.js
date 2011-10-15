@@ -28,6 +28,10 @@
     return this.height * heightScale;
   }
 
+  function getEdgeLength() {
+    return edgeLength;
+  }
+
   function drawTopFaceBox() {
     // top face: p1 is front left and rest is counter-clockwise
     lightBot.ctx.fillStyle = colorTop;
@@ -138,6 +142,7 @@
   }
 
   lightBot.Box.prototype.getHeight = getHeight;
+  lightBot.Box.prototype.getEdgeLength = getEdgeLength;
   lightBot.Box.prototype.step = stepBox;
   lightBot.Box.prototype.drawTopFace = drawTopFaceBox;
   lightBot.Box.prototype.drawFrontFace = drawFrontFaceBox;

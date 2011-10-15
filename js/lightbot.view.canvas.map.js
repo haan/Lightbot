@@ -16,6 +16,9 @@
         lightBot.map.getMapRef()[i][j].draw();
       }
     }
+
+    // draw the bot
+    lightBot.bot.draw();
   }
 
   lightBot.map.step = step;

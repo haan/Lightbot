@@ -6,6 +6,9 @@
 
   map.loadMap = function(data) {
 
+    // set the bot starting direction
+    lightBot.bot.init(data.direction, data.position);
+
     // map files are defined user-friendly so we have to adapt to that
     levelSize.x = data.map[0].length; // we suppose map is a rectangle
     levelSize.y = data.map.length;
