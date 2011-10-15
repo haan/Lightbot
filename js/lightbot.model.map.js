@@ -37,9 +37,9 @@
       }
     }
 
-    //if (nbrLights == 0) {
-    //  console.error('No light defined in map');
-    //}
+    if (nbrLights === 0) {
+      console.error('No light defined in map');
+    }
   };
 
   /* getters and setters */

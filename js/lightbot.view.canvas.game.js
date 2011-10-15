@@ -1,4 +1,7 @@
 var canvasView = function(lightbot, canvas) {
+  // set the rendering context
+  lightBot.ctx = canvas.get(0).getContext('2d');
+  
   // refresh rate and rendering loop
   var fps = 30;
   var fpsDelay = 1000 / fps;
@@ -7,54 +10,42 @@ var canvasView = function(lightbot, canvas) {
   // distance between lowest point in the map and the bottom edge
   var offsetY = 50;
 
-  /*
-  function update() {
-    LightBot.step();
-    LightBot.draw();
-  }
+  // create projection
+  lightBot.projection = new lightBot.Projection(canvas.get(0).height, canvas.get(0).width / 2, offsetY);
 
-  LightBot.step = function() {
-    
-  }
-  */
+  // create canvas background
+  var bg = null;
+
+  var tmp = new Image();
+  tmp.src = 'img/pattern.png';
+  tmp.onload = function() {
+    bg = lightBot.ctx.createPattern(tmp, 'repeat');
+  };
+
   function update() {
+    // check if we can execute the next bot instruction here?
+    // check if map has been completed here
     lightBot.step();
     lightBot.draw();
   }
 
   function step() {
+    // step the robot here
     lightBot.map.step();
   }
 
   function draw() {
-    //console.log('drawing');
-    // check if the map has been completed
-    //if (map.isCompleted()) {
-    //  this.levelComplete();
-    //}
-
-    // update the map
-    //map.step();
-
-    // update the bot
-    //bot.executeInstruction();
-    //bot.step();
-    //bot.move();
-
     //clear main canvas
     lightBot.ctx.clearRect(0,0, canvas.width(), canvas.height());
 
     // background
-    //ctx.fillStyle = bg;
-    //ctx.fillRect(0,0, canvas.width(), canvas.height());
+    lightBot.ctx.fillStyle = bg;
+    lightBot.ctx.fillRect(0,0, canvas.width(), canvas.height());
 
-    // draw the map and bot
-    //map.draw();
+    // draw the map which takes care of drawing the robot
     lightBot.map.draw();
   }
 
-  lightBot.ctx = canvas.get(0).getContext('2d');
-  lightBot.projection = new lightBot.Projection(canvas.get(0).height, canvas.get(0).width / 2, offsetY);
   lightBot.step = step;
   lightBot.draw = draw;
 

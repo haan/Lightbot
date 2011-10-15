@@ -1,3 +1,1 @@
-var Lightbot = function() {
-  
-}
+var Lightbot = function() {};
