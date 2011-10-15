@@ -4,7 +4,11 @@
     this.height = height;
     this.x = x;
     this.y = y;
+    this.toggleLight = function() {
+      this.lightOn = !this.lightOn;
+    };
   }
+
 
   LightBox.prototype = new lightBot.Box();
   LightBox.prototype.constructor = LightBox;
