@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>lightBot UI</title>
+    <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.15.custom.css" rel="stylesheet" /> 
+    <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.15.custom.min.js"></script>
+    <script type="text/javascript">
+      $(function(){
+        $( "ul" ).delegate("span.icon-delete", "click", function() {
+          $(this).parent().parent().remove();
+        });
+        $( "#main ul" ).sortable({
+          revert: false,
+          placeholder: "ui-state-highlight",
+          out: function(event, ui) {
+            console.log('function');
+          }
+        });
+        $( "#instructions li" ).draggable({
+          appendTo: "body",
+          helper: "clone"
+        });
+        $( "#main ul" ).droppable({
+          activeClass: "ui-state-default",
+          hoverClass: "ui-state-hover",
+          accept: ":not(.ui-sortable-helper)",
+          drop: function( event, ui ) {
+            $( this ).find( ".placeholder" ).remove();
+            $( "<li></li>" ).append( ui.draggable.children().clone() ).appendTo( this );
+          }
+        }).sortable({
+          items: "li:not(.placeholder)",
+          sort: function() {
+            // gets added unintentionally by droppable interacting with sortable
+            // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
+            $( this ).removeClass( "ui-state-default" );
+          }
+        });
+        $( ".droppable ul" ).droppable({
+          greedy: "true",
+          activeClass: "ui-state-default",
+          hoverClass: "ui-state-hover",
+          accept: ":not(.ui-sortable-helper)",
+          drop: function( event, ui ) {
+            $( this ).children( ".placeholder" ).remove();
+            $( ui.draggable.clone() ).removeClass("ui-draggable").appendTo( this );
+          }
+        });
+      });
+    </script>
+    <style type="text/css">
+      /*demo page css*/
+      body{font: 62.5% "Trebuchet MS", sans-serif; margin: 50px;}
+      h1, h2 {padding: .2em; margin: 0; }
+      p {
+        margin: 0;
+        /*height: 1em;*/
+      }
+      ul {
+        list-style: none;
+        padding: 2em;
+      }
+      li {
+        list-style: none;
+        border: 1px solid black;
+        margin: 0.1em auto;
+        padding: 1em;
+        font: "Trebuchet MS", sans-serif;
+        font-size: 12px;
+      }
+      #instructions {width: 500px; margin: 1em;}
+      #main {width: 500px; margin: 1em;}
+      #main ul { margin: 0}
+      .icon {
+        background-image: url('icons.png');
+        width: 16px;
+        height: 16px;
+      }
+      .icon-walk {
+        background-position: 0 0;
+      }
+      .icon-turn-left {
+        background-position: -16px 0;
+      }
+      .icon-turn-right {
+        background-position: -32px 0;
+      }
+      .icon-jump {
+        background-position: -48px 0;
+      }
+      .icon-light {
+        background-position: -64px 0;
+      }
+      .icon-delete {
+        cursor: pointer;
+        background-position: -80px 0;
+      }
+      #instructions .icon-delete {
+        /*display: none;*/
+      }
+    </style>  
+  </head>
+  <body>
+    <div class="container">
+      <div id="instructions">
+          <h1 class="ui-widget-header">Instructions</h1>
+          <div class="ui-widget-content">
+            <ul>
+                <li class="walk"><p><span class="icon icon-walk" style="float: left;"></span>Walk forward<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li class="turnRight"><p><span class="icon icon-turn-right" style="float: left;"></span>Turn 90&deg; to the right<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li class="turnLeft"><p><span class="icon icon-turn-left" style="float: left;"></span>Turn 90&deg; to the left<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li class="jump"><p><span class="icon icon-jump" style="float: left;"></span>Jump<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li class="light"><p><span class="icon icon-light" style="float: left;"></span>Light<span class="icon icon-delete" style="float: right;"></span></p></li>
+            </ul>
+          </div>
+      </div>
+
+      <div id="main" class="droppable">
+          <h1 class="ui-widget-header">Main program</h1>
+          <div class="ui-widget-content">
+            <ul>
+                <li class="placeholder">Drop your instructions here</li>
+                <li>
+                  <div class="droppable">
+                    <h2 class="ui-widget-header">If</h2>
+                    <div class="ui-widget-content">
+                      <ul>
+                        <li class="placeholder">Drop your instructions here</li>
+                      </ul>
+                    </div>
+                    <h2 class="ui-widget-header">else</h2>
+                    <div class="ui-widget-content">
+                      <ul>
+                        <li class="placeholder">Drop your instructions here</li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="droppable">
+                    <h2 class="ui-widget-header">Repeat <input type="number" min="1" max="99" step="1" value="10"> times</h2>
+                    <div class="ui-widget-content">
+                      <ul>
+                        <li class="placeholder">Drop your instructions here</li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+            </ul>
+          </div>
+      </div>
+
+    </div>
+  </body>
+</html>
+
+
