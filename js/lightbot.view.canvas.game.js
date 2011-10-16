@@ -52,14 +52,98 @@ var canvasView = function(canvas) {
     lightBot.ctx.fillRect(0,0, canvas.width(), canvas.height());
 
     // draw the map and the bot in the correct order
-    for (var i = lightBot.map.getLevelSize().x - 1; i >= 0; i--) {
-      for (var j = lightBot.map.getLevelSize().y - 1; j >= 0; j--) {
-        lightBot.map.getMapRef()[i][j].draw();
-        if (lightBot.bot.currentPos.x === i && lightBot.bot.currentPos.y === j) {
-          lightBot.bot.draw();
+    switch (lightBot.bot.direction) {
+      case lightBot.directions.se:
+        for (var i = lightBot.map.getLevelSize().x - 1; i >= 0; i--) {
+          for (var j = lightBot.map.getLevelSize().y - 1; j >= 0; j--) {
+            lightBot.map.getMapRef()[i][j].draw();
+            if (lightBot.bot.currentPos.x === i && lightBot.bot.currentPos.y === j) {
+              lightBot.bot.draw();
+            }
+          }
         }
-      }
+        break;
+      case lightBot.directions.nw:
+        for (i = lightBot.map.getLevelSize().x - 1; i >= 0; i--) {
+          for (j = lightBot.map.getLevelSize().y - 1; j >= 0; j--) {
+            lightBot.map.getMapRef()[i][j].draw();
+            switch (lightBot.bot.getAnimation().name) {
+              case lightBot.bot.animations.jumpUp.name:
+              case lightBot.bot.animations.jumpDown.name:
+                if (lightBot.bot.getMovement().dZ !== 0 && lightBot.bot.getCurrentStep() / lightBot.bot.getAnimation().duration <= 0.5) {
+                  if (lightBot.bot.currentPos.x === i && lightBot.bot.currentPos.y === j+1) {
+                    lightBot.bot.draw();
+                  }
+                } else {
+                  if (lightBot.bot.currentPos.x === i && lightBot.bot.currentPos.y === j) {
+                    lightBot.bot.draw();
+                  }
+                }
+                break;
+              case lightBot.bot.animations.walk.name:
+                if (lightBot.bot.getMovement().dZ !== 0 && lightBot.bot.currentPos.x === i && lightBot.bot.currentPos.y === j+1) {
+                  lightBot.bot.draw();
+                } else if (lightBot.bot.currentPos.x === i && lightBot.bot.currentPos.y === j) {
+                  lightBot.bot.draw();
+                }
+                break;
+              default:
+                if (lightBot.bot.currentPos.x === i && lightBot.bot.currentPos.y === j) {
+                  lightBot.bot.draw();
+                }
+                break;
+            }
+          }
+        }
+        break;
+      case lightBot.directions.ne:
+        for (i = lightBot.map.getLevelSize().y - 1; i >= 0; i--) {
+          for (j = lightBot.map.getLevelSize().x - 1; j >= 0; j--) {
+            lightBot.map.getMapRef()[j][i].draw();
+            switch (lightBot.bot.getAnimation().name) {
+              case lightBot.bot.animations.jumpUp.name:
+              case lightBot.bot.animations.jumpDown.name:
+                if (lightBot.bot.getMovement().dX !== 0 && lightBot.bot.getCurrentStep() / lightBot.bot.getAnimation().duration <= 0.5) {
+                  if (lightBot.bot.currentPos.x === j+1 && lightBot.bot.currentPos.y === i) {
+                    lightBot.bot.draw();
+                  }
+                } else {
+                  if (lightBot.bot.currentPos.x === j && lightBot.bot.currentPos.y === i) {
+                    lightBot.bot.draw();
+                  }
+                }
+                break;
+              case lightBot.bot.animations.walk.name:
+                if (lightBot.bot.getMovement().dX !== 0 && lightBot.bot.currentPos.x === j+1 && lightBot.bot.currentPos.y === i) {
+                  lightBot.bot.draw();
+                } else if (lightBot.bot.currentPos.x === j && lightBot.bot.currentPos.y === i) {
+                  lightBot.bot.draw();
+                }
+                break;
+              default:
+                if (lightBot.bot.currentPos.x === j && lightBot.bot.currentPos.y === i) {
+                  lightBot.bot.draw();
+                }
+                break;
+            }
+          }
+        }
+        break;
+      case lightBot.directions.sw:
+        for (i = lightBot.map.getLevelSize().y - 1; i >= 0; i--) {
+          for (j = lightBot.map.getLevelSize().x - 1; j >= 0; j--) {
+            lightBot.map.getMapRef()[j][i].draw();
+            if (lightBot.bot.currentPos.x === j && lightBot.bot.currentPos.y === i) {
+              lightBot.bot.draw();
+            }
+          }
+        }
+        break;
+      default:
+        console.error('canvasView draw: unknown direction "' + lightBot.bot.direction + '"');
+        break;
     }
+
   }
 
 

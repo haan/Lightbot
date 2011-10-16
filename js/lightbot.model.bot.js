@@ -88,7 +88,7 @@
           }
           break;
         default:
-          console.error('Bot is facing unknown direction');
+          console.error('Bot walk: unknown direction "' + this.direction + '"');
           break;
       }
     },

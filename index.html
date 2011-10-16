@@ -31,7 +31,7 @@
             [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"l"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
             [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
             [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":6, "t":"b"},{"h":5, "t":"b"}, {"h":5, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
+            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":5, "t":"b"}, {"h":5, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
             [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":2, "t":"b"},{"h":3, "t":"b"}, {"h":4, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
             [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":4, "t":"b"}, {"h":5, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
             [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"b"}, {"h":3, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
@@ -44,18 +44,22 @@
         //lightBot.draw();
 
         // add some instructions to the bot
+
         lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
         lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
         lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
-        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
-        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
-        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
-        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
-        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
-        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
-        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
-        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
-        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.LightInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnRightInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.LightInstruction());
+
         //lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
         //lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
         //lightBot.bot.queueInstruction(new lightBot.bot.instructions.LightInstruction());

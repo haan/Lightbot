@@ -119,6 +119,18 @@
     currentFrame = 0;
   }
 
+  function getAnimation() {
+    return animation;
+  }
+
+  function getCurrentStep() {
+    return currentStep;
+  }
+
+  function getMovement() {
+    return movement;
+  }
+
   function setMovement(dX, dY, dZ) {
     movement.dX = dX;
     movement.dY = dY;
@@ -132,7 +144,10 @@
   lightBot.bot.animate = animate;
   lightBot.bot.step = step;
   lightBot.bot.draw = draw;
+  lightBot.bot.getAnimation = getAnimation;
   lightBot.bot.setAnimation = setAnimation;
+  lightBot.bot.getCurrentStep = getCurrentStep;
+  lightBot.bot.getMovement = getMovement;
   lightBot.bot.setMovement = setMovement;
   lightBot.bot.isReadyForNextInstruction = isReadyForNextInstruction;
 })();
