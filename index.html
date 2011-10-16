@@ -5,12 +5,13 @@
     <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
     <link type="text/css" href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
     <link type="text/css" href="css/jplayer.css" rel="stylesheet"  />
-    <link type="text/css" href="css/lightbot.css" rel="stylesheet" /> 
+    <link type="text/css" href="css/lightbot.css" rel="stylesheet" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
     <script type="text/javascript" src="js/lightbot.model.game.js"></script>
     <script type="text/javascript" src="js/lightbot.model.directions.js"></script>
     <script type="text/javascript" src="js/lightbot.model.bot.js"></script>
+    <script type="text/javascript" src="js/lightbot.model.bot.instructions.js"></script>
     <script type="text/javascript" src="js/lightbot.model.map.js"></script>
     <script type="text/javascript" src="js/lightbot.model.box.js"></script>
     <script type="text/javascript" src="js/lightbot.model.lightbox.js"></script>
@@ -25,15 +26,40 @@
       $(document).ready(function() {
         var lvl = {
           'direction': 0,
-          'position': {x: 0, y: 0},
+          'position': {x: 2, y: 4},
           'map': [
-            [{"h":1, "t":"b"}, {"h":1, "t":"b"}],
-            [{"h":1, "t":"l"}, {"h":1, "t":"l"}],
+            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"l"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
+            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
+            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
+            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":6, "t":"b"},{"h":5, "t":"b"}, {"h":5, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
+            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":2, "t":"b"},{"h":3, "t":"b"}, {"h":4, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
+            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":4, "t":"b"}, {"h":5, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
+            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"b"}, {"h":3, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
+            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}, {"h":3, "t":"l"},{"h":1, "t":"b"},{"h":1, "t":"b"}]
           ]
         };
         var view = canvasView($('#gameCanvas'));
 
         lightBot.map.loadMap(lvl);
+        //lightBot.draw();
+
+        // add some instructions to the bot
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.LightInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
+        //lightBot.bot.queueInstruction(new lightBot.bot.instructions.LightInstruction());
+
         //console.log(lightBot.map.getMapRef());
         //console.log(view);
         //lightbot.draw();

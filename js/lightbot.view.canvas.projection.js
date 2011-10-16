@@ -1,3 +1,6 @@
+/*jsl:option explicit*/
+/*jsl:import lightbot.model.game.js*/
+
 (function() {
   function Projection(canvasHeight, offsetX, offsetY) {
     this.project = function(x, y, z) {

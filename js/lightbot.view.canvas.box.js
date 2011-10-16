@@ -1,3 +1,6 @@
+/*jsl:option explicit*/
+/*jsl:import lightbot.model.game.js*/
+
 (function() {
   // dimension
   var edgeLength = 50;
@@ -22,23 +25,13 @@
   lightBot.LightBox.prototype.pulseGrowing = true; // controls the growth/shrink of the pulse animation
   lightBot.LightBox.prototype.currentAnimationFrame = 0; // current animation frame, used internally to control the animation
 
-  
-  // overwrite the default getHeight of Box
-  function getHeight() {
-    return this.height * heightScale;
-  }
-
-  function getEdgeLength() {
-    return edgeLength;
-  }
-
   function drawTopFaceBox() {
     // top face: p1 is front left and rest is counter-clockwise
     lightBot.ctx.fillStyle = colorTop;
-    p1 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    p2 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    p3 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
-    p4 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
+    var p1 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p2 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p3 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
+    var p4 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
     lightBot.ctx.beginPath();
     lightBot.ctx.moveTo(p1.x, p1.y);
     lightBot.ctx.lineTo(p2.x, p2.y);
@@ -52,10 +45,10 @@
   function drawTopFaceLightBox() {
     // top face: p1 is front left and rest is counter-clockwise
     lightBot.ctx.fillStyle = this.lightOn ? colorTopLightOn : colorTopLightOff;
-    p1 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    p2 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    p3 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
-    p4 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
+    var p1 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p2 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p3 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
+    var p4 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
     lightBot.ctx.beginPath();
     lightBot.ctx.moveTo(p1.x, p1.y);
     lightBot.ctx.lineTo(p2.x, p2.y);
@@ -141,13 +134,22 @@
     this.drawSideFace();
   }
 
-  lightBot.Box.prototype.getHeight = getHeight;
-  lightBot.Box.prototype.getEdgeLength = getEdgeLength;
+  // add getHeight method and only use getHeight in view
+  function getHeight() {
+    return this.height * heightScale;
+  }
+
+  function getEdgeLength() {
+    return edgeLength;
+  }
+
   lightBot.Box.prototype.step = stepBox;
   lightBot.Box.prototype.drawTopFace = drawTopFaceBox;
   lightBot.Box.prototype.drawFrontFace = drawFrontFaceBox;
   lightBot.Box.prototype.drawSideFace = drawSideFaceBox;
   lightBot.Box.prototype.draw = draw;
+  lightBot.Box.prototype.getHeight = getHeight;
+  lightBot.Box.prototype.getEdgeLength = getEdgeLength;
 
   lightBot.LightBox.prototype.step = stepLightBox;
   lightBot.LightBox.prototype.drawTopFace = drawTopFaceLightBox;

@@ -1,6 +1,9 @@
+/*jsl:option explicit*/
+/*jsl:import lightbot.model.game.js*/
+
 (function() {
   function Box(height, x, y) {
-    this.height = height; // hide height from the outside
+    this.height = height;
     this.x = x;
     this.y = y;
   }

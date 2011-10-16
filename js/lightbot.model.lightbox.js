@@ -1,3 +1,6 @@
+/*jsl:option explicit*/
+/*jsl:import lightbot.model.game.js*/
+
 (function() {
   function LightBox(height, x, y) {
     this.lightOn = false;

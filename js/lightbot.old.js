@@ -421,7 +421,7 @@ function LightBot(drawCanvas) {
     }
 
     this.walk = function() {
-      
+
       botReadyForNextInstruction = false;
       movement.enabled = true;
       //movement.step = 20; // defines how long the animation lasts
@@ -520,7 +520,7 @@ function LightBot(drawCanvas) {
       currentStep = 0;
       currentMovementStep = 0;
       currentFrame = 0;
-      
+
       map.toggleLight(currentPos.x, currentPos.y);
     }
 
@@ -670,7 +670,7 @@ function LightBot(drawCanvas) {
     this.isMoving = function() {
       return movement.enabled;
     }
-    
+
     this.getAnimationName = function() {
       return animation.name;
     }

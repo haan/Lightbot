@@ -1,3 +1,6 @@
+/*jsl:option explicit*/
+/*jsl:import lightbot.model.game.js*/
+
 (function() {
   var map = {};
 
@@ -21,8 +24,8 @@
     var botInMap = false;
     var nbrLights = 0;
 
-    for (i = 0; i < data.map.length; i++){
-      for (j = 0; j < data.map[i].length; j++) {
+    for (var i = 0; i < data.map.length; i++){
+      for (var j = 0; j < data.map[i].length; j++) {
         switch (data.map[i][j].t) {
           case 'b':
             mapRef[j][data.map.length - i - 1] = new lightBot.Box(data.map[i][j].h, j, data.map.length - i - 1);
@@ -49,7 +52,7 @@
   map.getLevelSize = function() {
     return levelSize;
   };
-  
+
   map.getMapRef = function() {
     return mapRef;
   };
