@@ -10,6 +10,9 @@
     this.toggleLight = function() {
       this.lightOn = !this.lightOn;
     };
+    this.reset = function() {
+      this.lightOn = false;
+    };
   }
 
 

@@ -21,10 +21,12 @@
 
     // decide what to animate
     switch (instruction.name) {
+      // walk
       case lightBot.bot.instructions.WalkInstruction.instructionName:
         setAnimation(lightBot.bot.animations.walk);
         setMovement((oldPos.x - newPos.x) * lightBot.map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength(), 0, (oldPos.y - newPos.y) * lightBot.map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength());
         break;
+      // jump
       case lightBot.bot.instructions.JumpInstruction.instructionName:
         var heightDiff = (lightBot.map.getMapRef()[newPos.x][newPos.y].getHeight() - lightBot.map.getMapRef()[oldPos.x][oldPos.y].getHeight()) * lightBot.map.getMapRef()[newPos.x][newPos.y].getEdgeLength();
         if (heightDiff > 0) {
@@ -37,11 +39,14 @@
         }
         setMovement((oldPos.x - newPos.x) * lightBot.map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength(), heightDiff, (oldPos.y - newPos.y) * lightBot.map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength());
         break;
+      // light
       case lightBot.bot.instructions.LightInstruction.instructionName:
         setAnimation(lightBot.bot.animations.light);
         break;
+      // turn left, turn right, repeat
       case lightBot.bot.instructions.TurnLeftInstruction.instructionName:
       case lightBot.bot.instructions.TurnRightInstruction.instructionName:
+      case lightBot.bot.instructions.RepeatInstruction.instructionName:
         // no animation for turning
         break;
       default:
@@ -51,7 +56,7 @@
   }
 
   function step() {
-    if (currentStep >= animation.duration) {
+    if (currentStep >= animation.duration || lightBot.bot.resetFlag) {
       // set the bot to ready
       readyForNextInstruction = true;
 

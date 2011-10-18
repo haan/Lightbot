@@ -6,6 +6,7 @@
     this.height = height;
     this.x = x;
     this.y = y;
+    this.reset = function() {};
   }
 
   lightBot.Box = Box;

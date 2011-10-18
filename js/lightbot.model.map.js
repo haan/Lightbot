@@ -48,6 +48,15 @@
     }
   };
 
+  map.reset = function() {
+    lightBot.bot.reset();
+    for (var i = 0; i < levelSize.x; i++) {
+      for (var j = 0; j < levelSize.y; j++) {
+        mapRef[i][j].reset();
+      }
+    }
+  }
+
   /* getters and setters */
   map.getLevelSize = function() {
     return levelSize;

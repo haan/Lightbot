@@ -8,6 +8,7 @@
     startingDirection: lightBot.directions.se, // save initial direction for reset
     direction: lightBot.directions.se,
     instructionQueue: [],
+    resetFlag: true,
     init: function(direction, position) {
       this.startingPos = position;
       this.currentPos = position;
@@ -15,8 +16,10 @@
       this.direction = direction;
     },
     reset: function() {
-      this.currentPos = this.startingPos;
+      this.currentPos = jQuery.extend({}, this.startingPos);
       this.direction = this.startingDirection;
+      this.instructionQueue.length = 0;
+      this.resetFlag = true;
     },
     queueInstruction: function(instruction) {
       this.instructionQueue.push(instruction);
@@ -26,6 +29,7 @@
     },
     // executes and returns the next instruction
     executeNextInstruction: function() {
+      this.resetFlag = false;
       if (this.instructionQueue.length > 0) {
         var instruction = this.instructionQueue.shift();
         switch (instruction.name) {
