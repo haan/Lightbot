@@ -56,7 +56,7 @@
   }
 
   function step() {
-    if (currentStep >= animation.duration || lightBot.bot.resetFlag) {
+    if (currentStep >= animation.duration || !lightBot.bot.isInExecutionMode()) {
       // set the bot to ready
       readyForNextInstruction = true;
 

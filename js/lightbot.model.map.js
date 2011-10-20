@@ -6,11 +6,16 @@
 
   var levelSize = {'x': 0, 'y': 0}; // the level size
   var mapRef = null; // the actual map values
+  var medals = null; // medals for the level
+  var levelNumber = 0; // what level is the user currently playing
 
-  map.loadMap = function(data) {
+  map.loadMap = function(data) { //TODO: change data to levelNumber and store maps locally
 
     // set the bot starting direction
     lightBot.bot.init(data.direction, data.position);
+
+    // set the level medals
+    medals = data.medals;
 
     // map files are defined user-friendly so we have to adapt to that
     levelSize.x = data.map[0].length; // we suppose map is a rectangle
@@ -55,7 +60,7 @@
         mapRef[i][j].reset();
       }
     }
-  }
+  };
 
   /* getters and setters */
   map.getLevelSize = function() {
@@ -64,6 +69,18 @@
 
   map.getMapRef = function() {
     return mapRef;
+  };
+
+  map.getMedals = function() {
+    return medals;
+  };
+
+  map.getLevelNumber = function() {
+    return levelNumber;
+  };
+
+  map.getNbrOfLevels = function() { // TODO: implement this
+    return 15;
   };
 
   lightBot.map = map;

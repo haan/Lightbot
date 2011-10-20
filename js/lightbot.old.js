@@ -403,7 +403,7 @@ function LightBot(drawCanvas) {
                 }
                 for (var i = instruction.body.length - 1; i >= 0 ; i--) {
                   var tmp = instruction.body[i];
-                  var tmp2 = jQuery.extend(true, {}, tmp); // deep copy of object as explained here: http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-a-javascript-object
+                  var tmp2 = $.extend(true, {}, tmp); // deep copy of object as explained here: http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-a-javascript-object
                   instructionQueue.unshift(tmp2);
                 }
 

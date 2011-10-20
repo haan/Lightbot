@@ -3,6 +3,7 @@
   <head>
     <title>LightBot v0.5.1</title>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
     <script type="text/javascript" src="js/lightbot.model.game.js"></script>
     <script type="text/javascript" src="js/lightbot.model.directions.js"></script>
@@ -12,6 +13,8 @@
     <script type="text/javascript" src="js/lightbot.model.map.state.js"></script>
     <script type="text/javascript" src="js/lightbot.model.box.js"></script>
     <script type="text/javascript" src="js/lightbot.model.lightbox.js"></script>
+    <script type="text/javascript" src="js/lightbot.model.medals.js"></script>
+    <script type="text/javascript" src="js/lightbot.model.achievements.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.game.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.map.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.box.js"></script>
@@ -32,8 +35,9 @@
           lightBot.map.reset();
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
-          lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
-          lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+          var body = [new lightBot.bot.instructions.JumpInstruction()];
+          //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+          lightBot.bot.queueInstruction(new lightBot.bot.instructions.RepeatInstruction(2, body));
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
@@ -58,9 +62,13 @@
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.LightInstruction());
+          lightBot.bot.execute();
         });
-        $('#runProg2Button').click(function(){
-          lightBot.map.reset();
+        $('#awardMedalButton').click(function(){
+          console.log(lightBot.medals.awardMedal());
+        });
+        $('#awardAchievementsButton').click(function(){
+          console.log(lightBot.achievements.awardAchievements());
         });
 
 
@@ -68,15 +76,20 @@
           'direction': 0,
           'position': {x: 2, y: 4},
           'map': [
-            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"l"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"b"}, {"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":5, "t":"b"}, {"h":5, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":2, "t":"b"},{"h":3, "t":"b"}, {"h":4, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":4, "t":"b"}, {"h":5, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":3, "t":"b"}, {"h":3, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}],
-            [{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"},{"h":1, "t":"b"}, {"h":3, "t":"l"},{"h":1, "t":"b"},{"h":1, "t":"b"}]
-          ]
+            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':3, 't':'l'}, {'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
+            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':3, 't':'b'}, {'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
+            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':3, 't':'b'}, {'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
+            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':5, 't':'b'}, {'h':5, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
+            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':2, 't':'b'},{'h':3, 't':'b'}, {'h':4, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
+            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':4, 't':'b'}, {'h':5, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
+            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':3, 't':'b'}, {'h':3, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
+            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}, {'h':3, 't':'l'},{'h':1, 't':'b'},{'h':1, 't':'b'}]
+          ],
+          'medals': {
+            'gold': 3,
+            'silver': 4,
+            'bronze': 5
+          }
         };
         var view = canvasView($('#gameCanvas'));
 
@@ -89,7 +102,8 @@
       <button id="allLightsOnButton">Are all the lights on?</button>
       <button id="resetMapButton">Reset the map</button>
       <button id="runProg1Button">Run program 1</button>
-      <button id="runProg2Button">Run program 2</button>
+      <button id="awardMedalButton">Award medal</button>
+      <button id="awardAchievementsButton">Award achievements</button>
     </div>
     <div id="canvasContainer">
       <canvas id="gameCanvas" width="690" height="655">

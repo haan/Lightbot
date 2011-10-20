@@ -27,8 +27,8 @@ var canvasView = function(canvas) {
 
   function update() {
     // check if we can execute the next bot instruction here?
-    if (lightBot.bot.isReadyForNextInstruction() && lightBot.bot.hasNextInstruction()) {
-      var oldPos = jQuery.extend({}, lightBot.bot.currentPos); // copy old position
+    if (lightBot.bot.isInExecutionMode() && lightBot.bot.isReadyForNextInstruction() && lightBot.bot.hasNextInstruction()) {
+      var oldPos = $.extend({}, lightBot.bot.currentPos); // copy old position
       var instruction = lightBot.bot.executeNextInstruction(); // execute the next instruction
       var newPos = lightBot.bot.currentPos; // get the new position
       lightBot.bot.animate(instruction, oldPos, newPos);

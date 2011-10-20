@@ -6,9 +6,10 @@
     startingPos: {x: 0, y: 0}, // save initial position for reset
     currentPos: {x: 0, y: 0}, // current bot position on the map
     startingDirection: lightBot.directions.se, // save initial direction for reset
-    direction: lightBot.directions.se,
-    instructionQueue: [],
-    resetFlag: true,
+    direction: lightBot.directions.se, // current direction the bot is facing
+    instructionQueue: [], // saves the instruction queue. useful for post-executing analysis
+    executionQueue: [], // current instruction execution queue
+    executeFlag: false, // boolean flag indicating whether the bot is in execution mode
     init: function(direction, position) {
       this.startingPos = position;
       this.currentPos = position;
@@ -16,22 +17,26 @@
       this.direction = direction;
     },
     reset: function() {
-      this.currentPos = jQuery.extend({}, this.startingPos);
+      this.currentPos = $.extend({}, this.startingPos);
       this.direction = this.startingDirection;
       this.instructionQueue.length = 0;
-      this.resetFlag = true;
+      this.executionQueue.length = 0;
+      this.executeFlag = false;
     },
     queueInstruction: function(instruction) {
       this.instructionQueue.push(instruction);
     },
     hasNextInstruction: function() {
-      return (this.instructionQueue.length > 0);
+      return (this.executionQueue.length > 0);
+    },
+    execute: function() {
+      this.executeFlag = true;
+      this.executionQueue = this.instructionQueue.slice();
     },
     // executes and returns the next instruction
     executeNextInstruction: function() {
-      this.resetFlag = false;
-      if (this.instructionQueue.length > 0) {
-        var instruction = this.instructionQueue.shift();
+      if (this.executionQueue.length > 0) {
+        var instruction = this.executionQueue.shift();
         switch (instruction.name) {
           case lightBot.bot.instructions.WalkInstruction.instructionName:
             this.walk();
@@ -51,12 +56,12 @@
           case lightBot.bot.instructions.RepeatInstruction.instructionName:
             if (instruction.counter > 1) {
               instruction.counter--;
-              this.instructionQueue.unshift(instruction);
+              this.executionQueue.unshift(instruction);
             }
             for (var i = instruction.body.length - 1; i >= 0 ; i--) {
               var tmp = instruction.body[i];
-              var tmp2 = jQuery.extend(true, {}, tmp); // deep copy of object as explained here: http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-a-javascript-object
-              this.instructionQueue.unshift(tmp2);
+              var tmp2 = $.extend(true, {}, tmp); // deep copy of object as explained here: http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-a-javascript-object
+              this.executionQueue.unshift(tmp2);
             }
             break;
           default:
@@ -137,6 +142,22 @@
       if (this.direction < 0) {
         this.direction = 3;
       }
+    },
+    isInExecutionMode: function() {
+      return this.executeFlag;
+    },
+    getNumberOfInstructions: function() {
+      function count(a) {
+        var x = 0;
+        for (var i = 0; i < a.length; i++) {
+          x++;
+          if (a[i] instanceof lightBot.bot.instructions.RepeatInstruction) {
+            x += count(a[i].body);
+          }
+        }
+        return x;
+      }
+      return count(this.instructionQueue);
     }
   };
 
