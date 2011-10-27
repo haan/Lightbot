@@ -81,14 +81,13 @@
         }
       }
     ],
-    hasAchievement: function(x) {
-      return localStorage.getItem(this.achievementsList[x].name);
-      //return $.cookie(this.achievementsList[x].name);
+    hasAchievement: function(n) {
+      return localStorage.getItem(n);
     },
     awardAchievements: function() {
       var achievementsAwarded = [];
       for (var i = 0; i < this.achievementsList.length; i++) {
-        if (!this.hasAchievement(i) && this.achievementsList[i].check()) {
+        if (!this.hasAchievement(this.achievementsList[i].name) && this.achievementsList[i].check()) {
           localStorage.setItem(this.achievementsList[i].name, true);
           achievementsAwarded.push(this.achievementsList[i]);
         }
@@ -106,9 +105,6 @@
       if (localStorage.getItem('lightbot_level_' + i)) {
         count++;
       }
-      /*if ($.cookie('lightbot_level_' + i)) {
-        count++;
-      }*/
     }
     return count;
   }
