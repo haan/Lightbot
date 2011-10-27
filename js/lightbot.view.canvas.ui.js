@@ -37,7 +37,7 @@
       $('#levelList li').remove();
 
       for (var i = 0; i < lightBot.map.getNbrOfLevels(); i++) {
-        var item = parseInt(localStorage.getItem('lightbot_level_'+i));
+        var item = parseInt(localStorage.getItem('lightbot_level_'+i), 10);
         var medal = '';
         if (item) {
           switch (item) {

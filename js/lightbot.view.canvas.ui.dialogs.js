@@ -1,3 +1,6 @@
+/*jsl:option explicit*/
+/*jsl:import lightbot.model.game.js*/
+
 $(document).ready(function() {
   $("div#levelCompleteDialog").dialog({
     draggable: false,

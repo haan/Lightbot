@@ -79,7 +79,7 @@
   /* getters and setters */
   map.ready = function() {
     return levelNumber !== null;
-  }
+  };
 
   map.getLevelSize = function() {
     return levelSize;
@@ -103,7 +103,7 @@
 
   map.complete = function() {
     levelNumber = null; // by setting levelNumber to null, the map is marked as completed
-  }
+  };
 
   lightBot.map = map;
 })();

@@ -54,7 +54,7 @@ function hasAchieved(achievementName) {
       return getMedalCount(3) == lightBot.getNbrOfLevels();
     case 'lightbot_achievement_complete_levels_gold':
       return getMedalCount(4) == lightBot.getNbrOfLevels();
-  } 
+  }
 }
 
 function hasAchievement(achievementName) {
@@ -83,7 +83,7 @@ function getAchievementTitle(achievementName) {
       return 'Elite';
     case 'lightbot_achievement_complete_levels_gold':
       return 'H4X0R';
-  }  
+  }
 }
 
 function getAchievementMessage(achievementName) {

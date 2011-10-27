@@ -1,3 +1,6 @@
+/*jsl:option explicit*/
+/*jsl:import lightbot.model.game.js*/
+
 $(document).ready(function() {
   // show help screen button
   $('.helpButton').click(function() {
@@ -21,8 +24,8 @@ $(document).ready(function() {
 
   // show game screen buttons
   $('#levelList li').live({
-    'mouseover':  function() {$(this).addClass('ui-state-hover')},
-    'mouseout': function() {$(this).removeClass('ui-state-hover')},
-    'click': function () {lightBot.ui.showGameScreen($(this).text())}
+    'mouseover':  function() {$(this).addClass('ui-state-hover');},
+    'mouseout': function() {$(this).removeClass('ui-state-hover');},
+    'click': function () {lightBot.ui.showGameScreen($(this).text());}
   });
 });
