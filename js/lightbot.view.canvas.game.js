@@ -34,6 +34,21 @@ var canvasView = function(canvas) {
       lightBot.bot.animate(instruction, oldPos, newPos);
     }
     // check if map has been completed here
+    if (lightBot.map.ready() && lightBot.map.state.check(lightBot.map.state.allLightsOn)) {
+
+      // award medals
+      var medal = lightBot.medals.awardMedal();
+      lightBot.medals.display(medal); // show medal dialog
+
+      // award achievements
+      var achievements = lightBot.achievements.awardAchievements();
+      lightBot.achievements.display(achievements);
+
+      // set the map as complete
+      lightBot.map.complete();
+
+      // return to map selection screen
+    }
     lightBot.step();
     lightBot.draw();
   }

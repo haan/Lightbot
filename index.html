@@ -2,8 +2,8 @@
 <html>
   <head>
     <title>LightBot v0.5.1</title>
+    <link type="text/css" href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery.cookie.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
     <script type="text/javascript" src="js/lightbot.model.game.js"></script>
     <script type="text/javascript" src="js/lightbot.model.directions.js"></script>
@@ -15,16 +15,25 @@
     <script type="text/javascript" src="js/lightbot.model.lightbox.js"></script>
     <script type="text/javascript" src="js/lightbot.model.medals.js"></script>
     <script type="text/javascript" src="js/lightbot.model.achievements.js"></script>
+    <script type="text/javascript" src="js/lightbot.view.canvas.ui.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.game.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.map.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.box.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.bot.animations.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.bot.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.projection.js"></script>
+    <script type="text/javascript" src="js/lightbot.view.canvas.medals.js"></script>
+    <script type="text/javascript" src="js/lightbot.view.canvas.achievements.js"></script>
 
     <script type="text/javascript">
       $(document).ready(function() {
         // buttons
+        $('#loadMapsButton').click(function(){
+          lightBot.map.loadMaps();
+        });
+        $('#loadMapButton').click(function(){
+          lightBot.map.loadMap($('#mapNumber').val());
+        });
         $('#allLightsOnButton').click(function(){
           console.log(lightBot.map.state.check(lightBot.map.state.allLightsOn));
         });
@@ -33,7 +42,7 @@
         });
         $('#runProg1Button').click(function(){
           lightBot.map.reset();
-          lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
+          /*lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.TurnLeftInstruction());
           var body = [new lightBot.bot.instructions.JumpInstruction()];
           //lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
@@ -61,6 +70,9 @@
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.JumpInstruction());
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
+          lightBot.bot.queueInstruction(new lightBot.bot.instructions.LightInstruction());*/
+          lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
+          lightBot.bot.queueInstruction(new lightBot.bot.instructions.WalkInstruction());
           lightBot.bot.queueInstruction(new lightBot.bot.instructions.LightInstruction());
           lightBot.bot.execute();
         });
@@ -71,34 +83,20 @@
           console.log(lightBot.achievements.awardAchievements());
         });
 
-
-        var lvl = {
-          'direction': 0,
-          'position': {x: 2, y: 4},
-          'map': [
-            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':3, 't':'l'}, {'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
-            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':3, 't':'b'}, {'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
-            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':3, 't':'b'}, {'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
-            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':5, 't':'b'}, {'h':5, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
-            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':2, 't':'b'},{'h':3, 't':'b'}, {'h':4, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
-            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':4, 't':'b'}, {'h':5, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
-            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':3, 't':'b'}, {'h':3, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}],
-            [{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'},{'h':1, 't':'b'}, {'h':3, 't':'l'},{'h':1, 't':'b'},{'h':1, 't':'b'}]
-          ],
-          'medals': {
-            'gold': 3,
-            'silver': 4,
-            'bronze': 5
-          }
-        };
         var view = canvasView($('#gameCanvas'));
-
-        lightBot.map.loadMap(lvl);
       });
     </script>
   </head>
   <body>
     <div id="testButtons">
+      <button id="loadMapsButton">Load maps from server</button>
+      <select id="mapNumber">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+      <button id="loadMapButton">Load map</button>
       <button id="allLightsOnButton">Are all the lights on?</button>
       <button id="resetMapButton">Reset the map</button>
       <button id="runProg1Button">Run program 1</button>
@@ -107,6 +105,23 @@
     </div>
     <div id="canvasContainer">
       <canvas id="gameCanvas" width="690" height="655">
+    </div>
+
+    <div id="dialogs">
+      <div id="levelCompleteDialog" title="Level complete">
+        <p>
+          <span class="medal" style="float:left; margin:0 7px 50px 0;"></span>
+          Congratulations! You have completed this level using <span class="nbrOfInstructions"></span> instructions!
+        </p>
+        <p class="message" style="margin-top: 10px"></p>
+      </div>
+
+      <div id="achievementDialog" title="Achievement unlocked!">
+        <p>
+          <span class="achievement" style="float:left; margin:0 7px 50px 0;"></span>
+          <span class="message"></span>
+        </p>
+      </div>
     </div>
   </body>
 </html>

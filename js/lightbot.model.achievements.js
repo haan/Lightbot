@@ -82,13 +82,14 @@
       }
     ],
     hasAchievement: function(x) {
-      return $.cookie(this.achievementsList[x].name);
+      return localStorage.getItem(this.achievementsList[x].name);
+      //return $.cookie(this.achievementsList[x].name);
     },
     awardAchievements: function() {
       var achievementsAwarded = [];
       for (var i = 0; i < this.achievementsList.length; i++) {
         if (!this.hasAchievement(i) && this.achievementsList[i].check()) {
-          $.cookie(this.achievementsList[i].name, true, { expires: 365 });
+          localStorage.setItem(this.achievementsList[i].name, true);
           achievementsAwarded.push(this.achievementsList[i]);
         }
       }
@@ -102,9 +103,12 @@
   function getCompletedLevelCount() {
     var count = 0;
     for (var i = 0; i < lightBot.map.getNbrOfLevels(); i++) {
-      if ($.cookie('lightbot_level_' + i)) {
+      if (localStorage.getItem('lightbot_level_' + i)) {
         count++;
       }
+      /*if ($.cookie('lightbot_level_' + i)) {
+        count++;
+      }*/
     }
     return count;
   }
@@ -112,7 +116,7 @@
   function getMedalCount(quality) {
     var count = 0;
     for (var i = 0; i < lightBot.map.getNbrOfLevels(); i++) {
-      if ($.cookie('lightbot_level_' + i) && parseInt($.cookie('lightbot_level_' + i), 10) >= quality) {
+      if (localStorage.getItem('lightbot_level_' + i) && parseInt(localStorage.getItem('lightbot_level_' + i), 10) >= quality) {
         count++;
       }
     }

@@ -18,9 +18,12 @@
       } else if (nbrInstructions <= lvlMedals.bronze) {
         medal = this.bronze;
       }
-      if (!$.cookie('lightbot_level_' + lightBot.map.getLevelNumber()) || parseInt($.cookie('lightbot_level_' + lightBot.map.getLevelNumber()), 10) < medal) {
-        $.cookie('lightbot_level_' + lightBot.map.getLevelNumber(), medal, { expires: 365 });
+      if (!localStorage.getItem('lightbot_level_' + lightBot.map.getLevelNumber()) || parseInt(localStorage.getItem('lightbot_level_' + lightBot.map.getLevelNumber()), 10) < medal) {
+        localStorage.setItem('lightbot_level_' + lightBot.map.getLevelNumber(), medal);
       }
+      /*if (!$.cookie('lightbot_level_' + lightBot.map.getLevelNumber()) || parseInt($.cookie('lightbot_level_' + lightBot.map.getLevelNumber()), 10) < medal) {
+        $.cookie('lightbot_level_' + lightBot.map.getLevelNumber(), medal, { expires: 365 });
+      }*/
       return medal;
     }
   };

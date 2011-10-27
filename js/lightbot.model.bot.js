@@ -9,7 +9,7 @@
     direction: lightBot.directions.se, // current direction the bot is facing
     instructionQueue: [], // saves the instruction queue. useful for post-executing analysis
     executionQueue: [], // current instruction execution queue
-    executeFlag: false, // boolean flag indicating whether the bot is in execution mode
+    executionMode: false, // boolean flag indicating whether the bot is in execution mode
     init: function(direction, position) {
       this.startingPos = position;
       this.currentPos = position;
@@ -21,7 +21,7 @@
       this.direction = this.startingDirection;
       this.instructionQueue.length = 0;
       this.executionQueue.length = 0;
-      this.executeFlag = false;
+      this.executionMode = false;
     },
     queueInstruction: function(instruction) {
       this.instructionQueue.push(instruction);
@@ -30,8 +30,8 @@
       return (this.executionQueue.length > 0);
     },
     execute: function() {
-      this.executeFlag = true;
-      this.executionQueue = this.instructionQueue.slice();
+      this.executionMode = true;
+      this.executionQueue = this.instructionQueue.slice(); // copy instructionQueue into executionQueue
     },
     // executes and returns the next instruction
     executeNextInstruction: function() {
@@ -144,7 +144,7 @@
       }
     },
     isInExecutionMode: function() {
-      return this.executeFlag;
+      return this.executionMode;
     },
     getNumberOfInstructions: function() {
       function count(a) {
