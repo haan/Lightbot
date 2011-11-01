@@ -1,9 +1,0 @@
-Model
-  -LightBot
-    -Map
-      -Boxes and Lightboxes
-    -Robot
-
-View
-  -CanvasView
-    -Animations
