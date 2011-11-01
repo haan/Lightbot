@@ -50,7 +50,7 @@ $(document).ready(function() {
       $(this).children('span.ui-button-text').text('Run');
       $(this).removeClass('ui-state-active');
     } else {
-      instructions = lightBot.ui.editor.getInstructions($('#programContainer > div > ul > li'));
+      var instructions = lightBot.ui.editor.getInstructions($('#programContainer > div > ul > li'));
       lightBot.bot.queueInstructions(instructions);
       lightBot.bot.execute();
 
