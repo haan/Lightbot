@@ -22,6 +22,7 @@
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.media.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.buttons.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.dialogs.js"></script>
+    <script type="text/javascript" src="js/lightbot.view.canvas.ui.editor.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.game.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.map.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.box.js"></script>
@@ -128,6 +129,9 @@
         </button>
         <button class="levelSelectButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
           <span class="ui-button-icon-primary ui-icon ui-icon-power"></span><span class="ui-button-text">Start Game</span>
+        </button>
+        <button class="audioToggleButton ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-volume-on"></span><span class="ui-button-text">Toggle Audio</span>
         </button>
       </div>
 
@@ -267,7 +271,7 @@
             <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Back</span>
           </button>
 
-          <button id="audioToggleButton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+          <button class="audioToggleButton ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
             <span class="ui-button-icon-primary ui-icon ui-icon-volume-on"></span><span class="ui-button-text">Toggle Audio</span>
           </button>
 

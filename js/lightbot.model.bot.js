@@ -11,7 +11,7 @@
     executionQueue: [], // current instruction execution queue
     executionMode: false, // boolean flag indicating whether the bot is in execution mode
     init: function(direction, position) {
-      this.startingPos = position;
+      this.startingPos = $.extend({}, position);
       this.currentPos = position;
       this.startingDirection = direction;
       this.direction = direction;
@@ -25,6 +25,9 @@
     },
     queueInstruction: function(instruction) {
       this.instructionQueue.push(instruction);
+    },
+    queueInstructions: function(instructions) {
+      this.instructionQueue = this.instructionQueue.concat(instructions);
     },
     hasNextInstruction: function() {
       return (this.executionQueue.length > 0);
@@ -63,6 +66,7 @@
               var tmp2 = $.extend(true, {}, tmp); // deep copy of object as explained here: http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-a-javascript-object
               this.executionQueue.unshift(tmp2);
             }
+            return this.executeNextInstruction();
             break;
           default:
             console.error('Bot executeNextInstruction: unknown instruction "' + instruction.name + '"');
