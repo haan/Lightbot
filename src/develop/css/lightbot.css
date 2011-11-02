@@ -1,6 +1,6 @@
 body {
   font-size: 11px;
-  font-family: 'Droid Sans', sans-serif;
+  font-family: 'Lato', sans-serif;
   /*font-family: Arial, Helvetica, sans-serif;*/
   color: #222222;
   /*background: url('../img/bg_pattern.png') 0 0 repeat;*/
@@ -12,14 +12,23 @@ input[type="number"] {
 }
 
 h1, h2, h3 {
-  line-height: 22px;
   padding: 0 5px;
   margin: 0;
   text-transform: uppercase;
 }
 
 h1 {
-  font-size: 1.1em;
+  font-weight: 900px;
+  font-size: 31px;
+  color: #fffff2;
+  margin: 40px;
+}
+
+h3 {
+  font-weight: 900px;
+  font-size: 22px;
+  color: #fffff2;
+  margin: 5px 0 0 0;
 }
 
 p {
@@ -130,11 +139,13 @@ a:hover {
 }
 
 #welcomeScreen {
-  background-color: #eee;
+  border: 1px solid #000;
+  background: #4b4646 url('../img/welcome_screen_bg.png') no-repeat left top;
 }
 
 #achievementsScreen {
-  background-color: #eee;
+  border: 1px solid #000;
+  background-color: #4b4646;
 }
 
 #levelSelectScreen {
@@ -152,17 +163,43 @@ a:hover {
 
 
 /* achievements screen */
+
+#achievementsScreen .mainMenuButton {
+  position: absolute;
+  left: 40px;
+  bottom: 40px;
+  background: none;
+  background-color: #5c5c5c;
+  border-color: #7ca6ba;
+}
+
+#achievementsScreen .mainMenuButton.ui-state-hover {
+  background-color: #777777;
+  border-color: #a3cfc6;
+}
+
+#achievementsScreen .mainMenuButton span {
+  color: #f1ffd8;
+}
+
 #achievementsList {
-  height: 620px;
+  height: 513px;
   overflow: auto;
   padding: 0px;
-  margin: 5px;
+  margin: 0px 40px;
+  color: #f1ffd8;
 }
 
 #achievementsList li {
-  background-color: #ccc;
+  border: 1px solid #7ca6ba;
+  background-color: #5c5c5c;
   height: 50px;
   margin-bottom: 5px;
+}
+
+#achievementsList li:hover {
+  border-color: #a3cfc6;
+  background-color: #777777;
 }
 
 #achievementsList li img {

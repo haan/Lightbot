@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>LightBot v0.5.1</title>
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css'>
     <link type="text/css" href="css/lightbot.min.css" rel="stylesheet" />
     <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
@@ -18,7 +19,6 @@
       <div id="credits">Original concept by <a href="http://coolio-niato.newgrounds.com/" target="_blank">coolio niato</a>. Development by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Sprite by <a href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Interface by <a href="http://zenobiahoman.daportfolio.com/">Zenobia Homan</a>. Music by <a href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>.</div>
 
       <div id="welcomeScreen" class="ui-screen">
-        <h1>Welcome</h1>
         <button class="helpButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
           <span class="ui-button-icon-primary ui-icon ui-icon-help"></span><span class="ui-button-text">Help</span>
         </button>
@@ -35,11 +35,11 @@
 
       <div id="achievementsScreen" class="ui-screen ui-helper-hidden">
         <h1>Achievements</h1>
-        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
-          <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Main Menu</span>
-        </button>
         <ul id="achievementsList">
         </ul>
+        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+          <span class="ui-button-text">Main Menu</span>
+        </button>
       </div>
 
       <div id="helpScreen" class="ui-screen ui-helper-hidden">
@@ -178,7 +178,7 @@
           </button>
         </div>
         <div id="instructionsContainer">
-          <h1 class="ui-widget-header">Instructions</h1>
+          <h2 class="ui-widget-header">Instructions</h2>
           <div class="ui-widget-content">
             <ul>
                 <li><p class="walk"><span class="icon icon-walk" style="float: left;"></span>Walk forward<span class="icon icon-delete" style="float: right;"></span></p></li>
@@ -199,7 +199,7 @@
           </div>
         </div>
         <div id="programContainer">
-          <h1 class="ui-widget-header">Program</h1>
+          <h2 class="ui-widget-header">Program</h2>
           <div class="ui-widget-content" class="droppable">
             <ul>
             </ul>

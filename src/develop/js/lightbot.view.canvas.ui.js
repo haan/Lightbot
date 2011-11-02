@@ -25,7 +25,7 @@
       var achievements = lightBot.achievements.getAchievementsList();
       for (var i = 0; i < achievements.length; i++) {
         enabled = lightBot.achievements.hasAchievement(achievements[i].name) ? true : false;
-        $('<li class="ui-widget ' + ((enabled) ? 'ui-state-default' : 'ui-state-disabled') + ' ui-corner-all"><img src="img/achievements/'+achievements[i].name+'.png"><h3>'+achievements[i].title+'</h3><p>'+achievements[i].message+'</p></li>').appendTo('#achievementsList');
+        $('<li class="' + ((enabled) ? '' : 'ui-state-disabled') + '"><img src="img/achievements/'+achievements[i].name+'.png"><h3>'+achievements[i].title+'</h3><p>'+achievements[i].message+'</p></li>').appendTo('#achievementsList');
       }
 
       $('.ui-screen').hide();

@@ -61,7 +61,7 @@
         title: 'Nerd',
         message: 'Earn bronze medals on all levels.',
         check: function() {
-          getMedalCount(lightBot.medals.bronze) === lightBot.map.getNbrOfLevels();
+          return getMedalCount(lightBot.medals.bronze) === lightBot.map.getNbrOfLevels();
         }
       },
       {
@@ -69,7 +69,7 @@
         title: 'Elite',
         message: 'Earn silver medals on all levels.',
         check: function() {
-          getMedalCount(lightBot.medals.silver) === lightBot.map.getNbrOfLevels();
+          return getMedalCount(lightBot.medals.silver) === lightBot.map.getNbrOfLevels();
         }
       },
       {
@@ -77,7 +77,7 @@
         title: 'H4X0R',
         message: 'Earn gold medals on all levels.',
         check: function() {
-          getMedalCount(lightBot.medals.gold) === lightBot.map.getNbrOfLevels();
+          return getMedalCount(lightBot.medals.gold) === lightBot.map.getNbrOfLevels();
         }
       }
     ],
