@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LightBot v0.5.1</title>
+    <link type="text/css" href="css/lightbot.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="js/lightbot.min.js"></script>
+  </head>
+  <body>
+
+    <div id="audioContainer">
+      <div id="audioPlayer"></div>
+    </div>
+    <div id="lightbot">
+
+      <div id="credits">Original concept by <a href="http://coolio-niato.newgrounds.com/" target="_blank">coolio niato</a>. Development by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Sprite by <a href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Interface by <a href="http://zenobiahoman.daportfolio.com/">Zenobia Homan</a>. Music by <a href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>.</div>
+
+      <div id="welcomeScreen" class="ui-screen">
+        <h1>Welcome</h1>
+        <button class="helpButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-help"></span><span class="ui-button-text">Help</span>
+        </button>
+        <button class="achievementsButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-notice"></span><span class="ui-button-text">Achievements</span>
+        </button>
+        <button class="levelSelectButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-power"></span><span class="ui-button-text">Start Game</span>
+        </button>
+        <button class="audioToggleButton ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-volume-on"></span><span class="ui-button-text">Toggle Audio</span>
+        </button>
+      </div>
+
+      <div id="achievementsScreen" class="ui-screen ui-helper-hidden">
+        <h1>Achievements</h1>
+        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Main Menu</span>
+        </button>
+        <ul id="achievementsList">
+        </ul>
+      </div>
+
+      <div id="helpScreen" class="ui-screen ui-helper-hidden">
+        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
+          <span class="ui-button-text">Main Menu</span>
+        </button>
+        <div id="helpScreenAccordionContainer">
+          <div id="helpScreenAccordion">
+            <h3><a href="#goal">Goal of the game</a></h3>
+            <div>
+              <p>
+              Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+              ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+              amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+              odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+              </p>
+            </div>
+            <h3><a href="#howto">How to play the game</a></h3>
+            <div>
+              <p>
+              Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+              purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+              velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+              suscipit faucibus urna.
+              </p>
+            </div>
+            <h3><a href="#objects">Game objects</a></h3>
+            <div>
+              <p>
+              Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+              purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+              velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+              suscipit faucibus urna.
+              </p>
+            </div>
+            <h3><a href="#walk_forward">Instruction: walk forward</a></h3>
+            <div>
+              <p>
+              Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+              Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+              ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+              lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+              </p>
+            </div>
+            <h3><a href="#turn_right">Instruction: Turn 90&deg; to the right</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+            <h3><a href="#turn_left">Instruction: Turn 90&deg; to the left</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+            <h3><a href="#jump">Instruction: Jump</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+            <h3><a href="#jump">Instruction: Light</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+            <h3><a href="#jump">Instruction: Repeat</a></h3>
+            <div>
+              <p>
+              Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+              et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+              faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+              mauris vel est.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div id="helpScreenVerticalBar"></div>
+        <div id="videoContainer" class="jp-video jp-video-300p">
+          <div class="jp-type-single">
+            <div id="videoPlayer" class="jp-jplayer"></div>
+            <div class="jp-gui">
+              <div class="jp-video-play">
+                <a href="javascript:;" class="jp-video-play-icon" tabindex="1">play</a>
+              </div>
+              <div class="jp-interface">
+                <div class="jp-progress">
+                  <div class="jp-seek-bar">
+                    <div class="jp-play-bar"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="levelSelectScreen" class="ui-screen ui-helper-hidden">
+        <h1>Level select</h1>
+        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+          <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Main Menu</span>
+        </button>
+        <ul id="levelList">
+        </ul>
+      </div>
+
+      <div id="gameScreen" class="ui-screen ui-helper-hidden">
+        <div id="canvasContainer">
+          <canvas id="gameCanvas" width="690" height="655">
+        </div>
+        <div id="buttonContainer">
+          <button class="levelSelectButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Back</span>
+          </button>
+
+          <button class="audioToggleButton ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-volume-on"></span><span class="ui-button-text">Toggle Audio</span>
+          </button>
+
+          <button id="runButton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary ui-priority-primary" role="button" aria-disabled="false">
+            <span class="ui-button-icon-primary ui-icon ui-icon-notice"></span><span class="ui-button-text">Run</span>
+          </button>
+        </div>
+        <div id="instructionsContainer">
+          <h1 class="ui-widget-header">Instructions</h1>
+          <div class="ui-widget-content">
+            <ul>
+                <li><p class="walk"><span class="icon icon-walk" style="float: left;"></span>Walk forward<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="turnRight"><span class="icon icon-turn-right" style="float: left;"></span>Turn 90&deg; to the right<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="turnLeft"><span class="icon icon-turn-left" style="float: left;"></span>Turn 90&deg; to the left<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="jump"><span class="icon icon-jump" style="float: left;"></span>Jump<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="light"><span class="icon icon-light" style="float: left;"></span>Light<span class="icon icon-delete" style="float: right;"></span></p></li>
+                <li><p class="repeat"><span class="icon icon-repeat" style="float: left;"></span>Repeat <span><input type="number" min="1" max="99" step="1" value="2"> times</span><span class="icon icon-delete" style="float: right;"></span></p>
+                  <div class="droppable">
+                    <div class="ui-widget-content">
+                      <ul>
+                        <li class="placeholder"><p class="placeholder">Drop your instructions here</p></li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+            </ul>
+          </div>
+        </div>
+        <div id="programContainer">
+          <h1 class="ui-widget-header">Program</h1>
+          <div class="ui-widget-content" class="droppable">
+            <ul>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="dialogs">
+      <div id="levelCompleteDialog" title="Level complete">
+        <p>
+          <span class="medal" style="float:left; margin:0 7px 50px 0;"></span>
+          Congratulations! You have completed this level using <span class="nbrOfInstructions"></span> instructions!
+        </p>
+        <p class="message" style="margin-top: 10px"></p>
+      </div>
+
+      <div id="achievementDialog" title="Achievement unlocked!">
+        <p>
+          <span class="achievement" style="float:left; margin:0 7px 50px 0;"></span>
+          <span class="message"></span>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

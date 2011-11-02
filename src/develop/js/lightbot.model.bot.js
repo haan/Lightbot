@@ -15,6 +15,7 @@
       this.currentPos = position;
       this.startingDirection = direction;
       this.direction = direction;
+      this.reset();
     },
     reset: function() {
       this.currentPos = $.extend({}, this.startingPos);
