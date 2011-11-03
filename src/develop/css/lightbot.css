@@ -1,9 +1,7 @@
 body {
   font-size: 11px;
   font-family: 'Lato', sans-serif;
-  /*font-family: Arial, Helvetica, sans-serif;*/
   color: #222222;
-  /*background: url('../img/bg_pattern.png') 0 0 repeat;*/
   background-color: #cbf4f7;
 }
 
@@ -18,15 +16,22 @@ h1, h2, h3 {
 }
 
 h1 {
-  font-weight: 900px;
+  font-weight: 900;
   font-size: 31px;
   color: #fffff2;
   margin: 40px;
 }
 
+h2 {
+  font-weight: 900;
+  font-size: 20px;
+  color: #fffff2;
+  margin: 0;
+}
+
 h3 {
-  font-weight: 900px;
-  font-size: 22px;
+  font-weight: 900;
+  font-size: 20px;
   color: #fffff2;
   margin: 5px 0 0 0;
 }
@@ -39,6 +44,11 @@ a {
   text-decoration: none;
   font-weight: 700;
   color: inherit;
+}
+
+.ui-widget {
+  font-size: 12px;
+  font-family: 'Lato', sans-serif;
 }
 
 a:hover {
@@ -149,7 +159,8 @@ a:hover {
 }
 
 #levelSelectScreen {
-  background-color: #eee;
+  border: 1px solid #000;
+  background-color: #4b4646;
 }
 
 #gameScreen {
@@ -207,7 +218,27 @@ a:hover {
   margin:5px 15px 5px 5px;
 }
 
+
 /* level select screen */
+
+#levelSelectScreen .mainMenuButton {
+  position: absolute;
+  left: 40px;
+  bottom: 40px;
+  background: none;
+  background-color: #5c5c5c;
+  border-color: #7ca6ba;
+}
+
+#levelSelectScreen .mainMenuButton.ui-state-hover {
+  background-color: #777777;
+  border-color: #a3cfc6;
+}
+
+#levelSelectScreen .mainMenuButton span {
+  color: #f1ffd8;
+}
+
 #levelSelectScreen ul {
   width: 700px;
   list-style-type: none;
@@ -289,7 +320,7 @@ a:hover {
 }
 
 #programContainer > div > ul {
-  min-height: 414px;
+  min-height: 413px;
 }
 
 #programContainer li {
@@ -301,7 +332,7 @@ a:hover {
 }
 
 #programContainer > .ui-widget-content {
-  height: 439px;
+  height: 438px;
   overflow: auto;
 }
 
@@ -385,12 +416,13 @@ ul.ui-droppable {
   margin-top: 5px;
   background-color: #5c5c5c;
   background-image: none;
-  padding-left: 2.2em;
+  padding-left: 20px;
 }
 
 .ui-accordion .ui-accordion-header a{
   color: #f1ffd8;
   padding-left: 0;
+  font-size: 14px;
 }
 
 .ui-accordion .ui-accordion-header.ui-state-active {
@@ -417,4 +449,7 @@ ul.ui-droppable {
   margin-top: -3px;
   background-color: #fffff2;
   background-image: none;
+  font-size: 14px;
+  line-height: 18px;
+  padding: 10px 20px;
 }
