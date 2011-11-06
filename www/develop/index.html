@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>LightBot v0.5.1</title>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css'>
     <link type="text/css" href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
     <link type="text/css" href="css/jplayer.css" rel="stylesheet"  />
@@ -44,27 +45,17 @@
       <div id="credits">Original concept by <a href="http://coolio-niato.newgrounds.com/" target="_blank">coolio niato</a>. Development by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Sprite by <a href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Interface by <a href="http://zenobiahoman.daportfolio.com/">Zenobia Homan</a>. Music by <a href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>.</div>
 
       <div id="welcomeScreen" class="ui-screen">
-        <button class="helpButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
-          <span class="ui-button-icon-primary ui-icon ui-icon-help"></span><span class="ui-button-text">Help</span>
-        </button>
-        <button class="achievementsButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
-          <span class="ui-button-icon-primary ui-icon ui-icon-notice"></span><span class="ui-button-text">Achievements</span>
-        </button>
-        <button class="levelSelectButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
-          <span class="ui-button-icon-primary ui-icon ui-icon-power"></span><span class="ui-button-text">Start Game</span>
-        </button>
-        <button class="audioToggleButton ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
-          <span class="ui-button-icon-primary ui-icon ui-icon-volume-on"></span><span class="ui-button-text">Toggle Audio</span>
-        </button>
+        <button class="helpButton">Help</button>
+        <button class="achievementsButton">Achievements</button>
+        <button class="levelSelectButton">Start Game</button>
+        <button class="audioToggleButton">Toggle Audio</button>
       </div>
 
       <div id="achievementsScreen" class="ui-screen ui-helper-hidden">
         <h1>Achievements</h1>
         <ul id="achievementsList">
         </ul>
-        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
-          <span class="ui-button-text">Main Menu</span>
-        </button>
+        <button class="mainMenuButton">Main Menu</button>
       </div>
 
       <div id="helpScreen" class="ui-screen ui-helper-hidden">
@@ -171,47 +162,35 @@
             </div>
           </div>
         </div>
-        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
-          <span class="ui-button-text">Main Menu</span>
-        </button>
+        <button class="mainMenuButton">Main Menu</button>
       </div>
 
       <div id="levelSelectScreen" class="ui-screen ui-helper-hidden">
         <h1>Level select</h1>
         <ul id="levelList">
         </ul>
-        <button class="mainMenuButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false">
-          <span class="ui-button-text">Main Menu</span>
-        </button>
+        <button class="mainMenuButton">Main Menu</button>
       </div>
 
       <div id="gameScreen" class="ui-screen ui-helper-hidden">
         <div id="canvasContainer">
-          <canvas id="gameCanvas" width="690" height="655">
+          <canvas id="gameCanvas" width="690" height="666">
         </div>
         <div id="buttonContainer">
-          <button class="levelSelectButton ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary" role="button" aria-disabled="false">
-            <span class="ui-button-icon-primary ui-icon ui-icon-home"></span><span class="ui-button-text">Back</span>
-          </button>
-
-          <button class="audioToggleButton ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
-            <span class="ui-button-icon-primary ui-icon ui-icon-volume-on"></span><span class="ui-button-text">Toggle Audio</span>
-          </button>
-
-          <button id="runButton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-primary ui-priority-primary" role="button" aria-disabled="false">
-            <span class="ui-button-icon-primary ui-icon ui-icon-notice"></span><span class="ui-button-text">Run</span>
-          </button>
+          <button class="levelSelectButton">Back</button>
+          <button class="audioToggleButton">Toggle Audio</button>
+          <button id="runButton">Run</button>
         </div>
         <div id="instructionsContainer">
-          <h2 class="ui-widget-header">Instructions</h2>
-          <div class="ui-widget-content">
+          <h2>Instructions</h2>
+          <div>
             <ul>
-                <li><p class="walk"><span class="icon icon-walk" style="float: left;"></span>Walk forward<span class="icon icon-delete" style="float: right;"></span></p></li>
-                <li><p class="turnRight"><span class="icon icon-turn-right" style="float: left;"></span>Turn 90&deg; to the right<span class="icon icon-delete" style="float: right;"></span></p></li>
-                <li><p class="turnLeft"><span class="icon icon-turn-left" style="float: left;"></span>Turn 90&deg; to the left<span class="icon icon-delete" style="float: right;"></span></p></li>
-                <li><p class="jump"><span class="icon icon-jump" style="float: left;"></span>Jump<span class="icon icon-delete" style="float: right;"></span></p></li>
-                <li><p class="light"><span class="icon icon-light" style="float: left;"></span>Light<span class="icon icon-delete" style="float: right;"></span></p></li>
-                <li><p class="repeat"><span class="icon icon-repeat" style="float: left;"></span>Repeat <span><input type="number" min="1" max="99" step="1" value="2"> times</span><span class="icon icon-delete" style="float: right;"></span></p>
+                <li><p class="walk"><span class="ui-icon ui-icon-arrowthick-1-n" style="float: left;"></span>Walk forward<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="turnRight"><span class="ui-icon ui-icon-arrowreturnthick-1-w flip" style="float: left;"></span>Turn 90&deg; to the right<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="turnLeft"><span class="ui-icon ui-icon-arrowreturnthick-1-w" style="float: left;"></span>Turn 90&deg; to the left<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="jump"><span class="ui-icon ui-icon-arrowthickstop-1-n" style="float: left;"></span>Jump<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="light"><span class="ui-icon ui-icon-lightbulb" style="float: left;"></span>Light<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="repeat"><span class="ui-icon ui-icon-refresh" style="float: left;"></span>Repeat <span><input type="number" min="1" max="99" step="1" value="2"> times</span><span class="ui-icon ui-icon-close" style="float: right;"></span></p>
                   <div class="droppable">
                     <div class="ui-widget-content">
                       <ul>
@@ -224,8 +203,8 @@
           </div>
         </div>
         <div id="programContainer">
-          <h2 class="ui-widget-header">Program</h2>
-          <div class="ui-widget-content" class="droppable">
+          <h2>Program</h2>
+          <div class="droppable">
             <ul>
             </ul>
           </div>

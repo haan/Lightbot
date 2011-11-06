@@ -20,8 +20,8 @@
       lightBot.ui.media.playMenuAudio();
 
       var enabled = false;
-      $('#achievementsList li').remove();
 
+      $('#achievementsList').empty();
       var achievements = lightBot.achievements.getAchievementsList();
       for (var i = 0; i < achievements.length; i++) {
         enabled = lightBot.achievements.hasAchievement(achievements[i].name) ? true : false;
@@ -34,8 +34,7 @@
     showLevelSelectScreen: function() {
       lightBot.ui.media.playMenuAudio();
 
-      $('#levelList li').remove();
-
+      $('#levelList').empty();
       for (var i = 0; i < lightBot.map.getNbrOfLevels(); i++) {
         var item = parseInt(localStorage.getItem('lightbot_level_'+i), 10);
         var medal = '';
@@ -56,11 +55,12 @@
               console.error('Unknown medal "' + medal + '"');
               break;
           }
-          $('<li class="ui-state-default ui-state-highlight"><span class="medal '+medal+'" style="position: absolute; bottom: 2px; right: 0px"></span><span>'+i+'</span></li>').appendTo('#levelList');
+          $('<li class="ui-state-highlight"><span class="medal '+medal+'" style="position: absolute; bottom: 2px; right: 0px"></span><span>'+i+'</span></li>').appendTo('#levelList');
         } else {
-          $('<li class="ui-state-default">'+i+'</li>').appendTo('#levelList');
+          $('<li>'+i+'</li>').appendTo('#levelList');
         }
       }
+
       $('.ui-screen').hide();
       $('#levelSelectScreen').show();
     },
@@ -79,7 +79,7 @@
       $('#programContainer ul').append('<li class="ui-state-default placeholder"><p class="placeholder">Drop your instructions here</p></li>');
 
       // reset the run button
-      $('#runButton').removeClass('ui-state-active').children('span.ui-button-text').text('Run');
+      $('#runButton').button('option', {label: 'Run', icons: {primary: 'ui-icon-play'}}).removeClass('ui-state-highlight');
 
       // show the game screen
       $('#gameScreen').show();

@@ -24,6 +24,9 @@
       this.executionQueue.length = 0;
       this.executionMode = false;
     },
+    clearExecutionQueue: function() {
+      this.executionQueue.length = 0;
+    },
     queueInstruction: function(instruction) {
       this.instructionQueue.push(instruction);
     },

@@ -2,8 +2,9 @@
 /*jsl:import lightbot.model.game.js*/
 
 $(document).ready(function() {
+
   // delete icon for instructions in the program
-  $("#programContainer ul").delegate("span.icon-delete", "click", function() {
+  $("#programContainer").delegate(".ui-icon-close", "click", function() {
     $(this).parent().parent().remove();
   });
 
@@ -45,7 +46,7 @@ $(document).ready(function() {
 
           // if the target area was the "main" programContainer ul, scroll to the bottom
           var tmp = $(this).parent();
-          if (tmp.hasClass('ui-widget-content')) {
+          if (tmp.parent().is('#programContainer')) {
             tmp.animate({ scrollTop: tmp.height() }, "slow");
           }
         }

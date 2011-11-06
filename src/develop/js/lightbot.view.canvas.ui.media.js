@@ -83,14 +83,12 @@ $(document).ready(function() {
       this.audioEnabled = true;
       this.audioPlayer.jPlayer('play');
 
-      //$('.audioToggleButton').removeClass('ui-state-active');
       $('.audioToggleButton').children('span.ui-button-icon-primary').addClass('ui-icon-volume-on').removeClass('ui-icon-volume-off');
     },
     toggleAudioOff: function() {
       this.audioEnabled = false;
       this.audioPlayer.jPlayer('pause');
 
-      //$('.audioToggleButton').addClass('ui-state-active');
       $('.audioToggleButton').children('span.ui-button-icon-primary').addClass('ui-icon-volume-off').removeClass('ui-icon-volume-on');
     },
     toggleAudio: function() {

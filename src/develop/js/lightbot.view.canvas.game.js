@@ -39,6 +39,9 @@ var canvasView = function(canvas) {
     // check if map has been completed here
     if (lightBot.map.ready() && lightBot.map.state.check(lightBot.map.state.allLightsOn)) {
 
+      // stop the bot
+      lightBot.bot.clearExecutionQueue();
+
       // award medals
       var medal = lightBot.medals.awardMedal();
       lightBot.medals.display(medal); // show medal dialog
