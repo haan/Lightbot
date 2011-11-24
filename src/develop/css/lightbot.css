@@ -89,7 +89,7 @@ a:hover {
 }
 
 .ui-button.ui-state-highlight {
-  outline: #E59700 auto 5px;
+  border-color: #E59700;
 }
 
 .ui-button .ui-button-text {
@@ -222,6 +222,29 @@ a:hover {
 
 #gameScreen {
   background: #000;
+}
+
+/* welcome screen */
+#welcomeScreen .helpButton, #welcomeScreen .achievementsButton, #welcomeScreen .levelSelectButton, #welcomeScreen .audioToggleButton {
+  position: absolute;
+  bottom: 20px;
+}
+
+#welcomeScreen .audioToggleButton {
+  right: 40px;
+}
+
+#welcomeScreen .helpButton {
+  right: 75px;
+}
+
+#welcomeScreen .achievementsButton {
+  right: 150px;
+}
+
+#welcomeScreen .levelSelectButton {
+  right: 278px;
+  border-width: 2px;
 }
 
 

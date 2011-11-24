@@ -57,6 +57,7 @@ $(document).ready(function() {
       {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
       {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
       {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
+      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
       {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"}
     ],
     audioEnabled: true,
