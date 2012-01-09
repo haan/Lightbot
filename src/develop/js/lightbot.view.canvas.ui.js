@@ -4,19 +4,27 @@
 (function() {
 
   var ui = {
-    showWelcomeScreen: function() {
+    showWelcomeScreen: function(hist) {
       lightBot.ui.media.playMenuAudio();
+
+      // save in history if parameter hist is not set and then set the new page title
+      if (hist == null) history.pushState({page: 'welcomeScreen'});
+      $('title').text('Lightbot - Welcome');
 
       $('.ui-screen').hide();
       $('#welcomeScreen').show();
     },
-    showHelpScreen: function() {
+    showHelpScreen: function(hist) {
       lightBot.ui.media.playMenuAudio();
+
+      // save in history if parameter hist is not set and then set the new page title
+      if (hist == null) history.pushState({page: 'helpScreen'});
+      $('title').text('Lightbot - Help');
 
       $('.ui-screen').hide();
       $('#helpScreen').show();
     },
-    showAchievementsScreen: function() {
+    showAchievementsScreen: function(hist) {
       lightBot.ui.media.playMenuAudio();
 
       var enabled = false;
@@ -28,10 +36,14 @@
         $('<li class="' + ((enabled) ? '' : 'ui-state-disabled') + '"><img src="img/achievements/'+achievements[i].name+'.png"><h3>'+achievements[i].title+'</h3><p>'+achievements[i].message+'</p></li>').appendTo('#achievementsList');
       }
 
+      // save in history if parameter hist is not set and then set the new page title
+      if (hist == null) history.pushState({page: 'achievementsScreen'});
+      $('title').text('Lightbot - Achievements');
+
       $('.ui-screen').hide();
       $('#achievementsScreen').show();
     },
-    showLevelSelectScreen: function() {
+    showLevelSelectScreen: function(hist) {
       lightBot.ui.media.playMenuAudio();
 
       $('#levelList').empty();
@@ -61,14 +73,22 @@
         }
       }
 
+      // save in history if parameter hist is not set and then set the new page title
+      if (hist == null) history.pushState({page: 'levelSelectScreen'});
+      $('title').text('Lightbot - Level Select');
+
       $('.ui-screen').hide();
       $('#levelSelectScreen').show();
     },
-    showGameScreen: function(level) {
+    showGameScreen: function(level, hist) {
       lightBot.ui.media.playGameAudio();
 
       // load the map
       lightBot.map.loadMap(level);
+
+      // save in history if parameter hist is not set and then set the new page title
+      if (hist == null) history.pushState({page: 'gameScreen', 'level': level});
+      $('title').text('Lightbot - Level ' + level);
 
       $('.ui-screen').hide();
 

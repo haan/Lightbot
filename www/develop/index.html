@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>LightBot v0.5.1</title>
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css'>
+    <title>LightBot v0.8.1</title>
+    <link rel="shortcut icon" href="img/favicon.ico" />
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css' />
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css' />
     <link type="text/css" href="css/smoothness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
     <link type="text/css" href="css/jplayer.css" rel="stylesheet"  />
     <link type="text/css" href="css/lightbot.css" rel="stylesheet" />
@@ -22,6 +23,7 @@
     <script type="text/javascript" src="js/lightbot.model.achievements.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.js"></script>
+    <script type="text/javascript" src="js/lightbot.view.canvas.ui.history.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.media.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.buttons.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.dialogs.js"></script>
@@ -37,12 +39,21 @@
   </head>
   <body>
 
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
     <div id="audioContainer">
       <div id="audioPlayer"></div>
     </div>
     <div id="lightbot">
 
-      <div id="credits">Original concept by <a href="http://coolio-niato.newgrounds.com/" target="_blank">coolio niato</a>. Development by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Sprite by <a href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Interface by <a href="http://zenobiahoman.daportfolio.com/">Zenobia Homan</a>. Music by <a href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>.</div>
+      <div id="credits">Developed by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Interface by <a href="http://zenobiahoman.daportfolio.com/">Zenobia Homan</a>. Sprite by <a href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Music by <a href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>. Original concept by <a href="http://coolio-niato.newgrounds.com/" target="_blank">coolio niato</a>. This project is on <a href="https://github.com/haan/Lightbot" target="_blank">Github</a>.</div>
 
       <div id="welcomeScreen" class="ui-screen">
         <button class="helpButton">Help</button>
@@ -189,6 +200,21 @@
             <ul>
             </ul>
           </div>
+        </div>
+      </div>
+
+      <div id="credits2">
+        <div style="float:left;">Project hosted by the <a href="http://www.lte" target="_blank">Lyc&eacute;e Technique d'Esch-sur-Alzette</a>.</div>
+        <div style="float:right;">
+          <div class="fb-send" data-href="http://www.lightbot.lu"></div>
+          <div class="g-plusone" data-size="small" data-annotation="none"></div>
+          <script type="text/javascript">
+            (function() {
+              var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+              po.src = 'https://apis.google.com/js/plusone.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+          </script>
         </div>
       </div>
     </div>

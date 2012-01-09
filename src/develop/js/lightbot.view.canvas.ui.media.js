@@ -26,8 +26,8 @@ $(document).ready(function() {
     backgroundColor: '#000000',
     size: {
       width: "400px",
-      height: "300px",
-      cssClass: "jp-video-300p"
+      height: "285px",
+      cssClass: "jp-video-285p"
     }
   });
 
@@ -49,7 +49,7 @@ $(document).ready(function() {
       }
     },
     video: [
-      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
+      {webmv: "media/video/goal.webm", m4v: "media/video/goal.mp4", ogv: "media/video/goal.ogv"},
       {webmv: "media/video/howto.webm", m4v: "media/video/howto.mp4", ogv: "media/video/howto.ogv"},
       {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
       {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
