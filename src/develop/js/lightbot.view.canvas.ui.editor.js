@@ -6,6 +6,7 @@ $(document).ready(function() {
   // delete icon for instructions in the program
   $("#programContainer").delegate(".ui-icon-close", "click", function() {
     $(this).parent().parent().remove();
+    lightBot.ui.editor.saveProgram();
   });
 
   // make instructions in the instruction set draggable
@@ -28,6 +29,13 @@ $(document).ready(function() {
 (function() {
 
   var editor = {
+    // this function saves the current program in the localStorage
+    saveProgram: function() {
+      localStorage.setItem('lightbot_program_level_' + lightBot.map.getLevelNumber(), $('#programContainer ul').html());
+    },
+    loadProgram: function() {
+      $('#programContainer ul').append(localStorage.getItem('lightbot_program_level_' + lightBot.map.getLevelNumber())).find('.ui-state-hover').removeClass('ui-state-hover');
+    },
     // this function makes "repeat" instructions a droppable area
     makeDroppable: function() {
       $("#programContainer ul").droppable({
@@ -49,6 +57,9 @@ $(document).ready(function() {
           if (tmp.parent().is('#programContainer')) {
             tmp.animate({ scrollTop: tmp.height() }, "slow");
           }
+
+          // save the program
+          lightBot.ui.editor.saveProgram();
         }
       }).sortable({
         items: "li:not(.placeholder)",
@@ -58,6 +69,10 @@ $(document).ready(function() {
           // gets added unintentionally by droppable interacting with sortable
           // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
           $("#programContainer ul").removeClass( "ui-state-droppable" );
+        },
+        stop: function() {
+          // save the program
+          lightBot.ui.editor.saveProgram();
         }
       });
     },

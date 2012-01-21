@@ -77,6 +77,16 @@ $(document).ready(function() {
     }
   });
 
+  // clear program button
+  $('#clearButton').button({
+    icons: {
+      primary: "ui-icon-document"
+    }
+  }).click(function() {
+    $('#programContainer ul').empty();
+    lightBot.ui.editor.saveProgram();
+  });
+
   // help screen accordion (header buttons)
   $('#helpScreenAccordion').accordion({
     autoHeight: false,

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>LightBot v0.8.1</title>
+    <title>LightBot v0.8.3</title>
     <link rel="shortcut icon" href="img/favicon.ico" />
     <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css' />
@@ -13,16 +13,6 @@
     <script type="text/javascript" src="js/lightbot.min.js"></script>
   </head>
   <body>
-
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
-
     <div id="audioContainer">
       <div id="audioPlayer"></div>
     </div>
@@ -146,6 +136,7 @@
         <div id="buttonContainer">
           <button class="levelSelectButton">Back</button>
           <button class="audioToggleButton">Toggle Audio</button>
+          <button id="clearButton">Clear</button>
           <button id="runButton">Run</button>
         </div>
         <div id="instructionsContainer">
@@ -179,18 +170,8 @@
       </div>
 
       <div id="credits2">
-        <div style="float:left;">Project hosted by the <a href="http://www.lte" target="_blank">Lyc&eacute;e Technique d'Esch-sur-Alzette</a>.</div>
-        <div style="float:right;">
-          <div class="fb-send" data-href="http://www.lightbot.lu"></div>
-          <div class="g-plusone" data-size="small" data-annotation="none"></div>
-          <script type="text/javascript">
-            (function() {
-              var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-              po.src = 'https://apis.google.com/js/plusone.js';
-              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-            })();
-          </script>
-        </div>
+        <div style="float:left;"></div>
+        <div style="float:right;"></div>
       </div>
     </div>
 

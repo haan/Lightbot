@@ -95,8 +95,12 @@
       //clear all instructions in main program
       $('#programContainer li').remove();
 
-      //append placeholder instruction
-      $('#programContainer ul').append('<li class="ui-state-default placeholder"><p class="placeholder">Drop your instructions here</p></li>');
+      if (localStorage.getItem('lightbot_program_level_' + level)) {
+        lightBot.ui.editor.loadProgram();
+      } else {
+        //append placeholder instruction
+        $('#programContainer ul').append('<li class="ui-state-default placeholder"><p class="placeholder">Drop your instructions here</p></li>');
+      }
 
       // reset the run button
       $('#runButton').button('option', {label: 'Run', icons: {primary: 'ui-icon-play'}}).removeClass('ui-state-highlight');
