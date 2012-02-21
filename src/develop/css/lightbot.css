@@ -1,12 +1,11 @@
+/* GENERAL HTML TAGS
+   ================================================== */
+
 body {
   font-size: 11px;
   font-family: 'Lato', sans-serif;
   color: #222222;
   background-color: #cbf4f7;
-}
-
-input[type="number"] {
-  width: 40px;
 }
 
 h1, h2, h3 {
@@ -48,7 +47,8 @@ a:hover {
 }
 
 
-/* overwriting jquery ui default settings */
+/* JQUERY UI
+   ================================================== */
 
 .ui-widget-content {
   border: 1px solid #7CA6BA;
@@ -56,7 +56,8 @@ a:hover {
   background-color: #4B4646;
 }
 
-/* jquery dialogs */
+/* ===[ JQuery UI dialogs ]=== */
+
 .ui-dialog-titlebar {
   border: 0;
   background: none;
@@ -76,7 +77,8 @@ a:hover {
   color: #fffff2;
 }
 
-/* jquery ui buttons */
+/* ===[ JQuery UI buttons ]=== */
+
 .ui-button.ui-state-default {
   background: none;
   background-color: #5c5c5c;
@@ -100,7 +102,8 @@ a:hover {
   line-height: 1.2;
 }
 
-/* jquery ui accordion */
+/* ===[ JQuery UI accordion ]=== */
+
 .ui-accordion .ui-accordion-header {
   border: 1px solid #7ca6ba;
   margin-top: 5px;
@@ -144,18 +147,17 @@ a:hover {
   margin-top: -3px;
   background-color: #fffff2;
   background-image: none;
-
   padding: 10px 20px;
 }
 
-/* achievements */
+/* ===[ Additional JQuery icons (achievements and medals) ]=== */
+
 .achievement {
   background-image: url('../img/achievement.png');
   width: 32px;
   height: 32px;
 }
 
-/* medals */
 .medal {
   background-image: url('../img/medals.png');
   width: 32px;
@@ -163,18 +165,17 @@ a:hover {
 }
 
 .medal-gold {
-  background-position: -32px 0;  
+  background-position: -32px 0;
 }
 
 .medal-silver {
-  background-position: -64px 0;  
+  background-position: -64px 0;
 }
 
 .medal-bronze {
-  background-position: -96px 0;  
+  background-position: -96px 0;
 }
 
-/* icons */
 .flip {
   -moz-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
@@ -187,7 +188,9 @@ a:hover {
   cursor: pointer;
 }
 
-/* screen container and screens */
+/* SCREENS
+   ================================================== */
+
 #lightbot {
   position: absolute;
   top: 50%;
@@ -235,10 +238,16 @@ a:hover {
   background: #000;
 }
 
-/* welcome screen */
+/* WELCOME SCREEN
+   ================================================== */
+
 #welcomeScreen .helpButton, #welcomeScreen .achievementsButton, #welcomeScreen .levelSelectButton, #welcomeScreen .audioToggleButton {
   position: absolute;
   bottom: 20px;
+}
+
+#welcomeScreen .levelSelectButton {
+  bottom: 19px;
 }
 
 #welcomeScreen .audioToggleButton {
@@ -258,8 +267,8 @@ a:hover {
   border-width: 2px;
 }
 
-
-/* achievements screen */
+/* ACHIEVEMENTS SCREEN
+   ================================================== */
 
 #achievementsScreen .mainMenuButton {
   position: absolute;
@@ -273,6 +282,7 @@ a:hover {
   padding: 0px;
   margin: 0px 40px;
   color: #fffff2;
+  list-style-type: none;
 }
 
 #achievementsList li {
@@ -292,8 +302,8 @@ a:hover {
   margin:5px 15px 5px 5px;
 }
 
-
-/* level select screen */
+/* LEVEL SELECT SCREEN
+   ================================================== */
 
 #levelSelectScreen .mainMenuButton {
   position: absolute;
@@ -343,8 +353,8 @@ a:hover {
   background-color: #777777;
 }
 
-
-/* game screen */
+/* GAME SCREEN
+   ================================================== */
 
 #canvasContainer {
   position: absolute;
@@ -363,6 +373,8 @@ a:hover {
   height: 30px;
   background-color: #4B4646;
 }
+
+/* ===[ Instruction Container ]=== */
 
 #instructionsContainer {
   position: absolute;
@@ -390,10 +402,7 @@ a:hover {
   display: none;
 }
 
-input[type="number"] {
-  margin: 0px;
-  padding: 0px;
-}
+/* ===[ Program Container ]=== */
 
 #programContainer {
   position: absolute;
@@ -404,12 +413,20 @@ input[type="number"] {
   background-color: #4B4646;
 }
 
-#programContainer > div { /* allows the droppable program container to show a scrollbar when the program fills up */
+#programContainer input[type="number"] {
+  margin: 0px;
+  padding: 0px;
+  width: 40px;
+}
+
+/* allows the droppable program container to show a scrollbar when the program fills up */
+#programContainer > div {
   height: 442px;
   overflow: auto;
 }
 
-#programContainer > div > ul { /* the droppable area should fill the entire programcontainer */
+/* the droppable area should fill the entire programcontainer */
+#programContainer > div > ul {
   min-height: 417px;
 }
 
@@ -417,7 +434,8 @@ input[type="number"] {
   cursor: move;
 }
 
-#programContainer li.ui-state-highlight { /* sortable helper */
+/* sortable helper */
+#programContainer li.ui-state-highlight {
   height: 18px;
 }
 
@@ -427,13 +445,13 @@ input[type="number"] {
   overflow: auto;
 }
 
-ul {
+#instructionsContainer ul, #programContainer ul {
   margin: 0em;
   list-style: none;
   padding: 5px;
 }
 
-ul.ui-droppable {
+#instructionsContainer ul.ui-droppable, #programContainer ul.ui-droppable {
   padding-bottom: 20px;
 }
 
@@ -468,16 +486,19 @@ li.ui-draggable-dragging {
   width: 150px;
 }
 
-.ui-state-droppable { /* highlight droppable areas with a color */
+/* highlight droppable areas with a color */
+.ui-state-droppable {
   background-color: #fffed0;
 }
 
-.ui-state-droppable-hover { /* highlight the droppable area the mouse is currently hovering with another color */
+/* highlight the droppable area the mouse is currently hovering with another color */
+.ui-state-droppable-hover {
   background-color: #fbeea4;
 }
 
+/* HELP SCREEN
+   ================================================== */
 
-/* help screen */
 #helpScreenAccordionContainer {
   position: absolute;
   top: 40px;

@@ -3,6 +3,11 @@
 
 $(document).ready(function() {
 
+  // save the program when the value of input[type=number] changes
+  $("#programContainer").delegate(':input[type="number"]', "change", function() {
+    lightBot.ui.editor.saveProgram();
+  });
+
   // delete icon for instructions in the program
   $("#programContainer").delegate(".ui-icon-close", "click", function() {
     $(this).parent().parent().remove();
@@ -31,10 +36,14 @@ $(document).ready(function() {
   var editor = {
     // this function saves the current program in the localStorage
     saveProgram: function() {
+      $('#programContainer ul').find(':input[type="number"]').each(function(){
+        $(this).attr('value', $(this).val());
+      });
       localStorage.setItem('lightbot_program_level_' + lightBot.map.getLevelNumber(), $('#programContainer ul').html());
     },
     loadProgram: function() {
-      $('#programContainer ul').append(localStorage.getItem('lightbot_program_level_' + lightBot.map.getLevelNumber())).find('.ui-state-hover').removeClass('ui-state-hover');
+      $('#programContainer ul').append(localStorage.getItem('lightbot_program_level_' + lightBot.map.getLevelNumber())).find('*').removeClass('ui-state-hover ui-state-droppable');
+      this.makeDroppable();
     },
     // this function makes "repeat" instructions a droppable area
     makeDroppable: function() {

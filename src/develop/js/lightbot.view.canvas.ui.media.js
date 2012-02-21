@@ -26,8 +26,8 @@ $(document).ready(function() {
     backgroundColor: '#000000',
     size: {
       width: "400px",
-      height: "285px",
-      cssClass: "jp-video-285p"
+      height: "300px",
+      cssClass: "jp-video-300p"
     }
   });
 
@@ -51,14 +51,14 @@ $(document).ready(function() {
     video: [
       {webmv: "media/video/goal.webm", m4v: "media/video/goal.mp4", ogv: "media/video/goal.ogv"},
       {webmv: "media/video/howto.webm", m4v: "media/video/howto.mp4", ogv: "media/video/howto.ogv"},
-      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
-      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
-      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
-      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
-      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
-      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
-      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"},
-      {webmv: "media/video/demo.webm", m4v: "media/video/demo.mp4", ogv: "media/video/demo.ogv"}
+      {webmv: "media/video/objects.webm", m4v: "media/video/objects.mp4", ogv: "media/video/objects.ogv"},
+      {webmv: "media/video/walk.webm", m4v: "media/video/walk.mp4", ogv: "media/video/walk.ogv"},
+      {webmv: "media/video/turnRight.webm", m4v: "media/video/turnRight.mp4", ogv: "media/video/turnRight.ogv"},
+      {webmv: "media/video/turnLeft.webm", m4v: "media/video/turnLeft.mp4", ogv: "media/video/turnLeft.ogv"},
+      {webmv: "media/video/jump.webm", m4v: "media/video/jump.mp4", ogv: "media/video/jump.ogv"},
+      {webmv: "media/video/light.webm", m4v: "media/video/light.mp4", ogv: "media/video/light.ogv"},
+      {webmv: "media/video/repeat.webm", m4v: "media/video/repeat.mp4", ogv: "media/video/repeat.ogv"},
+      {webmv: "media/video/medal.webm", m4v: "media/video/medal.mp4", ogv: "media/video/medal.ogv"}
     ],
     audioEnabled: true,
     playMenuAudio: function() {
