@@ -16,9 +16,6 @@ var canvasView = function(canvas) {
   // create projection
   lightBot.projection = new lightBot.Projection(canvas.get(0).height, canvas.get(0).width / 2, offsetY);
 
-  // load maps
-  lightBot.map.loadMaps();
-
   // create canvas background pattern
   var bg = null;
 

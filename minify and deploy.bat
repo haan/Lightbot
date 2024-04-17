@@ -7,7 +7,6 @@ java -jar yuicompressor-2.4.6.jar -o src\deploy\css\lightbot.min.css src\deploy\
 rmdir /S /Q deploy
 mkdir deploy
 xcopy resources\img deploy\img /E /Q /Y /I
-xcopy resources\maps deploy\maps /E /Q /Y /I
 xcopy resources\media deploy\media /E /Q /Y /I
 xcopy src\deploy deploy /E /Q /Y /I
 xcopy www\deploy deploy /E /Q /Y /I
