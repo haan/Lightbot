@@ -20,7 +20,7 @@ Desktop.ini
 *.tmp
 
 # Build artifacts
-deploy/
+/deploy/
 dist/
 coverage/
 .tmp/
