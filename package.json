@@ -1,0 +1,34 @@
+{
+  "name": "lightbot",
+  "version": "1.0.0",
+  "description": "Lightbot is an educational game about programming designed for introductory courses to logical thinking.\r ## Deploying or self-hosting the game\r The content of the \"deploy\" folder is everything that you need in order to get started. Simply download the entire contents of the \"deploy\" folder and open the index.html locally in your web browser. Since the latest update, no server is needed anymore in order to run the game.",
+  "main": "index.js",
+  "scripts": {
+    "build:clean": "rimraf deploy && mkdir deploy\\js && mkdir deploy\\css",
+    "build:js": "google-closure-compiler --compilation_level=SIMPLE_OPTIMIZATIONS --warning_level=QUIET --js src/develop/js/lightbot.model.game.js --js src/develop/js/lightbot.model.directions.js --js src/develop/js/lightbot.model.bot.js --js src/develop/js/lightbot.model.bot.instructions.js --js src/develop/js/lightbot.model.map.js --js src/develop/js/lightbot.model.map.state.js --js src/develop/js/lightbot.model.box.js --js src/develop/js/lightbot.model.lightbox.js --js src/develop/js/lightbot.model.medals.js --js src/develop/js/lightbot.model.achievements.js --js src/develop/js/lightbot.view.canvas.ui.js --js src/develop/js/lightbot.view.canvas.ui.media.js --js src/develop/js/lightbot.view.canvas.ui.buttons.js --js src/develop/js/lightbot.view.canvas.ui.dialogs.js --js src/develop/js/lightbot.view.canvas.ui.editor.js --js src/develop/js/lightbot.view.canvas.game.js --js src/develop/js/lightbot.view.canvas.map.js --js src/develop/js/lightbot.view.canvas.box.js --js src/develop/js/lightbot.view.canvas.bot.animations.js --js src/develop/js/lightbot.view.canvas.bot.js --js src/develop/js/lightbot.view.canvas.projection.js --js src/develop/js/lightbot.view.canvas.medals.js --js src/develop/js/lightbot.view.canvas.achievements.js --js src/develop/js/lightbot.view.canvas.js --js src/develop/js/lightbot.view.canvas.ui.history.js --js_output_file=deploy/js/lightbot.min.js",
+    "build:css": "cleancss src/develop/css/smoothness/jquery-ui-1.8.16.custom.css src/develop/css/jplayer.css src/develop/css/lightbot.css -o deploy/css/lightbot.min.css",
+    "build:css-images": "copyfiles -u 4 src/develop/css/smoothness/images/** deploy/css",
+    "build:assets": "copyfiles -u 1 resources/img/** resources/media/** deploy",
+    "build:vendor-js": "copyfiles -u 2 src/develop/js/jquery-1.7.min.js src/develop/js/jquery-ui-1.8.16.custom.min.js src/develop/js/jquery.jplayer.min.js src/develop/js/jquery.history.js deploy",
+    "build:html": "copyfiles -u 2 src/deploy/index.html deploy",
+    "build": "npm run build:clean && npm run build:js && npm run build:css && npm run build:assets && npm run build:vendor-js && npm run build:css-images && npm run build:html"
+  },
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3",
+    "copyfiles": "^2.4.1",
+    "google-closure-compiler": "^20251111.0.0",
+    "rimraf": "^6.1.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haan/Lightbot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/haan/Lightbot/issues"
+  },
+  "homepage": "https://github.com/haan/Lightbot#readme"
+}

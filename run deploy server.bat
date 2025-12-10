@@ -1,1 +1,0 @@
-mongoose-3.0.exe -p 8080 -r .\www\deploy,/img=.\resources\img,/maps=.\resources\maps,/media=.\resources\media,/css=.\src\deploy\css,/js=.\src\deploy\js
