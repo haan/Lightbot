@@ -1,0 +1,39 @@
+# Node.js / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+package-lock.json
+
+# Logs
+logs/
+*.log
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.swp
+*.swo
+*.tmp
+
+# Build artifacts
+deploy/
+dist/
+coverage/
+.tmp/
+
+# Old Java tooling outputs (if any)
+*.class
+*.jar.backup
+
+# IDE / tooling
+.vscode/
+.idea/
+*.iml
+
+# Local environment / secrets (if you ever add them)
+.env
+.env.*
