@@ -96,4 +96,15 @@ $(document).ready(function() {
       lightBot.ui.media.playVideo($('#helpScreenAccordion h3').index(ui.newHeader));
     }
   });
+
+  // speed slider
+  $('#speedSlider').slider({
+    min: 0.5,
+    max: 5.0,
+    step: 0.01,
+    value: lightBot.speedMultiplier,
+    slide: function(event, ui) {
+      lightBot.speedMultiplier = ui.value;
+    }
+  });
 });

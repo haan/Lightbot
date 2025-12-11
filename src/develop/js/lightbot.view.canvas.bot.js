@@ -15,6 +15,11 @@
   var animation = lightBot.bot.animations.stand; // current animation
   var movement = {dX: 0, dY: 0, dZ: 0}; // controls bot movement during animations
 
+  function getAnimationDuration() {
+    // If speed is 2x, duration is halved. If speed is 0.5x, duration is doubled.
+    return animation.duration / lightBot.speedMultiplier;
+  }
+
   function animate(instruction, oldPos, newPos) {
     // set the bot to busy
     readyForNextInstruction = false;
@@ -56,7 +61,7 @@
   }
 
   function step() {
-    if (currentStep >= animation.duration || !lightBot.bot.isInExecutionMode()) {
+    if (currentStep >= getAnimationDuration() || !lightBot.bot.isInExecutionMode()) {
       // set the bot to ready
       readyForNextInstruction = true;
 
@@ -85,20 +90,21 @@
   }
 
   function getMovementOffset() {
+    var effectiveDuration = getAnimationDuration();
     var offset = {
-      x: currentStep / animation.duration * movement.dX,
-      y: currentStep / animation.duration * movement.dY,
-      z: currentStep / animation.duration * movement.dZ
+      x: currentStep / effectiveDuration * movement.dX,
+      y: currentStep / effectiveDuration * movement.dY,
+      z: currentStep / effectiveDuration * movement.dZ
     };
 
     // modify y offset during jump animations for a more natural movement
     if (animation.name === "jumpUp") {
       // jump up y movement is defined by f(x) = x^0.3 from 0 to 1: http://www.wolframalpha.com/input/?i=x%5E0.3+from+0+to+1
-      offset.y = Math.pow(currentStep / animation.duration, 0.3) * movement.dY;
+      offset.y = Math.pow(currentStep / effectiveDuration, 0.3) * movement.dY;
     }
     if (animation.name === "jumpDown") {
       // jump down y movement is defined by f(x) = x^4 from 0 to 1: http://www.wolframalpha.com/input/?i=f%28x%29+%3D+x%5E4+from+0+to+1
-      offset.y = Math.pow(currentStep / animation.duration, 4) * movement.dY;
+      offset.y = Math.pow(currentStep / effectiveDuration, 4) * movement.dY;
     }
     return offset;
   }

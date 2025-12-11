@@ -374,6 +374,31 @@ a:hover {
   background-color: #4B4646;
 }
 
+#buttonContainer button:not(:nth-of-type(2)) {
+  width: 66px
+}
+
+#speedControl {
+  display: inline-block;
+  position: relative;
+  margin-left: 10px;
+}
+
+#speedControl label {
+  margin-right: 5px;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 700;
+  color: #FFFFF2;
+  font-size: 13px;
+}
+
+#speedSlider {
+  display: inline-block;
+  width: 100px;
+  margin-left: 10px;
+}
+
+
 /* ===[ Instruction Container ]=== */
 
 #instructionsContainer {
