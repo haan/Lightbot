@@ -1,0 +1,28 @@
+--compilation_level=SIMPLE_OPTIMIZATIONS
+--warning_level=QUIET
+--js src/develop/js/lightbot.model.game.js
+--js src/develop/js/lightbot.model.directions.js
+--js src/develop/js/lightbot.model.bot.js
+--js src/develop/js/lightbot.model.bot.instructions.js
+--js src/develop/js/lightbot.model.map.js
+--js src/develop/js/lightbot.model.map.state.js
+--js src/develop/js/lightbot.model.box.js
+--js src/develop/js/lightbot.model.lightbox.js
+--js src/develop/js/lightbot.model.medals.js
+--js src/develop/js/lightbot.model.achievements.js
+--js src/develop/js/lightbot.view.canvas.ui.js
+--js src/develop/js/lightbot.view.canvas.ui.media.js
+--js src/develop/js/lightbot.view.canvas.ui.buttons.js
+--js src/develop/js/lightbot.view.canvas.ui.dialogs.js
+--js src/develop/js/lightbot.view.canvas.ui.editor.js
+--js src/develop/js/lightbot.view.canvas.game.js
+--js src/develop/js/lightbot.view.canvas.map.js
+--js src/develop/js/lightbot.view.canvas.box.js
+--js src/develop/js/lightbot.view.canvas.bot.animations.js
+--js src/develop/js/lightbot.view.canvas.bot.js
+--js src/develop/js/lightbot.view.canvas.projection.js
+--js src/develop/js/lightbot.view.canvas.medals.js
+--js src/develop/js/lightbot.view.canvas.achievements.js
+--js src/develop/js/lightbot.view.canvas.js
+--js src/develop/js/lightbot.view.canvas.ui.history.js
+--js_output_file=deploy/js/lightbot.min.js
