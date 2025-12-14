@@ -12,7 +12,7 @@
 --js src/develop/js/lightbot.model.achievements.js
 --js src/develop/js/lightbot.view.canvas.ui.js
 --js src/develop/js/lightbot.view.canvas.ui.media.js
---js src/develop/js/lightbot.view.canvas.ui.buttons.js
+--js src/develop/js/lightbot.view.canvas.ui.translate.js
 --js src/develop/js/lightbot.view.canvas.ui.dialogs.js
 --js src/develop/js/lightbot.view.canvas.ui.editor.js
 --js src/develop/js/lightbot.view.canvas.game.js

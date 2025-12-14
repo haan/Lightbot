@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>LightBot v1.1</title>
+    <title data-i18n="title"></title>
     <link rel="shortcut icon" href="img/favicon.ico" />
     <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css' />
@@ -11,6 +11,8 @@
     <link type="text/css" href="css/lightbot.css" rel="stylesheet" />
     <script type="text/javascript" src="js/jquery-1.7.min.js"></script>
     <script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+    <script type="text/javascript" src="js/locales/translations.js"></script>
+    <script type="text/javascript" src="js/i18next.min.js"></script>
     <script type="text/javascript" src="js/jquery.jplayer.min.js"></script>
     <script type="text/javascript" src="js/jquery.history.js"></script>
     <script type="text/javascript" src="js/lightbot.model.game.js"></script>
@@ -26,7 +28,7 @@
     <script type="text/javascript" src="js/lightbot.view.canvas.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.media.js"></script>
-    <script type="text/javascript" src="js/lightbot.view.canvas.ui.buttons.js"></script>
+    <script type="text/javascript" src="js/lightbot.view.canvas.ui.translate.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.dialogs.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.editor.js"></script>
     <script type="text/javascript" src="js/lightbot.view.canvas.ui.history.js"></script>
@@ -46,86 +48,66 @@
 
     <div id="lightbot">
 
-      <div id="credits">Developed by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Interface by <a href="http://zenobiahoman.daportfolio.com/">Zenobia Homan</a>. Sprite by <a href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Music by <a href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>. Original concept by <a href="http://coolio-niato.newgrounds.com/" target="_blank">coolio niato</a>.</div>
+      <div id="credits">
+        Developed by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Interface by <a href="http://www.zententia.net">Zenobia Homan</a>. Robot by <a href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Music by <a href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>. Original concept: <a href="http://lightbot.com/" target="_blank">lightbot.com</a>.
+      </div>
 
       <div id="welcomeScreen" class="ui-screen">
-        <button class="helpButton">Help</button>
-        <button class="achievementsButton">Achievements</button>
-        <button class="levelSelectButton ui-state-highlight">Start Game</button>
-        <button class="audioToggleButton">Toggle Audio</button>
+        <button class="helpButton"  data-i18n="welcomeScreen.help"></button>
+        <button class="achievementsButton" data-i18n="welcomeScreen.achievements"></button>
+        <button class="levelSelectButton ui-state-highlight" data-i18n="welcomeScreen.start"></button>
+        <button class="audioToggleButton" data-i18n="welcomeScreen.toggleAudio"></button>
       </div>
 
       <div id="achievementsScreen" class="ui-screen ui-helper-hidden">
-        <h1>Achievements</h1>
+        <h1 data-i18n="achievementsScreen.title"></h1>
         <ul id="achievementsList">
         </ul>
-        <button class="mainMenuButton">Main Menu</button>
+        <button class="mainMenuButton" data-i18n="achievementsScreen.mainMenu"></button>
       </div>
 
       <div id="helpScreen" class="ui-screen ui-helper-hidden">
         <div id="helpScreenAccordionContainer">
           <div id="helpScreenAccordion">
-            <h3><a href="#goal">Goal of the game</a></h3>
+            <h3><a href="#goal" data-i18n="helpScreen.goal.title"></a></h3>
             <div>
-              <p>
-              In order to complete the game, you have to tell the robot how to light up all the light tiles in a given level. However, your only way of interacting with the robot is by assembling instructions into a program that the robot can execute.
-              </p>
+              <p data-i18n="helpScreen.goal.content"></p>
             </div>
-            <h3><a href="#howto">How to play the game</a></h3>
+            <h3><a href="#howto" data-i18n="helpScreen.howTo.title"></a></h3>
             <div>
-              <p>
-              You can create a program by dragging instructions from the instruction list and dropping them into the program frame. The instructions will automatically be added to the bottom of the highlighted block.
-              </p>
-              <p>Execute your program by clicking the Run button. If you are not satisfied with your current program, you can interrupt the execution at any moment by clicking the Stop button. This will reset the robot to his initial position.
-              </p>
+              <p data-i18n="helpScreen.howTo.content"></p>
             </div>
-            <h3><a href="#objects">Game objects</a></h3>
+            <h3><a href="#objects" data-i18n="helpScreen.objects.title"></a></h3>
             <div>
-              <p>
-              A level is made up from gray tiles which have a certain height. Special <em>light</em> tiles are scattered throughout the level. These light tiles can either be blue, which means that they are unlit, or they can be yellow, which means that they are lit. If at any given moment, all the light tiles in a level are lit, you have completed that level.
-              </p>
+              <p data-i18n="helpScreen.objects.content"></p>
             </div>
-            <h3><a href="#walk_forward">Instruction: walk forward</a></h3>
+            <h3><a href="#walk_forward" data-i18n="helpScreen.walkForward.title"></a></h3>
             <div>
-              <p>
-              When walking forward, the robot will will advance one square in the direction it is currently facing. This movement will only be performed if the space it would be heading into is of the same height as the square it is moving out from. In any other case the movement will not be performed.
-              </p>
+              <p data-i18n="helpScreen.walkForward.content"></p>
             </div>
-            <h3><a href="#turn_right">Instruction: Turn 90&deg; to the right</a></h3>
+            <h3><a href="#turn_right" data-i18n="helpScreen.turnRight.title"></a></h3>
             <div>
-              <p>
-              When turning 90&deg; to the right, the robot will stay in place and turn 90&deg; (a quarter turn) to the right (clockwise).
-              </p>
+              <p data-i18n="helpScreen.turnRight.content"></p>
             </div>
-            <h3><a href="#turn_left">Instruction: Turn 90&deg; to the left</a></h3>
+            <h3><a href="#turn_left" data-i18n="helpScreen.turnLeft.title"></a></h3>
             <div>
-              <p>
-              When turning 90&deg; to the left, the robot will stay in place and turn 90&deg; (a quarter turn) to the left (anti-clockwise).
-              </p>
+              <p data-i18n="helpScreen.turnLeft.content"></p>
             </div>
-            <h3><a href="#jump">Instruction: Jump</a></h3>
+            <h3><a href="#jump" data-i18n="helpScreen.jump.title"></a></h3>
             <div>
-              <p>
-              Jumping is a combination of a move forward and a change in height. The direction of the movement is in the direction that the robot is facing. An upward jump is only successful if the destination tile is higher by exactly one step than the starting tile. If the height difference is bigger than one, the jump is not successful and no movement is performed. When jumping down, there is no limit to the height the robot can jump down from. The only condition is that the difference in height is at least one.
-              </p>
+              <p data-i18n="helpScreen.jump.content"></p>
             </div>
-            <h3><a href="#light">Instruction: Light</a></h3>
+            <h3><a href="#light" data-i18n="helpScreen.light.title"></a></h3>
             <div>
-              <p>
-              The light instruction can be used to toggle light tiles on or off. If the robot is located on an unlit light tile when the light instruction is executed, the light tile will be toggled on. However, if the robot is located on an already lit light tile, that light tile will be toggled off. When the robot is located on a normal tile, nothing happens.
-              </p>
+              <p data-i18n="helpScreen.light.content"></p>
             </div>
-            <h3><a href="#repeat">Instruction: Repeat</a></h3>
+            <h3><a href="#repeat" data-i18n="helpScreen.repeat.title"></a></h3>
             <div>
-              <p>
-              The repeat instruction is a special instruction that can be used to repeat some instructions a certain number of times. The repeat instruction has a special frame where you can drop instructions from the instruction list. It also has a counter where you can define the number of times the instructions within the repeat instruction will be repeated. It is even possible to place a repeat instruction within a repeat instruction, which is essential for creating very small programs.
-              </p>
+              <p data-i18n="helpScreen.repeat.content"></p>
             </div>
-            <h3><a href="#medals">Medals</a></h3>
+            <h3><a href="#medals" data-i18n="helpScreen.medals.title"></a></h3>
             <div>
-              <p>
-              Medals are rewarded for completing levels with only a very small amount of instructions. Sometimes, these small programs make the robot execute a lot of useless instructions, which is very inefficient and takes a lot of time. Please be aware that in computer science, the <em>best</em> program is not the one that <em>contains</em> the least amount of instructions but the one that has the robot <em>execute</em> the least amount of instructions.
-              </p>
+              <p data-i18n="helpScreen.medals.content"></p>
             </div>
           </div>
         </div>
@@ -135,7 +117,7 @@
             <div id="videoPlayer" class="jp-jplayer"></div>
             <div class="jp-gui">
               <div class="jp-video-play">
-                <a href="javascript:;" class="jp-video-play-icon" tabindex="1">play</a>
+                <a href="javascript:;" class="jp-video-play-icon" tabindex="1" data-i18n="helpScreen.video.play"></a>
               </div>
               <div class="jp-interface">
                 <div class="jp-progress">
@@ -147,14 +129,14 @@
             </div>
           </div>
         </div>
-        <button class="mainMenuButton">Main Menu</button>
+        <button class="mainMenuButton" data-i18n="helpScreen.mainMenu"></button>
       </div>
 
       <div id="levelSelectScreen" class="ui-screen ui-helper-hidden">
-        <h1>Level select</h1>
+        <h1 data-i18n="levelSelectScreen.title"></h1>
         <ul id="levelList">
         </ul>
-        <button class="mainMenuButton">Main Menu</button>
+        <button class="mainMenuButton" data-i18n="levelSelectScreen.mainMenu"></button>
       </div>
 
       <div id="gameScreen" class="ui-screen ui-helper-hidden">
@@ -162,29 +144,29 @@
           <canvas id="gameCanvas" width="690" height="666"></canvas>
         </div>
         <div id="buttonContainer">
-          <button class="levelSelectButton">Back</button>
-          <button class="audioToggleButton">Toggle Audio</button>
-          <button id="clearButton">Clear</button>
-          <button id="runButton">Run</button>
+          <button class="levelSelectButton" data-i18n="gameScreen.back"></button>
+          <button class="audioToggleButton" data-i18n="gameScreen.toggleAudio"></button>
+          <button id="clearButton" data-i18n="gameScreen.clear"></button>
+          <button id="runButton" data-i18n="gameScreen.run"></button>
           <div id="speedControl">
-            <label for="speedSlider">Speed:</label>
+            <label for="speedSlider" data-i18n="gameScreen.speed"></label>
             <div id="speedSlider"></div>
           </div>
         </div>
         <div id="instructionsContainer">
-          <h2>Instructions</h2>
+          <h2 data-i18n="instructions.title"></h2>
           <div>
             <ul>
-                <li><p class="walk"><span class="ui-icon ui-icon-arrowthick-1-n" style="float: left;"></span>Walk forward<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
-                <li><p class="turnRight"><span class="ui-icon ui-icon-arrowreturnthick-1-w flip" style="float: left;"></span>Turn 90&deg; to the right<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
-                <li><p class="turnLeft"><span class="ui-icon ui-icon-arrowreturnthick-1-w" style="float: left;"></span>Turn 90&deg; to the left<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
-                <li><p class="jump"><span class="ui-icon ui-icon-arrowthickstop-1-n" style="float: left;"></span>Jump<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
-                <li><p class="light"><span class="ui-icon ui-icon-lightbulb" style="float: left;"></span>Light<span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
-                <li><p class="repeat"><span class="ui-icon ui-icon-refresh" style="float: left;"></span>Repeat <span><input type="number" min="1" max="99" step="1" value="2"> times</span><span class="ui-icon ui-icon-close" style="float: right;"></span></p>
+                <li><p class="walk"><span class="ui-icon ui-icon-arrowthick-1-n" style="float: left;"></span><span data-i18n="instructions.walk">tgfhfghfhg</span><span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="turnRight"><span class="ui-icon ui-icon-arrowreturnthick-1-w flip" style="float: left;"></span><span data-i18n="instructions.turnRight"></span><span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="turnLeft"><span class="ui-icon ui-icon-arrowreturnthick-1-w" style="float: left;"></span><span data-i18n="instructions.turnLeft"></span><span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="jump"><span class="ui-icon ui-icon-arrowthickstop-1-n" style="float: left;"></span><span data-i18n="instructions.jump"></span><span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="light"><span class="ui-icon ui-icon-lightbulb" style="float: left;"></span><span data-i18n="instructions.light"></span><span class="ui-icon ui-icon-close" style="float: right;"></span></p></li>
+                <li><p class="repeat"><span class="ui-icon ui-icon-refresh" style="float: left;"></span><span data-i18n="instructions.repeat.label"></span> <span class="repeatCountLabel"><input type="number" min="1" max="99" step="1" value="2"> <span data-i18n="instructions.repeat.times"></span></span><span class="ui-icon ui-icon-close" style="float: right;"></span></p>
                   <div class="droppable">
                     <div class="ui-widget-content">
                       <ul>
-                        <li class="placeholder"><p class="placeholder">Drop your instructions here</p></li>
+                        <li class="placeholder"><p class="placeholder" data-i18n="instructions.placeholder"></p></li>
                       </ul>
                     </div>
                   </div>
@@ -193,7 +175,7 @@
           </div>
         </div>
         <div id="programContainer">
-          <h2>Program</h2>
+          <h2 data-i18n="program.title"></h2>
           <div class="droppable">
             <ul>
             </ul>
@@ -208,15 +190,15 @@
     </div>
 
     <div id="dialogs">
-      <div id="levelCompleteDialog" title="Level complete">
+      <div id="levelCompleteDialog" title="Level complete" data-i18n-title="dialogs.levelComplete.title">
         <p>
           <span class="medal" style="float:left; margin:0 7px 50px 0;"></span>
-          Congratulations! You have completed this level using <span class="nbrOfInstructions"></span> instructions!
+          <span class="message" data-i18n="dialogs.levelComplete.message"></span>
         </p>
-        <p class="message" style="margin-top: 10px"></p>
+        <p class="hint" style="margin-top: 10px"></p>
       </div>
 
-      <div id="achievementDialog" title="Achievement unlocked!">
+      <div id="achievementDialog" title="Achievement unlocked!" data-i18n-title="dialogs.achievement.title">
         <p>
           <span class="achievement" style="float:left; margin:0 7px 50px 0;"></span>
           <span class="message"></span>
