@@ -1,5 +1,5 @@
 window.LIGHTBOT_TRANSLATIONS = {
-  "title": "LightBot v1.1",
+  "title": "LightBot v1.2",
   "controls": {
     "run": "Run",
     "stop": "Stop"
