@@ -423,9 +423,15 @@ a:hover {
   display: none;
 }
 
-#instructionsContainer li div, li.ui-draggable-dragging div, #instructionsContainer li span:first-child + span {
+#instructionsContainer li div, li.ui-draggable-dragging div {
   display: none;
 }
+
+/*
+#instructionsContainer li span:first-child + span {
+  display: none;
+}
+*/
 
 /* ===[ Program Container ]=== */
 

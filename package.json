@@ -7,7 +7,7 @@
     "clean": "rimraf deploy && shx mkdir -p deploy/js deploy/css",
     "build:js": "google-closure-compiler --flagfile gcc-flags.txt",
     "build:css": "cleancss src/develop/css/smoothness/jquery-ui-1.8.16.custom.css src/develop/css/jplayer.css src/develop/css/lightbot.css -o deploy/css/lightbot.min.css",
-    "copy:base": "copyfiles -u 2 src/deploy/index.html src/develop/img/** src/develop/media/** src/develop/js/jquery*.js deploy",
+    "copy:base": "copyfiles -u 2 src/deploy/index.html src/develop/img/** src/develop/media/** src/develop/js/jquery*.js src/develop/js/i18next.min.js src/develop/js/locales/** deploy",
     "copy:css-img": "copyfiles -u 4 src/develop/css/smoothness/images/** deploy/css",
     "build": "npm-run-all clean --parallel build:* copy:*"
   },

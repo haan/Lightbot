@@ -1,61 +1,59 @@
 /*jsl:option explicit*/
 /*jsl:import lightbot.model.game.js*/
 
-$(document).ready(function() {
-
-  // save the program when the value of input[type=number] changes
-  $("#programContainer").delegate(':input[type="number"]', "change", function() {
-    lightBot.ui.editor.saveProgram();
-  });
-
-  // delete icon for instructions in the program
-  $("#programContainer").delegate(".ui-icon-close", "click", function() {
-    $(this).parent().parent().remove();
-    lightBot.ui.editor.saveProgram();
-  });
-
-  // make instructions in the instruction set draggable
-  $("#instructionsContainer li").draggable({
-    revert: "invalid",
-    appendTo: "body",
-    helper: "clone",
-    cursor: "move"
-  }).addClass('ui-state-default');
-
-  // hover effect for instructions
-  $('#instructionsContainer, #programContainer').delegate('li', 'hover', function() {
-    $(this).toggleClass('ui-state-hover');
-  });
-
-  // make instructions droppable and sortable
-  lightBot.ui.editor.makeDroppable();
-});
-
-(function() {
+(function () {
 
   var editor = {
+    initEditor: function () {
+      // save the program when the value of input[type=number] changes
+      $("#programContainer").delegate(':input[type="number"]', "change", function () {
+        lightBot.ui.editor.saveProgram();
+      });
+
+      // delete icon for instructions in the program
+      $("#programContainer").delegate(".ui-icon-close", "click", function () {
+        $(this).parent().parent().remove();
+        lightBot.ui.editor.saveProgram();
+      });
+
+      // make instructions in the instruction set draggable
+     $("#instructionsContainer li").draggable({
+        revert: "invalid",
+        appendTo: "body",
+        helper: "clone",
+        cursor: "move"
+      }).addClass('ui-state-default');
+
+      // hover effect for instructions
+      $('#instructionsContainer, #programContainer').delegate('li', 'hover', function () {
+        $(this).toggleClass('ui-state-hover');
+      });
+
+      // make instructions droppable and sortable
+      lightBot.ui.editor.makeDroppable();
+    },
     // this function saves the current program in the localStorage
-    saveProgram: function() {
-      $('#programContainer ul').find(':input[type="number"]').each(function(){
+    saveProgram: function () {
+      $('#programContainer ul').find(':input[type="number"]').each(function () {
         $(this).attr('value', $(this).val());
       });
       localStorage.setItem('lightbot_program_level_' + lightBot.map.getLevelNumber(), $('#programContainer ul').html());
     },
-    loadProgram: function() {
+    loadProgram: function () {
       $('#programContainer ul').append(localStorage.getItem('lightbot_program_level_' + lightBot.map.getLevelNumber())).find('*').removeClass('ui-state-hover ui-state-droppable');
       this.makeDroppable();
     },
     // this function makes "repeat" instructions a droppable area
-    makeDroppable: function() {
+    makeDroppable: function () {
       $("#programContainer ul").droppable({
         greedy: "true",
         activeClass: "ui-state-droppable",
         hoverClass: "ui-state-droppable-hover",
         accept: ":not(.ui-sortable-helper)",
-        drop: function( event, ui ) {
-          $( this ).children( ".placeholder" ).remove();
+        drop: function (event, ui) {
+          $(this).children(".placeholder").remove();
           var clone = $(ui.draggable.clone()).removeClass("ui-draggable");
-          clone.appendTo( this );
+          clone.appendTo(this);
           // make the area within repeat instructions droppable
           if (clone.children("div").hasClass("droppable")) {
             lightBot.ui.editor.makeDroppable();
@@ -74,22 +72,22 @@ $(document).ready(function() {
         items: "li:not(.placeholder)",
         placeholder: "ui-state-highlight",
         cursor: "move",
-        sort: function() {
+        sort: function () {
           // gets added unintentionally by droppable interacting with sortable
           // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
-          $("#programContainer ul").removeClass( "ui-state-droppable" );
+          $("#programContainer ul").removeClass("ui-state-droppable");
         },
-        stop: function() {
+        stop: function () {
           // save the program
           lightBot.ui.editor.saveProgram();
         }
       });
     },
     // recursively get all the instructions within a repeat instruction
-    getInstructions: function(source) {
+    getInstructions: function (source) {
       var instructions = [];
 
-      source.each(function(index) {
+      source.each(function (index) {
         switch ($(this).children('p').attr('class')) {
           case 'walk':
             instructions.push(new lightBot.bot.instructions.WalkInstruction());

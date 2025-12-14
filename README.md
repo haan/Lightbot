@@ -21,9 +21,6 @@ No installation or account is required for the online version.
 
 ## Downloading and running Lightbot locally
 
-The repository used to contain a committed `deploy` folder with a ready-to-run build.  
-That folder is now treated as a **build artifact** and is no longer tracked in Git.
-
 To get a downloadable, offline version:
 
 1. Go to the **Releases** page of this repository on GitHub.
@@ -34,6 +31,60 @@ To get a downloadable, offline version:
 
 Lightbot is a fully static web app: you only need to open `index.html`.  
 No web server or backend is required.
+
+---
+
+## Localizing the downloaded version
+
+You can translate Lightbot into your own language **using only the deploy ZIP**.  
+
+In the extracted folder you will find a file:
+
+```text
+js/locales/translations.js
+```
+
+This file contains the texts used in the game.
+
+1. Open `js/locales/translations.js` in a text editor.
+2. You will see a JavaScript object similar to this:
+
+   ```js
+   window.LIGHTBOT_TRANSLATIONS = {
+      "title": "LightBot v1.1",
+      "controls": {
+         "run": "Run",
+         "stop": "Stop"
+      },
+      "welcomeScreen": {
+         "start": "Start Game",
+         "toggleAudio": "Toggle Audio",
+         "help": "Help",
+         "achievements": "Achievements"
+      }
+     // ...
+   };
+   ```
+
+3. **Do not change the keys** (`menu.play`, `welcome.title`, etc.).  
+   Only change the text on the right-hand side to your language. For example:
+
+   ```js
+   window.LIGHTBOT_TRANSLATIONS = {
+     "menu": {
+       "play": "Spielen",
+       "options": "Optionen",
+       "exit": "Beenden"
+     },
+     "welcome": {
+       "title": "Willkommen bei Lightbot",
+       "subtitle": "Lerne, wie ein Programmierer zu denken!"
+     }
+   };
+   ```
+
+4. Save the file.
+5. Reload `index.html` in your browser. The game interface should now appear in your language.
 
 ---
 
