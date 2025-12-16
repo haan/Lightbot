@@ -98,8 +98,7 @@
       if (localStorage.getItem('lightbot_program_level_' + level)) {
         lightBot.ui.editor.loadProgram();
       } else {
-        //append placeholder instruction
-        $('#programContainer ul').append('<li class="ui-state-default placeholder"><p class="placeholder">Drop your instructions here</p></li>');
+        // leave program empty (drop zone is handled by SortableJS + CSS min-height)
       }
 
       // reset the run button

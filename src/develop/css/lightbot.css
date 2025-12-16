@@ -406,7 +406,7 @@ a:hover {
   top: 1px;
   right: 1px;
   width: 286px;
-  height: 220px;
+  height: 227px;
   background-color: #4B4646;
 }
 
@@ -440,7 +440,7 @@ a:hover {
   bottom: 1px;
   right: 1px;
   width: 286px;
-  height: 476px;
+  height: 470px;
   background-color: #4B4646;
 }
 
@@ -465,9 +465,9 @@ a:hover {
   cursor: move;
 }
 
-/* sortable helper */
-#programContainer li.ui-state-highlight {
-  height: 18px;
+/* SortableJS ghost while dragging */
+#programContainer li.sortable-ghost {
+  opacity: 0.4;
 }
 
 #programContainer > div.ui-widget-content {
@@ -482,7 +482,7 @@ a:hover {
   padding: 5px;
 }
 
-#instructionsContainer ul.ui-droppable, #programContainer ul.ui-droppable {
+#instructionsContainer ul.ui-state-droppable, #programContainer ul.ui-state-droppable {
   padding-bottom: 20px;
 }
 
@@ -514,7 +514,12 @@ a:hover {
 }
 
 li.ui-draggable-dragging {
-  width: 150px;
+  width: auto;
+}
+
+/* repeat body drop zone */
+#programContainer li .droppable > div.ui-widget-content > ul {
+  min-height: 30px;
 }
 
 /* highlight droppable areas with a color */
