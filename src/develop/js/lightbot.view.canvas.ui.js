@@ -44,7 +44,7 @@
       for (var i = 0; i < achievements.length; i++) {
         enabled = lightBot.achievements.hasAchievement(achievements[i].name) ? true : false;
         $(
-          '<li class="list-row ' + ((enabled) ? '' : 'opacity-40') + '">' +
+          '<li class="list-row ' + ((enabled) ? '' : 'opacity-40') + ' py-3">' +
             '<div><img class="size-10 rounded-box" src="img/achievements/' + achievements[i].name + '.png" alt=""></div>' +
             '<div class="flex-1">' +
               '<div class="font-bold">' + achievements[i].title + '</div>' +

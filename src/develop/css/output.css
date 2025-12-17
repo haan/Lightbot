@@ -2634,6 +2634,13 @@ div.jp-jplayer {
       margin-block-end: calc(calc(var(--spacing) * 0) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
+  .space-y-1 {
+    :where(& > :not(:last-child)) {
+      --tw-space-y-reverse: 0;
+      margin-block-start: calc(calc(var(--spacing) * 1) * var(--tw-space-y-reverse));
+      margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
+    }
+  }
   .space-y-2 {
     :where(& > :not(:last-child)) {
       --tw-space-y-reverse: 0;
@@ -2705,6 +2712,9 @@ div.jp-jplayer {
         padding-block: calc(0.25rem * 1);
       }
     }
+  }
+  .py-3 {
+    padding-block: calc(var(--spacing) * 3);
   }
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
@@ -2958,6 +2968,19 @@ div.jp-jplayer {
   }
   #instructionsContainer .lb-instruction-row {
     cursor: grab;
+  }
+  #programContainer .lb-instruction:has(> .repeat) {
+    border-radius: var(--rounded-btn);
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    border-color: var(--color-base-300);
+    background-color: var(--color-base-100);
+    padding-inline: calc(var(--spacing) * 2);
+    padding-block: calc(var(--spacing) * 2);
+    font-size: var(--text-sm);
+    line-height: var(--tw-leading, var(--text-sm--line-height));
+    --tw-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
   }
   #programContainer .lb-instruction-row {
     cursor: grab;

@@ -77,6 +77,10 @@
     @apply cursor-grab;
   }
 
+  #programContainer .lb-instruction:has(> .repeat) {
+   @apply border border-base-300 bg-base-100 px-2 py-2 text-sm font-semibold rounded-[var(--rounded-btn)];
+  }
+
   #programContainer .lb-instruction-row {
     @apply cursor-grab;
   }
