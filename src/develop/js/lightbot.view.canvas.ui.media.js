@@ -33,6 +33,16 @@ $(document).ready(function() {
 
   lightBot.ui.media.audioPlayer = $('#audioPlayer');
   lightBot.ui.media.videoPlayer = $('#videoPlayer');
+
+  if ($.jPlayer && $.jPlayer.event) {
+    $('#audioPlayer')
+      .bind($.jPlayer.event.play + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); })
+      .bind($.jPlayer.event.playing + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); })
+      .bind($.jPlayer.event.pause + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); })
+      .bind($.jPlayer.event.ended + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); });
+  }
+
+  lightBot.ui.media.syncAudioButtonState();
 });
 
 (function() {
@@ -80,17 +90,39 @@ $(document).ready(function() {
     playVideo: function(x) {
       this.videoPlayer.jPlayer("setMedia", this.video[x]);
     },
+    _isActuallyPlaying: function () {
+      if (!this.audioEnabled) return false;
+      if (!this.audioPlayer) return false;
+      var instance = this.audioPlayer.data('jPlayer');
+      if (!instance || !instance.status) return false;
+      return !instance.status.paused;
+    },
+    syncAudioButtonState: function () {
+      var isPlaying = this._isActuallyPlaying();
+      var buttons = document.querySelectorAll('.audioToggleButton');
+      for (var i = 0; i < buttons.length; i++) {
+        var btn = buttons[i];
+        if (!btn) continue;
+        btn.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
+
+        var onIcon = btn.querySelector('.lb-audio-on');
+        var offIcon = btn.querySelector('.lb-audio-off');
+
+        if (onIcon && onIcon.classList) onIcon.classList.toggle('hidden', !isPlaying);
+        if (offIcon && offIcon.classList) offIcon.classList.toggle('hidden', isPlaying);
+      }
+    },
     toggleAudioOn: function() {
       this.audioEnabled = true;
       this.audioPlayer.jPlayer('play');
-
-      $('.audioToggleButton').children('span.ui-button-icon-primary').addClass('ui-icon-volume-on').removeClass('ui-icon-volume-off');
+      this.syncAudioButtonState();
+      var self = this;
+      setTimeout(function () { self.syncAudioButtonState(); }, 0);
     },
     toggleAudioOff: function() {
       this.audioEnabled = false;
       this.audioPlayer.jPlayer('pause');
-
-      $('.audioToggleButton').children('span.ui-button-icon-primary').addClass('ui-icon-volume-off').removeClass('ui-icon-volume-on');
+      this.syncAudioButtonState();
     },
     toggleAudio: function() {
       if (this.audioEnabled) {

@@ -13,7 +13,7 @@
     if (queue.length > 0) {
       var achievement = queue.shift();
       $("#achievementDialog .message").html(achievement.message);
-      $("#achievementDialog").dialog("open");
+      if (lightBot.ui.dialogs) lightBot.ui.dialogs.open('achievementDialog');
     } else {
       queue = null;
     }

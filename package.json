@@ -6,18 +6,21 @@
   "scripts": {
     "clean": "rimraf deploy && shx mkdir -p deploy/js deploy/css",
     "build:js": "google-closure-compiler --flagfile gcc-flags.txt",
-    "build:css": "cleancss src/develop/css/smoothness/jquery-ui-1.8.16.custom.css src/develop/css/jplayer.css src/develop/css/lightbot.css -o deploy/css/lightbot.min.css",
-    "copy:base": "copyfiles -u 2 src/deploy/index.html src/develop/img/** src/develop/media/** src/develop/js/jquery*.js src/develop/js/i18next.min.js src/develop/js/Sortable.min.js src/develop/js/locales/** deploy",
-    "copy:css-img": "copyfiles -u 4 src/develop/css/smoothness/images/** deploy/css",
+    "build:css": "tailwindcss -i src/styles/tailwind.css -o deploy/css/lightbot.min.css --minify",
+    "develop": "tailwindcss -i src/styles/tailwind.css -o src/develop/css/output.css --watch",
+    "copy:base": "copyfiles -u 2 src/deploy/index.html src/develop/img/** src/develop/media/** src/develop/js/jquery-1.7.min.js src/develop/js/jquery.jplayer.min.js src/develop/js/jquery.history.js src/develop/js/i18next.min.js src/develop/js/Sortable.min.js src/develop/js/theme-change.min.js src/develop/js/locales/** deploy",
     "build": "npm-run-all clean --parallel build:* copy:*"
   },
   "devDependencies": {
-    "clean-css-cli": "^5.6.3",
+    "@tailwindcss/cli": "^4.0.0",
     "copyfiles": "^2.4.1",
+    "daisyui": "^5.0.0",
     "google-closure-compiler": "^20251111.0.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^6.1.2",
-    "shx": "^0.4.0"
+    "shx": "^0.4.0",
+    "theme-change": "^2.5.0",
+    "tailwindcss": "^4.0.0"
   },
   "repository": {
     "type": "git",

@@ -1,40 +1,45 @@
 /*jsl:option explicit*/
 /*jsl:import lightbot.model.game.js*/
 
-$(document).ready(function() {
-  $("div#levelCompleteDialog").dialog({
-    draggable: false,
-    autoOpen: false,
-    modal: true,
-    width: 400,
-    height: 200,
-    stack: false,
-    resizable: false,
-    close: function() {
-      lightBot.ui.showLevelSelectScreen();
-    },
-    buttons: {
-      Ok: function() {
-        $( this ).dialog( "close" );
-      }
+(function () {
+  function getDialog(id) {
+    var el = document.getElementById(id);
+    if (!el) return null;
+    if (typeof el.showModal !== 'function') return null;
+    return el;
+  }
+
+  function openDialog(id) {
+    var dialog = getDialog(id);
+    if (!dialog) return;
+    if (!dialog.open) dialog.showModal();
+  }
+
+  function closeDialog(id) {
+    var dialog = getDialog(id);
+    if (!dialog) return;
+    if (dialog.open) dialog.close();
+  }
+
+  $(document).ready(function () {
+    var levelComplete = getDialog('levelCompleteDialog');
+    if (levelComplete) {
+      levelComplete.addEventListener('close', function () {
+        lightBot.ui.showLevelSelectScreen();
+      });
+    }
+
+    var achievementDialog = getDialog('achievementDialog');
+    if (achievementDialog) {
+      achievementDialog.addEventListener('close', function () {
+        lightBot.achievements.display();
+      });
     }
   });
 
-  $("div#achievementDialog").dialog({
-    draggable: false,
-    autoOpen: false,
-    modal: true,
-    width: 400,
-    height: 200,
-    stack: true,
-    resizable: false,
-    close: function() {
-      lightBot.achievements.display(); // display the next achievement if available
-    },
-    buttons: {
-      Ok: function() {
-        $( this ).dialog( "close" );
-      }
-    }
-  });
-});
+  lightBot.ui.dialogs = {
+    open: openDialog,
+    close: closeDialog
+  };
+})();
+

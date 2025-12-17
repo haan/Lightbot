@@ -1,0 +1,91 @@
+@import "../develop/css/jplayer.css";
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: all;
+}
+@source "../develop/**/*.{html,js}";
+@source "../deploy/**/*.html";
+
+/* Non-Tailwind assets / legacy helpers kept as small component classes */
+@layer components {
+  .achievement {
+    background-image: url('../img/achievement.png');
+    width: 32px;
+    height: 32px;
+  }
+
+  .medal {
+    background-image: url('../img/medals.png');
+    width: 32px;
+    height: 32px;
+  }
+
+  .medal-gold {
+    background-position: -32px 0;
+  }
+
+  .medal-silver {
+    background-position: -64px 0;
+  }
+
+  .medal-bronze {
+    background-position: -96px 0;
+  }
+
+  .flip {
+    transform: scaleX(-1);
+  }
+
+  /* SortableJS visuals */
+  .sortable-ghost {
+    opacity: 0.4;
+  }
+
+  .lb-dragging {
+    width: auto;
+  }
+
+  .lb-drop-active {
+    outline: 2px solid color-mix(in oklab, oklch(var(--p)) 35%, transparent);
+    outline-offset: 2px;
+  }
+
+  .lb-drop-hover {
+    outline: 2px solid oklch(var(--p));
+    outline-offset: 2px;
+  }
+
+  /* Instruction palette/program differences */
+  #instructionsContainer .lb-instruction-delete {
+    display: none;
+  }
+
+  #instructionsContainer .lb-repeat-body {
+    display: none;
+  }
+
+  /* Instruction item styling */
+  .lb-instruction {
+    @apply select-none;
+  }
+
+  .lb-instruction-row {
+    @apply flex items-center justify-between gap-2 border border-base-300 bg-base-100 px-2 py-1 text-sm font-semibold rounded-[var(--rounded-btn)];
+  }
+
+  #instructionsContainer .lb-instruction-row {
+    @apply cursor-grab;
+  }
+
+  #programContainer .lb-instruction-row {
+    @apply cursor-grab;
+  }
+
+  .lb-repeat-body-inner {
+    @apply mt-2 border border-base-300 bg-base-100 p-2 rounded-[var(--rounded-box)];
+  }
+
+  .lb-repeat-body-inner > ul {
+    min-height: 3.75rem;
+  }
+}

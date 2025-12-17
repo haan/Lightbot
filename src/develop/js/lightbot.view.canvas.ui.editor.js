@@ -6,6 +6,12 @@
   var editor = {
     _instructionSortable: null,
     _programSortables: [],
+    _getMainProgramList: function () {
+      return $('#programContainer .card-body > .droppable > ul').first();
+    },
+    getProgramInstructions: function () {
+      return this.getInstructions(this._getMainProgramList().children('li'));
+    },
     initEditor: function () {
       // save the program when the value of input[type=number] changes
       $("#programContainer").delegate(':input[type="number"]', "change", function () {
@@ -13,18 +19,10 @@
       });
 
       // delete icon for instructions in the program
-      $("#programContainer").delegate(".ui-icon-close", "click", function () {
-        $(this).parent().parent().remove();
+      $("#programContainer").delegate(".lb-instruction-delete", "click", function () {
+        $(this).closest('li').remove();
         lightBot.ui.editor._cleanupProgramSortables();
         lightBot.ui.editor.saveProgram();
-      });
-
-      // palette items should look like instructions (Sortable handles drag/drop)
-      $("#instructionsContainer li").addClass('ui-state-default');
-
-      // hover effect for instructions
-      $('#instructionsContainer, #programContainer').delegate('li', 'hover', function () {
-        $(this).toggleClass('ui-state-hover');
       });
 
       // make instructions draggable (clone) and program sortable (incl. nested repeat bodies)
@@ -32,16 +30,17 @@
     },
     // this function saves the current program in the localStorage
     saveProgram: function () {
-      $('#programContainer ul').find(':input[type="number"]').each(function () {
+      var mainProgramList = this._getMainProgramList();
+      mainProgramList.find(':input[type="number"]').each(function () {
         $(this).attr('value', $(this).val());
       });
-      localStorage.setItem('lightbot_program_level_' + lightBot.map.getLevelNumber(), $('#programContainer ul').html());
+      localStorage.setItem('lightbot_program_level_' + lightBot.map.getLevelNumber(), mainProgramList.html());
     },
     loadProgram: function () {
-      $('#programContainer ul')
+      this._getMainProgramList()
         .append(localStorage.getItem('lightbot_program_level_' + lightBot.map.getLevelNumber()))
         .find('*')
-        .removeClass('ui-state-hover ui-state-droppable ui-state-droppable-hover sortable-ghost sortable-chosen ui-draggable-dragging');
+        .removeClass('lb-drop-active lb-drop-hover sortable-ghost sortable-chosen lb-dragging');
       $('#programContainer').find('li.placeholder').remove();
       this.makeDroppable();
     },
@@ -71,25 +70,25 @@
           put: false
         },
         sort: false,
-        draggable: 'li:not(.placeholder)',
+        draggable: 'li',
         handle: 'p',
-        filter: 'input, .ui-icon-close',
+        filter: 'input, .lb-instruction-delete',
         preventOnFilter: false,
         emptyInsertThreshold: 25,
         animation: 150,
-        dragClass: 'ui-draggable-dragging',
+        dragClass: 'lb-dragging',
         ghostClass: 'sortable-ghost',
         chosenClass: 'sortable-chosen',
         onStart: function () {
-          $('#programContainer ul').addClass('ui-state-droppable');
+          $('#programContainer ul').addClass('lb-drop-active');
         },
         onEnd: function () {
-          $('#programContainer ul').removeClass('ui-state-droppable ui-state-droppable-hover');
+          $('#programContainer ul').removeClass('lb-drop-active lb-drop-hover');
         },
         onMove: function (evt) {
           if (evt && evt.to) {
-            $('#programContainer ul.ui-state-droppable-hover').not(evt.to).removeClass('ui-state-droppable-hover');
-            $(evt.to).addClass('ui-state-droppable-hover');
+            $('#programContainer ul.lb-drop-hover').not(evt.to).removeClass('lb-drop-hover');
+            $(evt.to).addClass('lb-drop-hover');
           }
         }
       });
@@ -122,42 +121,37 @@
             put: ['lightbot-program', 'lightbot-instructions']
           },
           sort: true,
-          draggable: 'li:not(.placeholder)',
+          draggable: 'li',
           handle: 'p',
-          filter: 'input, .ui-icon-close',
+          filter: 'input, .lb-instruction-delete',
           preventOnFilter: false,
           emptyInsertThreshold: 25,
           animation: 150,
-          dragClass: 'ui-draggable-dragging',
+          dragClass: 'lb-dragging',
           ghostClass: 'sortable-ghost',
           chosenClass: 'sortable-chosen',
           onStart: function () {
-            $('#programContainer ul').addClass('ui-state-droppable');
+            $('#programContainer ul').addClass('lb-drop-active');
           },
           onEnd: function () {
-            $('#programContainer ul').removeClass('ui-state-droppable ui-state-droppable-hover');
+            $('#programContainer ul').removeClass('lb-drop-active lb-drop-hover');
           },
           onMove: function (evt) {
             if (evt && evt.to) {
-              $('#programContainer ul.ui-state-droppable-hover').not(evt.to).removeClass('ui-state-droppable-hover');
-              $(evt.to).addClass('ui-state-droppable-hover');
+              $('#programContainer ul.lb-drop-hover').not(evt.to).removeClass('lb-drop-hover');
+              $(evt.to).addClass('lb-drop-hover');
             }
           },
           onAdd: function (evt) {
-            $(evt.to).children('.placeholder').remove();
-            if (evt.item) {
-              $(evt.item).find('li.placeholder').remove();
-            }
-
             // if a repeat block was added, initialize its nested drop zone(s)
             if (evt.item && evt.item.querySelector && evt.item.querySelector('div.droppable ul')) {
               self._ensureProgramSortables(evt.item);
             }
 
             // if the target area was the "main" programContainer ul, scroll to the bottom
-            var tmp = $(evt.to).parent();
-            if (tmp.parent().is('#programContainer')) {
-              tmp.animate({ scrollTop: tmp.height() }, "slow");
+            var scrollBox = $(evt.to).closest('.droppable');
+            if (scrollBox.length) {
+              scrollBox.animate({ scrollTop: scrollBox[0].scrollHeight }, "slow");
             }
 
             self.saveProgram();
@@ -175,7 +169,6 @@
     },
     // this function makes "repeat" instructions a droppable area (SortableJS)
     makeDroppable: function () {
-      $('#programContainer').find('li.placeholder').remove();
       this._cleanupProgramSortables();
       this._ensureInstructionSortable();
       this._ensureProgramSortables();
@@ -185,29 +178,22 @@
       var instructions = [];
 
       source.each(function (index) {
-        switch ($(this).children('p').attr('class')) {
-          case 'walk':
-            instructions.push(new lightBot.bot.instructions.WalkInstruction());
-            break;
-          case 'jump':
-            instructions.push(new lightBot.bot.instructions.JumpInstruction());
-            break;
-          case 'light':
-            instructions.push(new lightBot.bot.instructions.LightInstruction());
-            break;
-          case 'turnLeft':
-            instructions.push(new lightBot.bot.instructions.TurnLeftInstruction());
-            break;
-          case 'turnRight':
-            instructions.push(new lightBot.bot.instructions.TurnRightInstruction());
-            break;
-          case 'repeat':
-            var counter = $(this).children('p').children('span').children('input').val();
-            var body = lightBot.ui.editor.getInstructions($(this).children('div').children('div').children('ul').children('li'));
-            instructions.push(new lightBot.bot.instructions.RepeatInstruction(counter, body));
-            break;
-          default:
-            break;
+        var p = $(this).children('p').first();
+
+        if (p.hasClass('walk')) {
+          instructions.push(new lightBot.bot.instructions.WalkInstruction());
+        } else if (p.hasClass('jump')) {
+          instructions.push(new lightBot.bot.instructions.JumpInstruction());
+        } else if (p.hasClass('light')) {
+          instructions.push(new lightBot.bot.instructions.LightInstruction());
+        } else if (p.hasClass('turnLeft')) {
+          instructions.push(new lightBot.bot.instructions.TurnLeftInstruction());
+        } else if (p.hasClass('turnRight')) {
+          instructions.push(new lightBot.bot.instructions.TurnRightInstruction());
+        } else if (p.hasClass('repeat')) {
+          var counter = $(this).find('input[type="number"]').first().val();
+          var body = lightBot.ui.editor.getInstructions($(this).find('.lb-repeat-body ul').first().children('li'));
+          instructions.push(new lightBot.bot.instructions.RepeatInstruction(counter, body));
         }
       });
       return instructions;

@@ -4,6 +4,16 @@
 (function () {
 
   var ui = {
+    _setRunButtonState: function (isRunning) {
+      var btn = $('#runButton');
+      if (!btn.length) return;
+
+      btn.toggleClass('btn-primary', !isRunning);
+      btn.toggleClass('btn-error', isRunning);
+      btn.attr('title', isRunning ? i18next.t('stop') : i18next.t('gameScreen.run'));
+      btn.find('.lb-run-icon').toggleClass('hidden', isRunning);
+      btn.find('.lb-stop-icon').toggleClass('hidden', !isRunning);
+    },
     showWelcomeScreen: function (hist) {
       lightBot.ui.media.playMenuAudio();
 
@@ -11,8 +21,8 @@
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'welcomeScreen' });
       $('title').text('Lightbot - Welcome');
 
-      $('.ui-screen').hide();
-      $('#welcomeScreen').show();
+      $('.lb-screen').addClass('hidden');
+      $('#welcomeScreen').removeClass('hidden');
     },
     showHelpScreen: function (hist) {
       lightBot.ui.media.playMenuAudio();
@@ -21,8 +31,8 @@
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'helpScreen' });
       $('title').text('Lightbot - Help');
 
-      $('.ui-screen').hide();
-      $('#helpScreen').show();
+      $('.lb-screen').addClass('hidden');
+      $('#helpScreen').removeClass('hidden');
     },
     showAchievementsScreen: function (hist) {
       lightBot.ui.media.playMenuAudio();
@@ -33,15 +43,23 @@
       var achievements = lightBot.achievements.getAchievementsList();
       for (var i = 0; i < achievements.length; i++) {
         enabled = lightBot.achievements.hasAchievement(achievements[i].name) ? true : false;
-        $('<li class="' + ((enabled) ? '' : 'ui-state-disabled') + '"><img src="img/achievements/' + achievements[i].name + '.png"><h3>' + achievements[i].title + '</h3><p>' + achievements[i].message + '</p></li>').appendTo('#achievementsList');
+        $(
+          '<li class="list-row ' + ((enabled) ? '' : 'opacity-40') + '">' +
+            '<div><img class="size-10 rounded-box" src="img/achievements/' + achievements[i].name + '.png" alt=""></div>' +
+            '<div class="flex-1">' +
+              '<div class="font-bold">' + achievements[i].title + '</div>' +
+              '<div class="text-sm opacity-70">' + achievements[i].message + '</div>' +
+            '</div>' +
+          '</li>'
+        ).appendTo('#achievementsList');
       }
 
       // save in history if parameter hist is not set and then set the new page title
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'achievementsScreen' });
       $('title').text('Lightbot - Achievements');
 
-      $('.ui-screen').hide();
-      $('#achievementsScreen').show();
+      $('.lb-screen').addClass('hidden');
+      $('#achievementsScreen').removeClass('hidden');
     },
     showLevelSelectScreen: function (hist) {
       lightBot.ui.media.playMenuAudio();
@@ -50,6 +68,9 @@
       for (var i = 0; i < lightBot.map.getNbrOfLevels(); i++) {
         var item = parseInt(localStorage.getItem('lightbot_level_' + i), 10);
         var medal = '';
+        var tile = $('<div class="lb-level-tile relative select-none w-28 h-20 rounded-box bg-base-200 shadow cursor-pointer flex items-center justify-center text-4xl font-black"></div>');
+        tile.attr('data-level', i).text(i);
+
         if (item) {
           switch (item) {
             case lightBot.medals.gold:
@@ -67,18 +88,18 @@
               console.error('Unknown medal "' + medal + '"');
               break;
           }
-          $('<li class="ui-state-highlight"><span class="medal ' + medal + '" style="position: absolute; bottom: 2px; right: 0px"></span><span>' + i + '</span></li>').appendTo('#levelList');
-        } else {
-          $('<li>' + i + '</li>').appendTo('#levelList');
+          tile.addClass('bg-base-100 ring-2 ring-primary/30');
+          tile.append('<span class="medal ' + medal + ' absolute bottom-1 right-1"></span>');
         }
+        tile.appendTo('#levelList');
       }
 
       // save in history if parameter hist is not set and then set the new page title
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'levelSelectScreen' });
       $('title').text('Lightbot - Level Select');
 
-      $('.ui-screen').hide();
-      $('#levelSelectScreen').show();
+      $('.lb-screen').addClass('hidden');
+      $('#levelSelectScreen').removeClass('hidden');
     },
     showGameScreen: function (level, hist) {
       lightBot.ui.media.playGameAudio();
@@ -90,10 +111,10 @@
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'gameScreen', 'level': level });
       $('title').text('Lightbot - Level ' + level);
 
-      $('.ui-screen').hide();
+      $('.lb-screen').addClass('hidden');
 
-      //clear all instructions in main program
-      $('#programContainer li').remove();
+      // clear all instructions in main program
+      $('#programContainer ul').empty();
 
       if (localStorage.getItem('lightbot_program_level_' + level)) {
         lightBot.ui.editor.loadProgram();
@@ -102,117 +123,78 @@
       }
 
       // reset the run button
-      $('#runButton').button('option', { label: 'Run', icons: { primary: 'ui-icon-play' } }).removeClass('ui-state-highlight');
+      lightBot.ui._setRunButtonState(false);
 
       // show the game screen
-      $('#gameScreen').show();
+      $('#gameScreen').removeClass('hidden');
     },
     initButtons: function () {
       // show help screen button
-      $('.helpButton').button({
-        icons: {
-          primary: "ui-icon-help"
-        }
-      }).click(function () {
+      $('.helpButton').click(function () {
         lightBot.ui.showHelpScreen();
       });
 
       // show welcome screen button
-      $('.mainMenuButton').button({
-        icons: {
-          primary: "ui-icon-home"
-        }
-      }).click(function () {
+      $('.mainMenuButton').click(function () {
         lightBot.ui.showWelcomeScreen();
       });
 
       // show achievements screen button
-      $('.achievementsButton').button({
-        icons: {
-          primary: "ui-icon-flag"
-        }
-      }).click(function () {
+      $('.achievementsButton').click(function () {
         lightBot.ui.showAchievementsScreen();
       });
 
       // show level select screen button
-      $('.levelSelectButton').button({
-        icons: {
-          primary: "ui-icon-power"
-        }
-      }).click(function () {
+      $('.levelSelectButton').click(function () {
         lightBot.ui.showLevelSelectScreen();
       });
-      $('#gameScreen .levelSelectButton').button('option', { icons: { primary: 'ui-icon-home' } });
 
       // show game screen buttons
-      $('#levelList li').live({
-        'mouseover': function () { $(this).addClass('ui-state-hover'); },
-        'mouseout': function () { $(this).removeClass('ui-state-hover'); },
-        'click': function () { lightBot.ui.showGameScreen($(this).text()); }
+      $('#levelList').on('click', '.lb-level-tile', function () {
+        lightBot.ui.showGameScreen(parseInt($(this).attr('data-level'), 10));
       });
 
       // audio toggle buttons
-      $('.audioToggleButton').button({
-        icons: {
-          primary: "ui-icon-volume-on"
-        },
-        text: false
-      }).click(function () {
+      $('.audioToggleButton').click(function () {
         lightBot.ui.media.toggleAudio();
       });
 
       // run program button
-      $('#runButton').button({
-        icons: {
-          primary: "ui-icon-play"
-        }
-      }).click(function () {
+      $('#runButton').click(function () {
         if (lightBot.bot.isInExecutionMode()) {
           // reset the map (resets the bot as well)
           lightBot.map.reset();
 
-          $(this).button('option', { label: 'Run', icons: { primary: 'ui-icon-play' } }).removeClass('ui-state-highlight');
+          lightBot.ui._setRunButtonState(false);
         } else {
-          var instructions = lightBot.ui.editor.getInstructions($('#programContainer > div > ul > li'));
+          var instructions = lightBot.ui.editor.getProgramInstructions();
           lightBot.bot.queueInstructions(instructions);
           lightBot.bot.execute();
 
-          $(this).button('option', { label: 'Stop', icons: { primary: 'ui-icon-stop' } }).addClass('ui-state-highlight');
+          lightBot.ui._setRunButtonState(true);
         }
       });
 
       // clear program button
-      $('#clearButton').button({
-        icons: {
-          primary: "ui-icon-document"
-        }
-      }).click(function () {
+      $('#clearButton').click(function () {
         $('#programContainer ul').empty();
         lightBot.ui.editor.saveProgram();
       });
 
-      // help screen accordion (header buttons)
-      $('#helpScreenAccordion').accordion({
-        autoHeight: false,
-        navigation: true,
-        icons: false,
-        change: function (event, ui) {
-          lightBot.ui.media.playVideo($('#helpScreenAccordion h3').index(ui.newHeader));
-        }
+      // help screen accordion (play video on selection)
+      $('#helpScreenAccordion').on('change', 'input[type="radio"]', function () {
+        if (!this.checked) return;
+        var idx = parseInt($(this).closest('[data-video]').attr('data-video'), 10);
+        if (!isNaN(idx)) lightBot.ui.media.playVideo(idx);
       });
     },
     initSlider: function () {
       // speed slider
-      $('#speedSlider').slider({
-        min: 0.5,
-        max: 5.0,
-        step: 0.01,
-        value: lightBot.speedMultiplier,
-        slide: function (event, ui) {
-          lightBot.speedMultiplier = ui.value;
-        }
-      });
+      $('#speedSlider')
+        .val(lightBot.speedMultiplier)
+        .on('input change', function () {
+          lightBot.speedMultiplier = parseFloat($(this).val());
+        });
     }
   };
 

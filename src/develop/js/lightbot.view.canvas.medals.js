@@ -32,7 +32,7 @@
     }
 
     $("#levelCompleteDialog .message").html(i18next.t('dialogs.levelComplete.message', { count: lightBot.bot.getNumberOfInstructions() }));
-    $("#levelCompleteDialog").dialog("open");
+    if (lightBot.ui.dialogs) lightBot.ui.dialogs.open('levelCompleteDialog');
   }
 
   lightBot.medals.display = display;

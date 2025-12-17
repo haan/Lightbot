@@ -27,7 +27,7 @@ $(document).ready(function() {
               lightBot.ui.showHelpScreen(true);
               break;
             case 'achievementsScreen':
-              lightBot.ui.showHelpScreen(true);
+              lightBot.ui.showAchievementsScreen(true);
               break;
             case 'levelSelectScreen':
               lightBot.ui.showLevelSelectScreen(true);
