@@ -6,6 +6,55 @@
 @source "../develop/**/*.{html,js}";
 @source "../deploy/**/*.html";
 
+@plugin "daisyui/theme" {
+  name: "lightbot";
+  prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
+  color-scheme: light; /* color of browser-provided UI */
+
+  /* Original Lightbot palette (from src/develop/css/lightbot.css) */
+  --color-base-100: #4b4646;
+  --color-base-200: #5c5c5c;
+  --color-base-300: #777777;
+  --color-base-content: #fffff2;
+
+  --color-primary: #a3cfc6;
+  --color-primary-content: #222222;
+
+  --color-secondary: #7ca6ba;
+  --color-secondary-content: #fffff2;
+
+  --color-accent: #e59700;
+  --color-accent-content: #222222;
+
+  --color-neutral: #4b4646;
+  --color-neutral-content: #fffff2;
+
+  --color-info: #7ca6ba;
+  --color-info-content: #222222;
+  --color-success: #a3cfc6;
+  --color-success-content: #222222;
+  --color-warning: #fbeea4;
+  --color-warning-content: #222222;
+  --color-error: #d9534f;
+  --color-error-content: #fffff2;
+
+  /* border radius */
+  --radius-selector: 1rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}
+
 /* Non-Tailwind assets / legacy helpers kept as small component classes */
 @layer components {
   .achievement {
@@ -46,12 +95,12 @@
   }
 
   .lb-drop-active {
-    outline: 2px solid color-mix(in oklab, oklch(var(--p)) 35%, transparent);
+    outline: 2px solid color-mix(in oklab, var(--color-primary) 35%, transparent);
     outline-offset: 2px;
   }
 
   .lb-drop-hover {
-    outline: 2px solid oklch(var(--p));
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 
@@ -60,6 +109,7 @@
     display: none;
   }
 
+  /* don't show a repeat-body in the instruction palette */
   #instructionsContainer .lb-repeat-body {
     display: none;
   }
@@ -77,8 +127,14 @@
     @apply cursor-grab;
   }
 
+  /* don't show a repeat-body while the instruction is being dragged into the program container */
+  #programContainer .sortable-ghost .lb-repeat-body {
+    display: none;
+  }
+
+  /* make a box with bg and border around the two parts of a repeat instruction but only when in the program container */
   #programContainer .lb-instruction:has(> .repeat) {
-   @apply border border-base-300 bg-base-100 px-2 py-2 text-sm font-semibold rounded-[var(--rounded-btn)];
+   @apply border border-base-300 bg-base-100 px-0 py-0 text-sm font-semibold rounded-[var(--rounded-btn)];
   }
 
   #programContainer .lb-instruction-row {

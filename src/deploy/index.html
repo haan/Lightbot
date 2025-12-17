@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="light">
+<html data-theme="lightbot">
   <head>
     <meta charset="utf-8">
     <title data-i18n="title"></title>
@@ -24,146 +24,193 @@
     <script type="text/javascript" src="js/jquery.history.js"></script>
     <script type="text/javascript" src="js/lightbot.min.js"></script>
   </head>
-  <body class="min-h-screen bg-base-200 text-base-content flex items-center justify-center">
-    <div id="audioContainer">
-      <div id="audioPlayer"></div>
+
+<body class="min-h-screen bg-base-200 text-base-content flex items-center justify-center">
+  <div id="audioContainer">
+    <div id="audioPlayer"></div>
+  </div>
+
+  <div id="lightbot" class="relative w-[980px] h-[740px]">
+
+    <div id="credits" class="absolute top-0 inset-x-0 h-5 text-center text-xs opacity-70">
+      Developed by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Interface by <a
+        href="http://www.zententia.net">Zenobia Homan</a>. Robot by <a
+        href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Music by <a
+        href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>. Original concept: <a
+        href="http://lightbot.com/" target="_blank">lightbot.com</a>.
     </div>
 
-    <div id="lightbot" class="relative w-[980px] h-[740px]">
-
-      <div id="credits" class="absolute top-0 inset-x-0 h-5 text-center text-xs opacity-70">
-        Developed by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Interface by <a href="http://www.zententia.net">Zenobia Homan</a>. Robot by <a href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Music by <a href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>. Original concept: <a href="http://lightbot.com/" target="_blank">lightbot.com</a>.
+    <div id="welcomeScreen"
+      class="lb-screen absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow overflow-hidden bg-[url('../img/welcome_screen_bg.png')] bg-no-repeat bg-left-top">
+      <div class="absolute bottom-4 left-4 flex flex-wrap gap-2">
+        <button class="helpButton btn btn-sm gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+            <path fill-rule="evenodd"
+              d="M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0Zm-6 3.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM7.293 5.293a1 1 0 1 1 .99 1.667c-.459.134-1.033.566-1.033 1.29v.25a.75.75 0 1 0 1.5 0v-.115a2.5 2.5 0 1 0-2.518-4.153.75.75 0 1 0 1.061 1.06Z"
+              clip-rule="evenodd" />
+          </svg>
+          <span data-i18n="welcomeScreen.help"></span>
+        </button>
+        <button class="achievementsButton btn btn-sm gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+            <path fill-rule="evenodd"
+              d="M12 1.69a.494.494 0 0 0-.438-.494 32.352 32.352 0 0 0-7.124 0A.494.494 0 0 0 4 1.689v.567c-.811.104-1.612.24-2.403.406a.75.75 0 0 0-.595.714 4.5 4.5 0 0 0 4.35 4.622A3.99 3.99 0 0 0 7 8.874V10H6a1 1 0 0 0-1 1v2h-.667C3.597 13 3 13.597 3 14.333c0 .368.298.667.667.667h8.666a.667.667 0 0 0 .667-.667c0-.736-.597-1.333-1.333-1.333H11v-2a1 1 0 0 0-1-1H9V8.874a3.99 3.99 0 0 0 1.649-.876 4.5 4.5 0 0 0 4.35-4.622.75.75 0 0 0-.596-.714A30.897 30.897 0 0 0 12 2.256v-.567ZM4 3.768c-.49.066-.976.145-1.458.235a3.004 3.004 0 0 0 1.64 2.192A3.999 3.999 0 0 1 4 5V3.769Zm8 0c.49.066.976.145 1.458.235a3.004 3.004 0 0 1-1.64 2.192C11.936 5.818 12 5.416 12 5V3.769Z"
+              clip-rule="evenodd" />
+          </svg>
+          <span data-i18n="welcomeScreen.achievements"></span>
+        </button>
+        <button class="levelSelectButton btn btn-sm btn-primary gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+            <path d="M8 5v14l11-7-11-7Z" />
+          </svg>
+          <span data-i18n="welcomeScreen.start"></span>
+        </button>
+        <button class="audioToggleButton btn btn-sm btn-square" data-i18n-title="welcomeScreen.toggleAudio"
+          title="Toggle audio">
+          <svg class="lb-audio-on size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              d="M10.5 3.75a.75.75 0 0 0-1.264-.546L5.203 7H2.667a.75.75 0 0 0-.7.48A6.985 6.985 0 0 0 1.5 10c0 .887.165 1.737.468 2.52.111.29.39.48.7.48h2.535l4.033 3.796a.75.75 0 0 0 1.264-.546V3.75ZM16.45 5.05a.75.75 0 0 0-1.06 1.061 5.5 5.5 0 0 1 0 7.778.75.75 0 0 0 1.06 1.06 7 7 0 0 0 0-9.899Z" />
+            <path
+              d="M14.329 7.172a.75.75 0 0 0-1.061 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 0 0 1.06 1.06 4 4 0 0 0 0-5.656Z" />
+          </svg>
+          <svg class="lb-audio-off hidden size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+            fill="currentColor">
+            <path
+              d="M10.047 3.062a.75.75 0 0 1 .453.688v12.5a.75.75 0 0 1-1.264.546L5.203 13H2.667a.75.75 0 0 1-.7-.48A6.985 6.985 0 0 1 1.5 10c0-.887.165-1.737.468-2.52a.75.75 0 0 1 .7-.48h2.535l4.033-3.796a.75.75 0 0 1 .811-.142ZM13.78 7.22a.75.75 0 1 0-1.06 1.06L14.44 10l-1.72 1.72a.75.75 0 0 0 1.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 1 0 1.06-1.06L16.56 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L15.5 8.94l-1.72-1.72Z" />
+          </svg>
+        </button>
+        <select data-choose-theme class="select select-sm w-36 bg-base-100/80 backdrop-blur shadow">
+          <option value="lightbot">lightbot</option>
+          <option value="light">light</option>
+          <option value="dark">dark</option>
+          <option value="cupcake">cupcake</option>
+          <option value="bumblebee">bumblebee</option>
+          <option value="emerald">emerald</option>
+          <option value="corporate">corporate</option>
+          <option value="synthwave">synthwave</option>
+          <option value="retro">retro</option>
+          <option value="cyberpunk">cyberpunk</option>
+          <option value="valentine">valentine</option>
+          <option value="halloween">halloween</option>
+          <option value="garden">garden</option>
+          <option value="forest">forest</option>
+          <option value="aqua">aqua</option>
+          <option value="lofi">lofi</option>
+          <option value="pastel">pastel</option>
+          <option value="wireframe">wireframe</option>
+          <option value="black">black</option>
+          <option value="luxury">luxury</option>
+          <option value="dracula">dracula</option>
+          <option value="cmyk">cmyk</option>
+          <option value="autumn">autumn</option>
+          <option value="business">business</option>
+          <option value="acid">acid</option>
+          <option value="lemonade">lemonade</option>
+          <option value="night">night</option>
+          <option value="coffee">coffee</option>
+          <option value="winter">winter</option>
+        </select>
       </div>
+    </div>
 
-      <div id="welcomeScreen" class="lb-screen absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow overflow-hidden bg-[url('../img/welcome_screen_bg.png')] bg-no-repeat bg-left-top">
-        <div class="absolute bottom-4 left-4 flex flex-wrap gap-2">
-          <button class="helpButton btn btn-sm gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M12 18a1.25 1.25 0 1 0 0 2.5A1.25 1.25 0 0 0 12 18Zm0-16C6.477 2 2 6.262 2 11.5c0 3.05 1.63 5.755 4.168 7.51.522.363.832.954.832 1.588V22h10v-1.402c0-.634.31-1.225.832-1.588C20.37 17.255 22 14.55 22 11.5 22 6.262 17.523 2 12 2Zm3.786 15.364c-.884.614-1.456 1.58-1.57 2.636H9.784c-.114-1.056-.686-2.022-1.57-2.636C6.33 16.06 5.25 13.88 5.25 11.5 5.25 8.07 8.318 5.25 12 5.25s6.75 2.82 6.75 6.25c0 2.38-1.08 4.56-2.964 5.864Z"/></svg>
-            <span data-i18n="welcomeScreen.help"></span>
-          </button>
-          <button class="achievementsButton btn btn-sm gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M6 2h12v2h2a1 1 0 0 1 1 1v3a6 6 0 0 1-6 6h-.07A6.002 6.002 0 0 1 13 15.91V19h3v3H8v-3h3v-3.09A6.002 6.002 0 0 1 9.07 14H9a6 6 0 0 1-6-6V5a1 1 0 0 1 1-1h2V2Zm0 4H5v2a4 4 0 0 0 4 4h.35A5.98 5.98 0 0 1 6 6Zm13 0a5.98 5.98 0 0 1-3.35 6H15a4 4 0 0 0 4-4V6h0Z"/></svg>
-            <span data-i18n="welcomeScreen.achievements"></span>
-          </button>
-          <button class="levelSelectButton btn btn-sm btn-primary gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M8 5v14l11-7-11-7Z"/></svg>
-            <span data-i18n="welcomeScreen.start"></span>
-          </button>
-          <button class="audioToggleButton btn btn-sm btn-square" data-i18n-title="welcomeScreen.toggleAudio" title="Toggle audio">
-            <svg class="lb-audio-on size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10.5 3.75a.75.75 0 0 0-1.264-.546L5.203 7H2.667a.75.75 0 0 0-.7.48A6.985 6.985 0 0 0 1.5 10c0 .887.165 1.737.468 2.52.111.29.39.48.7.48h2.535l4.033 3.796a.75.75 0 0 0 1.264-.546V3.75ZM16.45 5.05a.75.75 0 0 0-1.06 1.061 5.5 5.5 0 0 1 0 7.778.75.75 0 0 0 1.06 1.06 7 7 0 0 0 0-9.899Z" />
-              <path d="M14.329 7.172a.75.75 0 0 0-1.061 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 0 0 1.06 1.06 4 4 0 0 0 0-5.656Z" />
-            </svg>
-            <svg class="lb-audio-off hidden size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M10.047 3.062a.75.75 0 0 1 .453.688v12.5a.75.75 0 0 1-1.264.546L5.203 13H2.667a.75.75 0 0 1-.7-.48A6.985 6.985 0 0 1 1.5 10c0-.887.165-1.737.468-2.52a.75.75 0 0 1 .7-.48h2.535l4.033-3.796a.75.75 0 0 1 .811-.142ZM13.78 7.22a.75.75 0 1 0-1.06 1.06L14.44 10l-1.72 1.72a.75.75 0 0 0 1.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 1 0 1.06-1.06L16.56 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L15.5 8.94l-1.72-1.72Z" />
-            </svg>
-          </button>
-          <select data-choose-theme class="select select-sm w-36 bg-base-100/80 backdrop-blur shadow">
-            <option value="light">light</option>
-            <option value="dark">dark</option>
-            <option value="cupcake">cupcake</option>
-            <option value="bumblebee">bumblebee</option>
-            <option value="emerald">emerald</option>
-            <option value="corporate">corporate</option>
-            <option value="synthwave">synthwave</option>
-            <option value="retro">retro</option>
-            <option value="cyberpunk">cyberpunk</option>
-            <option value="valentine">valentine</option>
-            <option value="halloween">halloween</option>
-            <option value="garden">garden</option>
-            <option value="forest">forest</option>
-            <option value="aqua">aqua</option>
-            <option value="lofi">lofi</option>
-            <option value="pastel">pastel</option>
-            <option value="wireframe">wireframe</option>
-            <option value="black">black</option>
-            <option value="luxury">luxury</option>
-            <option value="dracula">dracula</option>
-            <option value="cmyk">cmyk</option>
-            <option value="autumn">autumn</option>
-            <option value="business">business</option>
-            <option value="acid">acid</option>
-            <option value="lemonade">lemonade</option>
-            <option value="night">night</option>
-            <option value="coffee">coffee</option>
-            <option value="winter">winter</option>
-          </select>
-        </div>
+    <div id="achievementsScreen"
+      class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-6 flex flex-col gap-4">
+      <h1 class="text-3xl font-black uppercase" data-i18n="achievementsScreen.title"></h1>
+      <ul id="achievementsList" class="list bg-base-200 rounded-box shadow overflow-auto"></ul>
+      <div class="mt-auto">
+        <button class="mainMenuButton btn btn-sm gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5Z" />
+          </svg>
+          <span data-i18n="achievementsScreen.mainMenu"></span>
+        </button>
       </div>
+    </div>
 
-      <div id="achievementsScreen" class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-6 flex flex-col gap-4">
-        <h1 class="text-3xl font-black uppercase" data-i18n="achievementsScreen.title"></h1>
-        <ul id="achievementsList" class="list bg-base-200 rounded-box shadow overflow-auto"></ul>
-        <div class="mt-auto">
-          <button class="mainMenuButton btn btn-sm gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5Z"/></svg>
-            <span data-i18n="achievementsScreen.mainMenu"></span>
-          </button>
-        </div>
-      </div>
-
-      <div id="helpScreen" class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-6">
-        <div class="grid grid-cols-[1fr_12px_400px] gap-6 h-full">
-          <div id="helpScreenAccordion" class="space-y-2 overflow-auto pr-2">
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="0">
-              <input type="radio" name="help-accordion" checked="checked" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.goal.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.goal.content"></p></div>
-            </div>
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="1">
-              <input type="radio" name="help-accordion" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.howTo.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.howTo.content"></p></div>
-            </div>
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="2">
-              <input type="radio" name="help-accordion" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.objects.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.objects.content"></p></div>
-            </div>
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="3">
-              <input type="radio" name="help-accordion" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.walkForward.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.walkForward.content"></p></div>
-            </div>
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="4">
-              <input type="radio" name="help-accordion" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.turnRight.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.turnRight.content"></p></div>
-            </div>
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="5">
-              <input type="radio" name="help-accordion" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.turnLeft.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.turnLeft.content"></p></div>
-            </div>
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="6">
-              <input type="radio" name="help-accordion" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.jump.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.jump.content"></p></div>
-            </div>
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="7">
-              <input type="radio" name="help-accordion" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.light.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.light.content"></p></div>
-            </div>
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="8">
-              <input type="radio" name="help-accordion" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.repeat.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.repeat.content"></p></div>
-            </div>
-            <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="9">
-              <input type="radio" name="help-accordion" />
-              <div class="collapse-title font-bold" data-i18n="helpScreen.medals.title"></div>
-              <div class="collapse-content"><p data-i18n="helpScreen.medals.content"></p></div>
+    <div id="helpScreen" class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-6">
+      <div class="grid grid-cols-[1fr_12px_400px] gap-6 h-full">
+        <div id="helpScreenAccordion" class="space-y-2 overflow-auto pr-2 text-sm">
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="0">
+            <input type="radio" name="help-accordion" checked="checked" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.goal.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.goal.content"></p>
             </div>
           </div>
-          <div class="w-[12px] bg-base-300 rounded-box"></div>
-          <div class="flex flex-col gap-4">
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="1">
+            <input type="radio" name="help-accordion" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.howTo.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.howTo.content"></p>
+            </div>
+          </div>
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="2">
+            <input type="radio" name="help-accordion" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.objects.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.objects.content"></p>
+            </div>
+          </div>
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="3">
+            <input type="radio" name="help-accordion" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.walkForward.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.walkForward.content"></p>
+            </div>
+          </div>
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="4">
+            <input type="radio" name="help-accordion" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.turnRight.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.turnRight.content"></p>
+            </div>
+          </div>
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="5">
+            <input type="radio" name="help-accordion" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.turnLeft.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.turnLeft.content"></p>
+            </div>
+          </div>
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="6">
+            <input type="radio" name="help-accordion" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.jump.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.jump.content"></p>
+            </div>
+          </div>
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="7">
+            <input type="radio" name="help-accordion" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.light.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.light.content"></p>
+            </div>
+          </div>
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="8">
+            <input type="radio" name="help-accordion" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.repeat.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.repeat.content"></p>
+            </div>
+          </div>
+          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="9">
+            <input type="radio" name="help-accordion" />
+            <div class="collapse-title font-bold" data-i18n="helpScreen.medals.title"></div>
+            <div class="collapse-content">
+              <p data-i18n="helpScreen.medals.content"></p>
+            </div>
+          </div>
+        </div>
+        <div class="divider divider-horizontal m-0"></div>
+        <div class="flex flex-col h-full">
+          <div class="flex-1 flex items-center justify-center">
             <div id="videoContainer" class="jp-video jp-video-300p">
               <div class="jp-type-single">
                 <div id="videoPlayer" class="jp-jplayer"></div>
                 <div class="jp-gui">
                   <div class="jp-video-play">
-                    <a href="javascript:;" class="jp-video-play-icon" tabindex="1" data-i18n="helpScreen.video.play"></a>
+                    <a href="javascript:;" class="jp-video-play-icon" tabindex="1"
+                      data-i18n="helpScreen.video.play"></a>
                   </div>
                   <div class="jp-interface">
                     <div class="jp-progress">
@@ -175,175 +222,225 @@
                 </div>
               </div>
             </div>
-            <div class="mt-auto">
-              <button class="mainMenuButton btn btn-sm gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5Z"/></svg>
-                <span data-i18n="helpScreen.mainMenu"></span>
-              </button>
-            </div>
+          </div>
+          <div class="pt-4">
+            <button class="mainMenuButton btn btn-sm gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5Z" />
+              </svg>
+              <span data-i18n="helpScreen.mainMenu"></span>
+            </button>
           </div>
         </div>
-      </div>
-
-      <div id="levelSelectScreen" class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-6 flex flex-col gap-4">
-        <h1 class="text-3xl font-black uppercase" data-i18n="levelSelectScreen.title"></h1>
-        <div id="levelList" class="flex flex-wrap gap-3 justify-center overflow-auto p-2"></div>
-        <div class="mt-auto">
-          <button class="mainMenuButton btn btn-sm gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5Z"/></svg>
-            <span data-i18n="levelSelectScreen.mainMenu"></span>
-          </button>
-        </div>
-      </div>
-
-      <div id="gameScreen" class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-2">
-        <div class="grid grid-cols-[690px_1fr] gap-2 h-full">
-          <div class="relative">
-            <div id="canvasContainer" class="bg-base-200 rounded-box overflow-hidden">
-              <canvas id="gameCanvas" width="690" height="666" class="block"></canvas>
-            </div>
-            <div id="buttonContainer" class="absolute bottom-2 left-2 flex flex-wrap items-center gap-2 p-2 rounded-box bg-base-100/80 backdrop-blur shadow">
-              <button class="levelSelectButton btn btn-sm btn-square" data-i18n-title="gameScreen.back" title="Back">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M19 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H19v-2Z"/></svg>
-              </button>
-              <button class="audioToggleButton btn btn-sm btn-square" data-i18n-title="gameScreen.toggleAudio" title="Toggle audio">
-                <svg class="lb-audio-on size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M10.5 3.75a.75.75 0 0 0-1.264-.546L5.203 7H2.667a.75.75 0 0 0-.7.48A6.985 6.985 0 0 0 1.5 10c0 .887.165 1.737.468 2.52.111.29.39.48.7.48h2.535l4.033 3.796a.75.75 0 0 0 1.264-.546V3.75ZM16.45 5.05a.75.75 0 0 0-1.06 1.061 5.5 5.5 0 0 1 0 7.778.75.75 0 0 0 1.06 1.06 7 7 0 0 0 0-9.899Z" />
-                  <path d="M14.329 7.172a.75.75 0 0 0-1.061 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 0 0 1.06 1.06 4 4 0 0 0 0-5.656Z" />
-                </svg>
-                <svg class="lb-audio-off hidden size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path d="M10.047 3.062a.75.75 0 0 1 .453.688v12.5a.75.75 0 0 1-1.264.546L5.203 13H2.667a.75.75 0 0 1-.7-.48A6.985 6.985 0 0 1 1.5 10c0-.887.165-1.737.468-2.52a.75.75 0 0 1 .7-.48h2.535l4.033-3.796a.75.75 0 0 1 .811-.142ZM13.78 7.22a.75.75 0 1 0-1.06 1.06L14.44 10l-1.72 1.72a.75.75 0 0 0 1.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 1 0 1.06-1.06L16.56 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L15.5 8.94l-1.72-1.72Z" />
-                </svg>
-              </button>
-              <button id="clearButton" class="btn btn-sm btn-square" data-i18n-title="gameScreen.clear" title="Clear">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12Zm3.5-9h1v8h-1v-8Zm4 0h1v8h-1v-8ZM15.5 4l-1-1h-5l-1 1H5v2h14V4h-3.5Z"/></svg>
-              </button>
-              <button id="runButton" class="btn btn-sm btn-primary btn-square" data-i18n-title="gameScreen.run" title="Run">
-                <svg class="lb-run-icon size-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7Z"/></svg>
-                <svg class="lb-stop-icon hidden size-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 6h12v12H6V6Z"/></svg>
-              </button>
-              <div id="speedControl" class="flex items-center gap-2 pl-2">
-                <label for="speedSlider" class="text-sm font-semibold" data-i18n="gameScreen.speed"></label>
-                <input id="speedSlider" type="range" min="0.5" max="5.0" step="0.01" value="1" class="range range-xs w-28" />
-              </div>
-            </div>
-          </div>
-          <div class="flex flex-col gap-2 min-h-0">
-            <div id="instructionsContainer" class="card bg-base-200 shadow">
-              <div class="card-body p-3">
-                <h2 class="card-title text-base"><span data-i18n="instructions.title"></span></h2>
-                <div class="overflow-auto max-h-[220px]">
-                  <ul class="space-y-2">
-                    <li class="lb-instruction">
-                      <p class="walk lb-instruction-row">
-                        <span class="lb-instruction-label" data-i18n="instructions.walk"></span>
-                        <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square" title="Remove">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
-                        </button>
-                      </p>
-                    </li>
-                    <li class="lb-instruction">
-                      <p class="turnRight lb-instruction-row">
-                        <span class="lb-instruction-label" data-i18n="instructions.turnRight"></span>
-                        <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square" title="Remove">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
-                        </button>
-                      </p>
-                    </li>
-                    <li class="lb-instruction">
-                      <p class="turnLeft lb-instruction-row">
-                        <span class="lb-instruction-label" data-i18n="instructions.turnLeft"></span>
-                        <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square" title="Remove">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
-                        </button>
-                      </p>
-                    </li>
-                    <li class="lb-instruction">
-                      <p class="jump lb-instruction-row">
-                        <span class="lb-instruction-label" data-i18n="instructions.jump"></span>
-                        <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square" title="Remove">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
-                        </button>
-                      </p>
-                    </li>
-                    <li class="lb-instruction">
-                      <p class="light lb-instruction-row">
-                        <span class="lb-instruction-label" data-i18n="instructions.light"></span>
-                        <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square" title="Remove">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
-                        </button>
-                      </p>
-                    </li>
-                    <li class="lb-instruction">
-                      <p class="repeat lb-instruction-row">
-                        <span class="lb-instruction-label" data-i18n="instructions.repeat.label"></span>
-                        <span class="lb-repeat-count flex items-center gap-2">
-                          <input type="number" min="1" max="99" step="1" value="2" class="input input-bordered input-xs w-16" />
-                          <span class="text-xs opacity-70" data-i18n="instructions.repeat.times"></span>
-                        </span>
-                        <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square" title="Remove">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
-                        </button>
-                      </p>
-                      <div class="lb-repeat-body droppable">
-                        <div class="lb-repeat-body-inner">
-                          <ul class="space-y-2"></ul>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div id="programContainer" class="card bg-base-200 shadow flex-1 min-h-0">
-              <div class="card-body p-3 min-h-0">
-                <h2 class="card-title text-base"><span data-i18n="program.title"></span></h2>
-                <div class="droppable flex-1 overflow-auto min-h-0">
-                  <ul class="space-y-2 min-h-[360px]"></ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="credits2" class="absolute bottom-0 inset-x-0 h-4 text-center text-xs opacity-70">
-        <div style="float:left;"></div>
-        <div style="float:right;"></div>
       </div>
     </div>
 
-    <dialog id="levelCompleteDialog" class="modal">
-      <div class="modal-box">
-        <h3 class="font-bold text-lg" data-i18n="dialogs.levelComplete.title"></h3>
-        <div class="py-4 flex gap-3 items-start">
-          <span class="medal shrink-0"></span>
-          <div class="flex-1">
-            <p class="message" data-i18n="dialogs.levelComplete.message"></p>
-            <p class="hint mt-2 text-sm opacity-80"></p>
+    <div id="levelSelectScreen"
+      class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-6 flex flex-col gap-4">
+      <h1 class="text-3xl font-black uppercase" data-i18n="levelSelectScreen.title"></h1>
+      <div id="levelList" class="flex flex-wrap gap-3 justify-start overflow-auto p-2"></div>
+      <div class="mt-auto">
+        <button class="mainMenuButton btn btn-sm gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5Z" />
+          </svg>
+          <span data-i18n="levelSelectScreen.mainMenu"></span>
+        </button>
+      </div>
+    </div>
+
+    <div id="gameScreen" class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-2">
+      <div class="grid grid-cols-[690px_1fr] gap-2 h-full">
+        <div class="relative">
+          <div id="canvasContainer" class="bg-base-200 rounded-box overflow-hidden">
+            <canvas id="gameCanvas" width="690" height="690" class="block"></canvas>
+          </div>
+          <div id="buttonContainer"
+            class="absolute bottom-2 left-2 flex flex-wrap items-center gap-2 p-2 rounded-box bg-base-100/80 backdrop-blur shadow">
+            <button class="levelSelectButton btn btn-sm btn-square" data-i18n-title="gameScreen.back" title="Back">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+                <path d="M19 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H19v-2Z" />
+              </svg>
+            </button>
+            <button class="audioToggleButton btn btn-sm btn-square" data-i18n-title="gameScreen.toggleAudio"
+              title="Toggle audio">
+              <svg class="lb-audio-on size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path
+                  d="M10.5 3.75a.75.75 0 0 0-1.264-.546L5.203 7H2.667a.75.75 0 0 0-.7.48A6.985 6.985 0 0 0 1.5 10c0 .887.165 1.737.468 2.52.111.29.39.48.7.48h2.535l4.033 3.796a.75.75 0 0 0 1.264-.546V3.75ZM16.45 5.05a.75.75 0 0 0-1.06 1.061 5.5 5.5 0 0 1 0 7.778.75.75 0 0 0 1.06 1.06 7 7 0 0 0 0-9.899Z" />
+                <path
+                  d="M14.329 7.172a.75.75 0 0 0-1.061 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 0 0 1.06 1.06 4 4 0 0 0 0-5.656Z" />
+              </svg>
+              <svg class="lb-audio-off hidden size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path
+                  d="M10.047 3.062a.75.75 0 0 1 .453.688v12.5a.75.75 0 0 1-1.264.546L5.203 13H2.667a.75.75 0 0 1-.7-.48A6.985 6.985 0 0 1 1.5 10c0-.887.165-1.737.468-2.52a.75.75 0 0 1 .7-.48h2.535l4.033-3.796a.75.75 0 0 1 .811-.142ZM13.78 7.22a.75.75 0 1 0-1.06 1.06L14.44 10l-1.72 1.72a.75.75 0 0 0 1.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 1 0 1.06-1.06L16.56 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L15.5 8.94l-1.72-1.72Z" />
+              </svg>
+            </button>
+            <button id="clearButton" class="btn btn-sm btn-square" data-i18n-title="gameScreen.clear" title="Clear">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+                <path
+                  d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12Zm3.5-9h1v8h-1v-8Zm4 0h1v8h-1v-8ZM15.5 4l-1-1h-5l-1 1H5v2h14V4h-3.5Z" />
+              </svg>
+            </button>
+            <button id="runButton" class="btn btn-sm btn-primary btn-square" data-i18n-title="gameScreen.run"
+              title="Run">
+              <svg class="lb-run-icon size-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7-11-7Z" />
+              </svg>
+              <svg class="lb-stop-icon hidden size-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24">
+                <path d="M6 6h12v12H6V6Z" />
+              </svg>
+            </button>
+            <div id="speedControl" class="flex items-center gap-2 pl-2">
+                <label for="speedSlider" class="text-sm font-semibold" data-i18n="gameScreen.speed"></label>
+                <input id="speedSlider" type="range" min="0.5" max="3.0" step="0.01" value="2" class="range range-xs range-primary w-28" />
+              </div>
+            </div>
+          </div>
+        <div class="flex flex-col gap-2 min-h-0">
+          <div id="instructionsContainer" class="card bg-base-200 shadow">
+            <div class="card-body p-3">
+              <h2 class="card-title text-base"><span data-i18n="instructions.title"></span></h2>
+              <div class="overflow-auto max-h-[220px]">
+                <ul class="space-y-0">
+                  <li class="lb-instruction">
+                    <p class="walk lb-instruction-row">
+                      <span class="lb-instruction-label" data-i18n="instructions.walk"></span>
+                      <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square"
+                        title="Remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+                          <path
+                            d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                        </svg>
+                      </button>
+                    </p>
+                  </li>
+                  <li class="lb-instruction">
+                    <p class="turnRight lb-instruction-row">
+                      <span class="lb-instruction-label" data-i18n="instructions.turnRight"></span>
+                      <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square"
+                        title="Remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+                          <path
+                            d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                        </svg>
+                      </button>
+                    </p>
+                  </li>
+                  <li class="lb-instruction">
+                    <p class="turnLeft lb-instruction-row">
+                      <span class="lb-instruction-label" data-i18n="instructions.turnLeft"></span>
+                      <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square"
+                        title="Remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+                          <path
+                            d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                        </svg>
+                      </button>
+                    </p>
+                  </li>
+                  <li class="lb-instruction">
+                    <p class="jump lb-instruction-row">
+                      <span class="lb-instruction-label" data-i18n="instructions.jump"></span>
+                      <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square"
+                        title="Remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+                          <path
+                            d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                        </svg>
+                      </button>
+                    </p>
+                  </li>
+                  <li class="lb-instruction">
+                    <p class="light lb-instruction-row">
+                      <span class="lb-instruction-label" data-i18n="instructions.light"></span>
+                      <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square"
+                        title="Remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+                          <path
+                            d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                        </svg>
+                      </button>
+                    </p>
+                  </li>
+                  <li class="lb-instruction">
+                    <p class="repeat lb-instruction-row">
+                      <span class="lb-instruction-label" data-i18n="instructions.repeat.label"></span>
+                      <span class="lb-repeat-count flex items-center gap-2">
+                        <input type="number" min="1" max="99" step="1" value="2"
+                          class="input input-bordered input-xs w-16" />
+                        <span class="text-xs opacity-70" data-i18n="instructions.repeat.times"></span>
+                      </span>
+                      <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square"
+                        title="Remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+                          <path
+                            d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z" />
+                        </svg>
+                      </button>
+                    </p>
+                    <div class="lb-repeat-body droppable">
+                      <div class="lb-repeat-body-inner">
+                        <ul class="space-y-2"></ul>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div id="programContainer" class="card bg-base-200 shadow flex-1 min-h-0">
+            <div class="card-body p-3 min-h-0">
+              <h2 class="card-title text-base"><span data-i18n="program.title"></span></h2>
+              <div class="droppable flex-1 overflow-x-hidden overflow-y-auto min-h-0">
+                <ul class="space-y-0 min-h-[360px]"></ul>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="modal-action">
-          <form method="dialog">
-            <button class="btn btn-sm">OK</button>
-          </form>
-        </div>
       </div>
-    </dialog>
+    </div>
 
-    <dialog id="achievementDialog" class="modal">
-      <div class="modal-box">
-        <h3 class="font-bold text-lg" data-i18n="dialogs.achievement.title"></h3>
-        <div class="py-4 flex gap-3 items-start">
-          <span class="achievement shrink-0"></span>
-          <p class="message flex-1"></p>
-        </div>
-        <div class="modal-action">
-          <form method="dialog">
-            <button class="btn btn-sm">OK</button>
-          </form>
+    <div id="credits2" class="absolute bottom-0 inset-x-0 h-4 text-center text-xs opacity-70">
+      <div style="float:left;"></div>
+      <div style="float:right;"></div>
+    </div>
+  </div>
+
+  <dialog id="levelCompleteDialog" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg" data-i18n="dialogs.levelComplete.title"></h3>
+      <div class="py-4 flex gap-3 items-start">
+        <span class="medal shrink-0"></span>
+        <div class="flex-1">
+          <p class="message" data-i18n="dialogs.levelComplete.message"></p>
+          <p class="hint mt-2 text-sm opacity-80"></p>
         </div>
       </div>
-    </dialog>
-  </body>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-sm">OK</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="achievementDialog" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg" data-i18n="dialogs.achievement.title"></h3>
+      <div class="py-4 flex gap-3 items-start">
+        <span class="achievement shrink-0"></span>
+        <p class="message flex-1"></p>
+      </div>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-sm">OK</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+</body>
+
 </html>

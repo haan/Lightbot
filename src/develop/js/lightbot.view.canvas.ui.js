@@ -68,7 +68,7 @@
       for (var i = 0; i < lightBot.map.getNbrOfLevels(); i++) {
         var item = parseInt(localStorage.getItem('lightbot_level_' + i), 10);
         var medal = '';
-        var tile = $('<div class="lb-level-tile relative select-none w-28 h-20 rounded-box bg-base-200 shadow cursor-pointer flex items-center justify-center text-4xl font-black"></div>');
+        var tile = $('<div class="lb-level-tile relative select-none w-34 h-30 rounded-box bg-base-200 hover:bg-base-300 shadow cursor-pointer flex items-center justify-center text-4xl font-black"></div>');
         tile.attr('data-level', i).text(i);
 
         if (item) {
@@ -88,7 +88,7 @@
               console.error('Unknown medal "' + medal + '"');
               break;
           }
-          tile.addClass('bg-base-100 ring-2 ring-primary/30');
+          tile.addClass('bg-accent ring-2 ring-primary/30');
           tile.append('<span class="medal ' + medal + ' absolute bottom-1 right-1"></span>');
         }
         tile.appendTo('#levelList');

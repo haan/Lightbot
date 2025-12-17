@@ -6,7 +6,7 @@ var canvasView = function(canvas) {
   lightBot.ctx = canvas.get(0).getContext('2d');
 
   // refresh rate and rendering loop
-  var fps = 30;
+  var fps = 60;
   var fpsDelay = 1000 / fps;
   var fpsTimer = window.setInterval(update, fpsDelay);
 

@@ -2250,6 +2250,39 @@ div.jp-jplayer {
       max-width: 96rem;
     }
   }
+  .divider {
+    @layer daisyui.l1.l2.l3 {
+      display: flex;
+      height: calc(0.25rem * 4);
+      flex-direction: row;
+      align-items: center;
+      align-self: stretch;
+      white-space: nowrap;
+      margin: var(--divider-m, 1rem 0);
+      --divider-color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        --divider-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+      }
+      &:before, &:after {
+        content: "";
+        height: calc(0.25rem * 0.5);
+        width: 100%;
+        flex-grow: 1;
+        background-color: var(--divider-color);
+      }
+      @media print {
+        &:before, &:after {
+          border: 0.5px solid;
+        }
+      }
+      &:not(:empty) {
+        gap: calc(0.25rem * 4);
+      }
+    }
+  }
+  .m-0 {
+    margin: calc(var(--spacing) * 0);
+  }
   .filter {
     @layer daisyui.l1.l2.l3 {
       display: flex;
@@ -2475,6 +2508,24 @@ div.jp-jplayer {
   .table {
     display: table;
   }
+  .divider-horizontal {
+    @layer daisyui.l1.l2 {
+      --divider-m: 0 1rem;
+      &.divider {
+        height: auto;
+        width: calc(0.25rem * 4);
+        flex-direction: column;
+        &:before {
+          height: 100%;
+          width: calc(0.25rem * 0.5);
+        }
+        &:after {
+          height: 100%;
+          width: calc(0.25rem * 0.5);
+        }
+      }
+    }
+  }
   .btn-square {
     @layer daisyui.l1.l2 {
       padding-inline: calc(0.25rem * 0);
@@ -2500,8 +2551,8 @@ div.jp-jplayer {
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
-  .h-20 {
-    height: calc(var(--spacing) * 20);
+  .h-30 {
+    height: calc(var(--spacing) * 30);
   }
   .h-\[740px\] {
     height: 740px;
@@ -2526,6 +2577,9 @@ div.jp-jplayer {
   }
   .w-28 {
     width: calc(var(--spacing) * 28);
+  }
+  .w-34 {
+    width: calc(var(--spacing) * 34);
   }
   .w-36 {
     width: calc(var(--spacing) * 36);
@@ -2615,6 +2669,9 @@ div.jp-jplayer {
   .justify-center {
     justify-content: center;
   }
+  .justify-start {
+    justify-content: flex-start;
+  }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
@@ -2634,13 +2691,6 @@ div.jp-jplayer {
       margin-block-end: calc(calc(var(--spacing) * 0) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
-  .space-y-1 {
-    :where(& > :not(:last-child)) {
-      --tw-space-y-reverse: 0;
-      margin-block-start: calc(calc(var(--spacing) * 1) * var(--tw-space-y-reverse));
-      margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
-    }
-  }
   .space-y-2 {
     :where(& > :not(:last-child)) {
       --tw-space-y-reverse: 0;
@@ -2654,6 +2704,12 @@ div.jp-jplayer {
   .overflow-hidden {
     overflow: hidden;
   }
+  .overflow-x-hidden {
+    overflow-x: hidden;
+  }
+  .overflow-y-auto {
+    overflow-y: auto;
+  }
   .rounded-box {
     border-radius: var(--radius-box);
   }
@@ -2663,6 +2719,9 @@ div.jp-jplayer {
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
+  }
+  .bg-accent {
+    background-color: var(--color-accent);
   }
   .bg-base-100 {
     background-color: var(--color-base-100);
@@ -2719,6 +2778,9 @@ div.jp-jplayer {
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
+  .pt-4 {
+    padding-top: calc(var(--spacing) * 4);
+  }
   .pr-2 {
     padding-right: calc(var(--spacing) * 2);
   }
@@ -2766,6 +2828,12 @@ div.jp-jplayer {
   }
   .text-wrap {
     text-wrap: wrap;
+  }
+  .range-primary {
+    @layer daisyui.l1.l2 {
+      color: var(--color-primary);
+      --range-thumb: var(--color-primary-content);
+    }
   }
   .text-base-content {
     color: var(--color-base-content);
@@ -2898,6 +2966,13 @@ div.jp-jplayer {
       --range-thumb-size: calc(var(--size-selector, 0.25rem) * 4);
     }
   }
+  .hover\:bg-base-300 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-base-300);
+      }
+    }
+  }
 }
 @layer components {
   .achievement {
@@ -2929,14 +3004,14 @@ div.jp-jplayer {
     width: auto;
   }
   .lb-drop-active {
-    outline: 2px solid oklch(var(--p));
+    outline: 2px solid var(--color-primary);
     @supports (color: color-mix(in lab, red, red)) {
-      outline: 2px solid color-mix(in oklab, oklch(var(--p)) 35%, transparent);
+      outline: 2px solid color-mix(in oklab, var(--color-primary) 35%, transparent);
     }
     outline-offset: 2px;
   }
   .lb-drop-hover {
-    outline: 2px solid oklch(var(--p));
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
   #instructionsContainer .lb-instruction-delete {
@@ -2969,14 +3044,17 @@ div.jp-jplayer {
   #instructionsContainer .lb-instruction-row {
     cursor: grab;
   }
+  #programContainer .sortable-ghost .lb-repeat-body {
+    display: none;
+  }
   #programContainer .lb-instruction:has(> .repeat) {
     border-radius: var(--rounded-btn);
     border-style: var(--tw-border-style);
     border-width: 1px;
     border-color: var(--color-base-300);
     background-color: var(--color-base-100);
-    padding-inline: calc(var(--spacing) * 2);
-    padding-block: calc(var(--spacing) * 2);
+    padding-inline: calc(var(--spacing) * 0);
+    padding-block: calc(var(--spacing) * 0);
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
     --tw-font-weight: var(--font-weight-semibold);
@@ -4331,6 +4409,39 @@ div.jp-jplayer {
 @keyframes progress {
   50% {
     background-position-x: -115%;
+  }
+}
+@layer base {
+  :root:has(input.theme-controller[value=lightbot]:checked),[data-theme="lightbot"] {
+    color-scheme: light;
+    --color-base-100: #4b4646;
+    --color-base-200: #5c5c5c;
+    --color-base-300: #777777;
+    --color-base-content: #fffff2;
+    --color-primary: #a3cfc6;
+    --color-primary-content: #222222;
+    --color-secondary: #7ca6ba;
+    --color-secondary-content: #fffff2;
+    --color-accent: #e59700;
+    --color-accent-content: #222222;
+    --color-neutral: #4b4646;
+    --color-neutral-content: #fffff2;
+    --color-info: #7ca6ba;
+    --color-info-content: #222222;
+    --color-success: #a3cfc6;
+    --color-success-content: #222222;
+    --color-warning: #fbeea4;
+    --color-warning-content: #222222;
+    --color-error: #d9534f;
+    --color-error-content: #fffff2;
+    --radius-selector: 1rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.5rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 0;
   }
 }
 @property --tw-rotate-x {
