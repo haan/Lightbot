@@ -204,7 +204,7 @@
         <div class="divider divider-horizontal m-0"></div>
         <div class="flex flex-col h-full">
           <div class="flex-1 flex items-center justify-center">
-            <div id="videoContainer" class="jp-video jp-video-300p">
+            <div id="videoContainer" class="jp-video jp-video-300p w-[402px]">
               <div class="jp-type-single">
                 <div id="videoPlayer" class="jp-jplayer"></div>
                 <div class="jp-gui">
@@ -278,9 +278,10 @@
               </svg>
             </button>
             <button id="clearButton" class="btn btn-sm btn-square" data-i18n-title="gameScreen.clear" title="Clear">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
-                <path
-                  d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12Zm3.5-9h1v8h-1v-8Zm4 0h1v8h-1v-8ZM15.5 4l-1-1h-5l-1 1H5v2h14V4h-3.5Z" />
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                <path fill-rule="evenodd"
+                  d="M5 3.25V4H2.75a.75.75 0 0 0 0 1.5h.3l.815 8.15A1.5 1.5 0 0 0 5.357 15h5.285a1.5 1.5 0 0 0 1.493-1.35l.815-8.15h.3a.75.75 0 0 0 0-1.5H11v-.75A2.25 2.25 0 0 0 8.75 1h-1.5A2.25 2.25 0 0 0 5 3.25Zm2.25-.75a.75.75 0 0 0-.75.75V4h3v-.75a.75.75 0 0 0-.75-.75h-1.5ZM6.05 6a.75.75 0 0 1 .787.713l.275 5.5a.75.75 0 0 1-1.498.075l-.275-5.5A.75.75 0 0 1 6.05 6Zm3.9 0a.75.75 0 0 1 .712.787l-.275 5.5a.75.75 0 0 1-1.498-.075l.275-5.5a.75.75 0 0 1 .786-.711Z"
+                  clip-rule="evenodd" />
               </svg>
             </button>
             <button id="runButton" class="btn btn-sm btn-primary btn-square" data-i18n-title="gameScreen.run"
@@ -294,11 +295,12 @@
               </svg>
             </button>
             <div id="speedControl" class="flex items-center gap-2 pl-2">
-                <label for="speedSlider" class="text-sm font-semibold" data-i18n="gameScreen.speed"></label>
-                <input id="speedSlider" type="range" min="0.5" max="3.0" step="0.01" value="2" class="range range-xs range-primary w-28" />
-              </div>
+              <label for="speedSlider" class="text-sm font-semibold" data-i18n="gameScreen.speed"></label>
+              <input id="speedSlider" type="range" min="0.5" max="3.0" step="0.01" value="2"
+                class="range range-xs range-primary w-28" />
             </div>
           </div>
+        </div>
         <div class="flex flex-col gap-2 min-h-0">
           <div id="instructionsContainer" class="card bg-base-200 shadow">
             <div class="card-body p-3">
