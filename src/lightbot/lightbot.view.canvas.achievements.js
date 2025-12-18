@@ -12,7 +12,8 @@
 
     if (queue.length > 0) {
       var achievement = queue.shift();
-      $("#achievementDialog .message").html(achievement.message);
+      var messageEl = document.querySelector("#achievementDialog .message");
+      if (messageEl) messageEl.textContent = achievement.message;
       if (lightBot.ui.dialogs) lightBot.ui.dialogs.open('achievementDialog');
     } else {
       queue = null;

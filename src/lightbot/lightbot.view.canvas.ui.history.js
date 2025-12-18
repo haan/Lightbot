@@ -1,7 +1,7 @@
 /*jsl:option explicit*/
 /*jsl:import lightbot.model.game.js*/
 
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
   function stateToHash(state) {
     if (!state || !state.page) return "#/welcome";
 

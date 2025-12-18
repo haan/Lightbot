@@ -21,7 +21,7 @@
     if (dialog.open) dialog.close();
   }
 
-  $(document).ready(function () {
+  document.addEventListener("DOMContentLoaded", function () {
     var levelComplete = getDialog('levelCompleteDialog');
     if (levelComplete) {
       levelComplete.addEventListener('close', function () {

@@ -1,9 +1,9 @@
 /*jsl:option explicit*/
 /*jsl:import lightbot.model.game.js*/
 
-globalThis.canvasView = function(canvas) {
+export function canvasView(canvas) {
   // set the rendering context
-  lightBot.ctx = canvas.get(0).getContext('2d');
+  lightBot.ctx = canvas.getContext('2d');
 
   // refresh rate and rendering loop
   var fps = 60;
@@ -14,7 +14,7 @@ globalThis.canvasView = function(canvas) {
   var offsetY = 50;
 
   // create projection
-  lightBot.projection = new lightBot.Projection(canvas.get(0).height, canvas.get(0).width / 2, offsetY);
+  lightBot.projection = new lightBot.Projection(canvas.height, canvas.width / 2, offsetY);
 
   // create canvas background pattern
   var bg = null;
@@ -28,7 +28,7 @@ globalThis.canvasView = function(canvas) {
   function update() {
     // check if we can execute the next bot instruction here?
     if (lightBot.bot.isInExecutionMode() && lightBot.bot.isReadyForNextInstruction() && lightBot.bot.hasNextInstruction()) {
-      var oldPos = $.extend({}, lightBot.bot.currentPos); // copy old position
+      var oldPos = Object.assign({}, lightBot.bot.currentPos); // copy old position
       var instruction = lightBot.bot.executeNextInstruction(); // execute the next instruction
       var newPos = lightBot.bot.currentPos; // get the new position
       lightBot.bot.animate(instruction, oldPos, newPos);
@@ -63,11 +63,11 @@ globalThis.canvasView = function(canvas) {
 
   function draw() {
     //clear main canvas
-    lightBot.ctx.clearRect(0,0, canvas.width(), canvas.height());
+    lightBot.ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // background
     lightBot.ctx.fillStyle = bg;
-    lightBot.ctx.fillRect(0,0, canvas.width(), canvas.height());
+    lightBot.ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // draw the map and the bot in the correct order
     switch (lightBot.bot.direction) {

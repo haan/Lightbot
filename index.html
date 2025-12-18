@@ -21,7 +21,7 @@
 
 <body class="min-h-screen bg-base-200 text-base-content flex items-center justify-center">
   <div id="audioContainer">
-    <div id="audioPlayer"></div>
+    <audio id="audioPlayer" preload="auto"></audio>
   </div>
 
   <div id="lightbot" class="relative w-[980px] h-[740px]">
@@ -199,23 +199,9 @@
         <div class="divider divider-horizontal m-0"></div>
         <div class="flex flex-col h-full">
           <div class="flex-1 flex items-center justify-center">
-            <div id="videoContainer" class="jp-video jp-video-300p w-[402px]">
-              <div class="jp-type-single">
-                <div id="videoPlayer" class="jp-jplayer"></div>
-                <div class="jp-gui">
-                  <div class="jp-video-play">
-                    <a href="javascript:;" class="jp-video-play-icon" tabindex="1"
-                      data-i18n="helpScreen.video.play"></a>
-                  </div>
-                  <div class="jp-interface">
-                    <div class="jp-progress">
-                      <div class="jp-seek-bar">
-                        <div class="jp-play-bar"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div id="videoContainer" class="w-[402px]">
+              <video id="videoPlayer" class="w-[402px] h-[300px] bg-black rounded-box" width="400" height="300"
+                controls preload="metadata" playsinline></video>
             </div>
           </div>
           <div class="pt-4">

@@ -1,79 +1,122 @@
 /*jsl:option explicit*/
 /*jsl:import lightbot.model.game.js*/
 
+import i18next from "i18next";
+
 (function () {
+
+  function hideAllScreens() {
+    var screens = document.querySelectorAll(".lb-screen");
+    for (var i = 0; i < screens.length; i++) screens[i].classList.add("hidden");
+  }
+
+  function showScreen(id) {
+    var el = document.getElementById(id);
+    if (el) el.classList.remove("hidden");
+  }
 
   var ui = {
     _setRunButtonState: function (isRunning) {
-      var btn = $('#runButton');
-      if (!btn.length) return;
+      var btn = document.getElementById("runButton");
+      if (!btn) return;
 
-      btn.toggleClass('btn-primary', !isRunning);
-      btn.toggleClass('btn-error', isRunning);
-      btn.attr('title', isRunning ? i18next.t('stop') : i18next.t('gameScreen.run'));
+      btn.classList.toggle("btn-primary", !isRunning);
+      btn.classList.toggle("btn-error", isRunning);
+      btn.setAttribute("title", isRunning ? i18next.t("stop") : i18next.t("gameScreen.run"));
 
-      // jQuery 1.7 does not reliably toggle classes on SVG elements
-      var runIcon = btn[0].querySelector('.lb-run-icon');
-      if (runIcon && runIcon.classList) runIcon.classList.toggle('hidden', isRunning);
-      var stopIcon = btn[0].querySelector('.lb-stop-icon');
-      if (stopIcon && stopIcon.classList) stopIcon.classList.toggle('hidden', !isRunning);
+      var runIcon = btn.querySelector(".lb-run-icon");
+      if (runIcon && runIcon.classList) runIcon.classList.toggle("hidden", isRunning);
+      var stopIcon = btn.querySelector(".lb-stop-icon");
+      if (stopIcon && stopIcon.classList) stopIcon.classList.toggle("hidden", !isRunning);
     },
     showWelcomeScreen: function (hist) {
       lightBot.ui.media.playMenuAudio();
 
       // save in history if parameter hist is not set and then set the new page title
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'welcomeScreen' });
-      $('title').text('Lightbot - Welcome');
+      document.title = "Lightbot - Welcome";
 
-      $('.lb-screen').addClass('hidden');
-      $('#welcomeScreen').removeClass('hidden');
+      hideAllScreens();
+      showScreen("welcomeScreen");
     },
     showHelpScreen: function (hist) {
       lightBot.ui.media.playMenuAudio();
 
       // save in history if parameter hist is not set and then set the new page title
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'helpScreen' });
-      $('title').text('Lightbot - Help');
+      document.title = "Lightbot - Help";
 
-      $('.lb-screen').addClass('hidden');
-      $('#helpScreen').removeClass('hidden');
+      hideAllScreens();
+      showScreen("helpScreen");
+
+      var firstRadio = document.querySelector('#helpScreenAccordion [data-video="0"] input[type="radio"]');
+      if (firstRadio) firstRadio.checked = true;
+      if (lightBot.ui && lightBot.ui.media && typeof lightBot.ui.media.playVideo === "function") {
+        lightBot.ui.media.playVideo(0);
+      }
     },
     showAchievementsScreen: function (hist) {
       lightBot.ui.media.playMenuAudio();
 
-      var enabled = false;
+      var list = document.getElementById("achievementsList");
+      if (list) list.textContent = "";
 
-      $('#achievementsList').empty();
       var achievements = lightBot.achievements.getAchievementsList();
       for (var i = 0; i < achievements.length; i++) {
-        enabled = lightBot.achievements.hasAchievement(achievements[i].name) ? true : false;
-        $(
-          '<li class="list-row ' + ((enabled) ? '' : 'opacity-40') + ' py-3">' +
-            '<div><img class="size-10 rounded-box" src="img/achievements/' + achievements[i].name + '.png" alt=""></div>' +
-            '<div class="flex-1">' +
-              '<div class="font-bold">' + achievements[i].title + '</div>' +
-              '<div class="text-sm opacity-70">' + achievements[i].message + '</div>' +
-            '</div>' +
-          '</li>'
-        ).appendTo('#achievementsList');
+        var enabled = !!lightBot.achievements.hasAchievement(achievements[i].name);
+        if (!list) continue;
+
+        var li = document.createElement("li");
+        li.className = "list-row " + (enabled ? "" : "opacity-40") + " py-3";
+
+        var imgWrap = document.createElement("div");
+        var img = document.createElement("img");
+        img.className = "size-10 rounded-box";
+        img.src = "img/achievements/" + achievements[i].name + ".png";
+        img.alt = "";
+        imgWrap.appendChild(img);
+
+        var content = document.createElement("div");
+        content.className = "flex-1";
+
+        var title = document.createElement("div");
+        title.className = "font-bold";
+        title.textContent = achievements[i].title;
+
+        var message = document.createElement("div");
+        message.className = "text-sm opacity-70";
+        message.textContent = achievements[i].message;
+
+        content.appendChild(title);
+        content.appendChild(message);
+
+        li.appendChild(imgWrap);
+        li.appendChild(content);
+        list.appendChild(li);
       }
 
       // save in history if parameter hist is not set and then set the new page title
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'achievementsScreen' });
-      $('title').text('Lightbot - Achievements');
+      document.title = "Lightbot - Achievements";
 
-      $('.lb-screen').addClass('hidden');
-      $('#achievementsScreen').removeClass('hidden');
+      hideAllScreens();
+      showScreen("achievementsScreen");
     },
     showLevelSelectScreen: function (hist) {
       lightBot.ui.media.playMenuAudio();
 
-      $('#levelList').empty();
+      var levelList = document.getElementById("levelList");
+      if (levelList) levelList.textContent = "";
+
       for (var i = 0; i < lightBot.map.getNbrOfLevels(); i++) {
         var item = parseInt(localStorage.getItem('lightbot_level_' + i), 10);
-        var medal = '';
-        var tile = $('<div class="lb-level-tile relative select-none w-34 h-30 rounded-box bg-base-200 hover:bg-base-300 shadow cursor-pointer flex items-center justify-center text-4xl font-black"></div>');
-        tile.attr('data-level', i).text(i);
+        var medal = "";
+
+        if (!levelList) continue;
+        var tile = document.createElement("div");
+        tile.className = "lb-level-tile relative select-none w-34 h-30 rounded-box bg-base-200 hover:bg-base-300 shadow cursor-pointer flex items-center justify-center text-4xl font-black";
+        tile.dataset.level = String(i);
+        tile.textContent = String(i);
 
         if (item) {
           switch (item) {
@@ -92,18 +135,20 @@
               console.error('Unknown medal "' + medal + '"');
               break;
           }
-          tile.addClass('bg-accent ring-2 ring-primary/30');
-          tile.append('<span class="medal ' + medal + ' absolute bottom-1 right-1"></span>');
+          tile.classList.add("bg-accent", "ring-2", "ring-primary/30");
+          var medalEl = document.createElement("span");
+          medalEl.className = "medal " + medal + " absolute bottom-1 right-1";
+          tile.appendChild(medalEl);
         }
-        tile.appendTo('#levelList');
+        levelList.appendChild(tile);
       }
 
       // save in history if parameter hist is not set and then set the new page title
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'levelSelectScreen' });
-      $('title').text('Lightbot - Level Select');
+      document.title = "Lightbot - Level Select";
 
-      $('.lb-screen').addClass('hidden');
-      $('#levelSelectScreen').removeClass('hidden');
+      hideAllScreens();
+      showScreen("levelSelectScreen");
     },
     showGameScreen: function (level, hist) {
       lightBot.ui.media.playGameAudio();
@@ -113,12 +158,13 @@
 
       // save in history if parameter hist is not set and then set the new page title
       if (hist == null && lightBot.ui.History) lightBot.ui.History.pushState({ page: 'gameScreen', 'level': level });
-      $('title').text('Lightbot - Level ' + level);
+      document.title = "Lightbot - Level " + level;
 
-      $('.lb-screen').addClass('hidden');
+      hideAllScreens();
 
       // clear all instructions in main program
-      $('#programContainer ul').empty();
+      var programList = document.querySelector("#programContainer ul");
+      if (programList) programList.textContent = "";
 
       if (localStorage.getItem('lightbot_program_level_' + level)) {
         lightBot.ui.editor.loadProgram();
@@ -130,41 +176,57 @@
       lightBot.ui._setRunButtonState(false);
 
       // show the game screen
-      $('#gameScreen').removeClass('hidden');
+      showScreen("gameScreen");
     },
     initButtons: function () {
       // show help screen button
-      $('.helpButton').click(function () {
-        lightBot.ui.showHelpScreen();
+      document.querySelectorAll(".helpButton").forEach(function (el) {
+        el.addEventListener("click", function () {
+          lightBot.ui.showHelpScreen();
+        });
       });
 
       // show welcome screen button
-      $('.mainMenuButton').click(function () {
-        lightBot.ui.showWelcomeScreen();
+      document.querySelectorAll(".mainMenuButton").forEach(function (el) {
+        el.addEventListener("click", function () {
+          lightBot.ui.showWelcomeScreen();
+        });
       });
 
       // show achievements screen button
-      $('.achievementsButton').click(function () {
-        lightBot.ui.showAchievementsScreen();
+      document.querySelectorAll(".achievementsButton").forEach(function (el) {
+        el.addEventListener("click", function () {
+          lightBot.ui.showAchievementsScreen();
+        });
       });
 
       // show level select screen button
-      $('.levelSelectButton').click(function () {
-        lightBot.ui.showLevelSelectScreen();
+      document.querySelectorAll(".levelSelectButton").forEach(function (el) {
+        el.addEventListener("click", function () {
+          lightBot.ui.showLevelSelectScreen();
+        });
       });
 
       // show game screen buttons
-      $('#levelList').on('click', '.lb-level-tile', function () {
-        lightBot.ui.showGameScreen(parseInt($(this).attr('data-level'), 10));
-      });
+      var levelList = document.getElementById("levelList");
+      if (levelList) {
+        levelList.addEventListener("click", function (e) {
+          var tile = e.target && e.target.closest ? e.target.closest(".lb-level-tile") : null;
+          if (!tile) return;
+          lightBot.ui.showGameScreen(parseInt(tile.getAttribute("data-level"), 10));
+        });
+      }
 
       // audio toggle buttons
-      $('.audioToggleButton').click(function () {
-        lightBot.ui.media.toggleAudio();
+      document.querySelectorAll(".audioToggleButton").forEach(function (el) {
+        el.addEventListener("click", function () {
+          lightBot.ui.media.toggleAudio();
+        });
       });
 
       // run program button
-      $('#runButton').click(function () {
+      var runButton = document.getElementById("runButton");
+      if (runButton) runButton.addEventListener("click", function () {
         if (lightBot.bot.isInExecutionMode()) {
           // reset the map (resets the bot as well)
           lightBot.map.reset();
@@ -180,25 +242,39 @@
       });
 
       // clear program button
-      $('#clearButton').click(function () {
-        $('#programContainer ul').empty();
+      var clearButton = document.getElementById("clearButton");
+      if (clearButton) clearButton.addEventListener("click", function () {
+        var list = document.querySelector("#programContainer ul");
+        if (list) list.textContent = "";
         lightBot.ui.editor.saveProgram();
       });
 
       // help screen accordion (play video on selection)
-      $('#helpScreenAccordion').on('change', 'input[type="radio"]', function () {
-        if (!this.checked) return;
-        var idx = parseInt($(this).closest('[data-video]').attr('data-video'), 10);
-        if (!isNaN(idx)) lightBot.ui.media.playVideo(idx);
-      });
+      var accordion = document.getElementById("helpScreenAccordion");
+      if (accordion) {
+        accordion.addEventListener("change", function (e) {
+          var target = e.target;
+          if (!target || target.tagName !== "INPUT") return;
+          if (target.type !== "radio" || !target.checked) return;
+          var holder = target.closest ? target.closest("[data-video]") : null;
+          if (!holder) return;
+          var idx = parseInt(holder.getAttribute("data-video"), 10);
+          if (!isNaN(idx)) lightBot.ui.media.playVideo(idx);
+        });
+      }
     },
     initSlider: function () {
       // speed slider
-      $('#speedSlider')
-        .val(lightBot.speedMultiplier)
-        .on('input change', function () {
-          lightBot.speedMultiplier = parseFloat($(this).val());
-        });
+      var slider = document.getElementById("speedSlider");
+      if (!slider) return;
+
+      slider.value = String(lightBot.speedMultiplier);
+      slider.addEventListener("input", function () {
+        lightBot.speedMultiplier = parseFloat(slider.value);
+      });
+      slider.addEventListener("change", function () {
+        lightBot.speedMultiplier = parseFloat(slider.value);
+      });
     }
   };
 

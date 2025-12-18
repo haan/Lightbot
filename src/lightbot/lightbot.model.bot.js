@@ -2,6 +2,28 @@
 /*jsl:import lightbot.model.game.js*/
 
 (function() {
+  function cloneShallowIncludingInherited(obj) {
+    var out = {};
+    for (var k in obj) out[k] = obj[k];
+    return out;
+  }
+
+  function cloneInstructionDeep(instruction) {
+    if (!instruction) return instruction;
+
+    var out = cloneShallowIncludingInherited(instruction);
+
+    if (out.body && Array.isArray(out.body)) {
+      var clonedBody = [];
+      for (var i = 0; i < out.body.length; i++) {
+        clonedBody.push(cloneInstructionDeep(out.body[i]));
+      }
+      out.body = clonedBody;
+    }
+
+    return out;
+  }
+
   var bot = {
     startingPos: {x: 0, y: 0}, // save initial position for reset
     currentPos: {x: 0, y: 0}, // current bot position on the map
@@ -11,14 +33,14 @@
     executionQueue: [], // current instruction execution queue
     executionMode: false, // boolean flag indicating whether the bot is in execution mode
     init: function(direction, position) {
-      this.startingPos = $.extend({}, position);
-      this.currentPos = position;
+      this.startingPos = cloneShallowIncludingInherited(position);
+      this.currentPos = cloneShallowIncludingInherited(position);
       this.startingDirection = direction;
       this.direction = direction;
       this.reset();
     },
     reset: function() {
-      this.currentPos = $.extend({}, this.startingPos);
+      this.currentPos = cloneShallowIncludingInherited(this.startingPos);
       this.direction = this.startingDirection;
       this.instructionQueue.length = 0;
       this.executionQueue.length = 0;
@@ -67,7 +89,7 @@
             }
             for (var i = instruction.body.length - 1; i >= 0 ; i--) {
               var tmp = instruction.body[i];
-              var tmp2 = $.extend(true, {}, tmp); // deep copy of object as explained here: http://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-clone-a-javascript-object
+              var tmp2 = cloneInstructionDeep(tmp);
               this.executionQueue.unshift(tmp2);
             }
             return this.executeNextInstruction();
