@@ -1,7 +1,5 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
-
-(function() {
+// Sprite animation definitions used by the bot view (frame timing + sprite sheet offsets).
+export function createBotAnimations() {
   var animations = {
     stand: {
       name: 'stand',
@@ -54,6 +52,5 @@
       sX: 400
     }
   };
-
-  lightBot.bot.animations = animations;
-})();
+  return animations;
+}

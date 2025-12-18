@@ -1,23 +1,18 @@
 @import "tailwindcss";
+
 @plugin "daisyui" {
   themes: all;
 }
+
 @source "../index.html";
 @source "../src/**/*.js";
 
-@layer base {
-  html {
-    font-family: "PT Sans", ui-sans-serif, system-ui, sans-serif;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: "Lato", ui-sans-serif, system-ui, sans-serif;
-  }
-}
-
 @plugin "daisyui/theme" {
   name: "lightbot";
-  prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
-  color-scheme: light; /* color of browser-provided UI */
+  prefersdark: false;
+  /* set as default dark mode (prefers-color-scheme:dark) */
+  color-scheme: light;
+  /* color of browser-provided UI */
 
   /* Original Lightbot palette (from src/develop/css/lightbot.css) */
   --color-base-100: #4b4646;
@@ -75,6 +70,7 @@
     background-image: var(--lb-medals-bg);
     width: 32px;
     height: 32px;
+    background-repeat: no-repeat;
   }
 
   .medal-gold {
@@ -87,6 +83,18 @@
 
   .medal-bronze {
     background-position: -96px 0;
+  }
+
+  .lb-level-tile .medal {
+    position: absolute;
+    right: 0.35rem;
+    bottom: 0.35rem;
+    pointer-events: none;
+  }
+
+  .lb-level-tile--completed {
+    outline: 2px solid color-mix(in oklab, var(--color-primary) 60%, transparent);
+    outline-offset: 2px;
   }
 
   .flip {
@@ -146,18 +154,24 @@
 
   /* make a box with bg and border around the two parts of a repeat instruction but only when in the program container */
   #programContainer .lb-instruction:has(> .repeat) {
-   @apply border border-base-300 bg-base-100 px-0 py-0 text-sm font-semibold rounded-[var(--rounded-btn)];
+    @apply border border-base-300 bg-base-100 px-0 py-0 text-sm font-semibold rounded-[var(--rounded-btn)];
+  }
+
+  /* change the border around the instruction row for a repeat instruction when in the program container */
+  #programContainer .repeat {
+    @apply border-0 border-b;
+  }
+
+  /* change the border around the body for a repeat instruction when in the program container */
+  .lb-repeat-body-inner {
+    @apply mt-2 border-t border-base-300 bg-base-100 p-2 rounded-[var(--rounded-box)];
   }
 
   #programContainer .lb-instruction-row {
     @apply cursor-grab;
   }
 
-  .lb-repeat-body-inner {
-    @apply mt-2 border border-base-300 bg-base-100 p-2 rounded-[var(--rounded-box)];
-  }
-
-  .lb-repeat-body-inner > ul {
+  .lb-repeat-body-inner>ul {
     min-height: 2.5rem;
   }
 }

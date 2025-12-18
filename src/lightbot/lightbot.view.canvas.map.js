@@ -1,16 +1,14 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
-
-(function() {
-
+// Map rendering "view" extension: provides `map.step()` to tick all tiles each frame.
+export function extendMapView(map) {
   function step() {
-    for (var i = 0; i < lightBot.map.getLevelSize().x; i++) {
-      for (var j = 0; j < lightBot.map.getLevelSize().y; j++) {
+    for (var i = 0; i < map.getLevelSize().x; i++) {
+      for (var j = 0; j < map.getLevelSize().y; j++) {
         // update the tile
-        lightBot.map.getMapRef()[i][j].step();
+        map.getMapRef()[i][j].step();
       }
     }
   }
 
-  lightBot.map.step = step;
-})();
+  map.step = step;
+  return map;
+}

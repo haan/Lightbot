@@ -1,7 +1,13 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
+// Tile/box drawing "view" extension: adds `draw()`/`step()` behavior to Box + LightBox.
+export function extendBoxView(params) {
+  if (!params) throw new Error("extendBoxView: missing params");
+  var app = params.app;
+  var Box = params.Box;
+  var LightBox = params.LightBox;
+  if (!app) throw new Error("extendBoxView: missing app");
+  if (!Box) throw new Error("extendBoxView: missing Box");
+  if (!LightBox) throw new Error("extendBoxView: missing LightBox");
 
-(function() {
   // dimension
   var edgeLength = 50;
   var heightScale = 0.5;
@@ -22,90 +28,90 @@
   // pulse values (pulse is the lighter color in the middle of the top face)
   var pulseSize = 0.5; // this represents the minimum percentage of surface that will be covered (0=disappears completely,1=always entire face), same for all lightboxes
   var animationFrames = 30; // # of frames for the pulse to fully grow/shrink, same for all lightboxes
-  lightBot.LightBox.prototype.pulseGrowing = true; // controls the growth/shrink of the pulse animation
-  lightBot.LightBox.prototype.currentAnimationFrame = 0; // current animation frame, used internally to control the animation
+  LightBox.prototype.pulseGrowing = true; // controls the growth/shrink of the pulse animation
+  LightBox.prototype.currentAnimationFrame = 0; // current animation frame, used internally to control the animation
 
   function drawTopFaceBox() {
     // top face: p1 is front left and rest is counter-clockwise
-    lightBot.ctx.fillStyle = colorTop;
-    var p1 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    var p2 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    var p3 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
-    var p4 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
-    lightBot.ctx.beginPath();
-    lightBot.ctx.moveTo(p1.x, p1.y);
-    lightBot.ctx.lineTo(p2.x, p2.y);
-    lightBot.ctx.lineTo(p3.x, p3.y);
-    lightBot.ctx.lineTo(p4.x, p4.y);
-    lightBot.ctx.lineTo(p1.x, p1.y);
-    lightBot.ctx.fill();
-    lightBot.ctx.stroke();
+    app.ctx.fillStyle = colorTop;
+    var p1 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p2 = app.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p3 = app.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
+    var p4 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
+    app.ctx.beginPath();
+    app.ctx.moveTo(p1.x, p1.y);
+    app.ctx.lineTo(p2.x, p2.y);
+    app.ctx.lineTo(p3.x, p3.y);
+    app.ctx.lineTo(p4.x, p4.y);
+    app.ctx.lineTo(p1.x, p1.y);
+    app.ctx.fill();
+    app.ctx.stroke();
   }
 
   function drawTopFaceLightBox() {
     // top face: p1 is front left and rest is counter-clockwise
-    lightBot.ctx.fillStyle = this.lightOn ? colorTopLightOn : colorTopLightOff;
-    var p1 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    var p2 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    var p3 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
-    var p4 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
-    lightBot.ctx.beginPath();
-    lightBot.ctx.moveTo(p1.x, p1.y);
-    lightBot.ctx.lineTo(p2.x, p2.y);
-    lightBot.ctx.lineTo(p3.x, p3.y);
-    lightBot.ctx.lineTo(p4.x, p4.y);
-    lightBot.ctx.lineTo(p1.x, p1.y);
-    lightBot.ctx.fill();
-    lightBot.ctx.stroke();
+    app.ctx.fillStyle = this.lightOn ? colorTopLightOn : colorTopLightOff;
+    var p1 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p2 = app.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p3 = app.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
+    var p4 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
+    app.ctx.beginPath();
+    app.ctx.moveTo(p1.x, p1.y);
+    app.ctx.lineTo(p2.x, p2.y);
+    app.ctx.lineTo(p3.x, p3.y);
+    app.ctx.lineTo(p4.x, p4.y);
+    app.ctx.lineTo(p1.x, p1.y);
+    app.ctx.fill();
+    app.ctx.stroke();
 
     // top face overlay: p1 is front left and rest is counter-clockwise
     var overlayOffset = (1-(this.currentAnimationFrame / animationFrames)) * ((1-pulseSize) * edgeLength / 2);
-    lightBot.ctx.fillStyle = this.lightOn ? colorTopLightOnOverlay : colorTopLightOffOverlay;
-    p1 = lightBot.projection.project(this.x * edgeLength + overlayOffset, this.getHeight() * edgeLength, this.y * edgeLength + overlayOffset);
-    p2 = lightBot.projection.project((this.x+1) * edgeLength - overlayOffset, this.getHeight() * edgeLength, this.y * edgeLength + overlayOffset);
-    p3 = lightBot.projection.project((this.x+1) * edgeLength - overlayOffset, this.getHeight() * edgeLength, (this.y+1) * edgeLength - overlayOffset);
-    p4 = lightBot.projection.project(this.x * edgeLength + overlayOffset, this.getHeight() * edgeLength, (this.y+1) * edgeLength - overlayOffset);
-    lightBot.ctx.beginPath();
-    lightBot.ctx.moveTo(p1.x, p1.y);
-    lightBot.ctx.lineTo(p2.x, p2.y);
-    lightBot.ctx.lineTo(p3.x, p3.y);
-    lightBot.ctx.lineTo(p4.x, p4.y);
-    lightBot.ctx.lineTo(p1.x, p1.y);
-    lightBot.ctx.fill();
+    app.ctx.fillStyle = this.lightOn ? colorTopLightOnOverlay : colorTopLightOffOverlay;
+    p1 = app.projection.project(this.x * edgeLength + overlayOffset, this.getHeight() * edgeLength, this.y * edgeLength + overlayOffset);
+    p2 = app.projection.project((this.x+1) * edgeLength - overlayOffset, this.getHeight() * edgeLength, this.y * edgeLength + overlayOffset);
+    p3 = app.projection.project((this.x+1) * edgeLength - overlayOffset, this.getHeight() * edgeLength, (this.y+1) * edgeLength - overlayOffset);
+    p4 = app.projection.project(this.x * edgeLength + overlayOffset, this.getHeight() * edgeLength, (this.y+1) * edgeLength - overlayOffset);
+    app.ctx.beginPath();
+    app.ctx.moveTo(p1.x, p1.y);
+    app.ctx.lineTo(p2.x, p2.y);
+    app.ctx.lineTo(p3.x, p3.y);
+    app.ctx.lineTo(p4.x, p4.y);
+    app.ctx.lineTo(p1.x, p1.y);
+    app.ctx.fill();
   }
 
   function drawFrontFaceBox() {
     // front face: p1 is bottom left and rest is counter-clockwise;
-    lightBot.ctx.fillStyle = colorFront;
-    var p1 = lightBot.projection.project(this.x * edgeLength, 0, this.y * edgeLength);
-    var p2 = lightBot.projection.project((this.x+1) * edgeLength, 0, this.y * edgeLength);
-    var p3 = lightBot.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    var p4 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    lightBot.ctx.beginPath();
-    lightBot.ctx.moveTo(p1.x, p1.y);
-    lightBot.ctx.lineTo(p2.x, p2.y);
-    lightBot.ctx.lineTo(p3.x, p3.y);
-    lightBot.ctx.lineTo(p4.x, p4.y);
-    lightBot.ctx.lineTo(p1.x, p1.y);
-    lightBot.ctx.fill();
-    lightBot.ctx.stroke();
+    app.ctx.fillStyle = colorFront;
+    var p1 = app.projection.project(this.x * edgeLength, 0, this.y * edgeLength);
+    var p2 = app.projection.project((this.x+1) * edgeLength, 0, this.y * edgeLength);
+    var p3 = app.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p4 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    app.ctx.beginPath();
+    app.ctx.moveTo(p1.x, p1.y);
+    app.ctx.lineTo(p2.x, p2.y);
+    app.ctx.lineTo(p3.x, p3.y);
+    app.ctx.lineTo(p4.x, p4.y);
+    app.ctx.lineTo(p1.x, p1.y);
+    app.ctx.fill();
+    app.ctx.stroke();
   }
 
   function drawSideFaceBox() {
     // left side face: p1 is bottom front and rest is counter-clockwise;
-    lightBot.ctx.fillStyle = colorSide;
-    var p1 = lightBot.projection.project(this.x * edgeLength, 0, this.y * edgeLength);
-    var p2 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    var p3 = lightBot.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
-    var p4 = lightBot.projection.project(this.x * edgeLength, 0, (this.y+1) * edgeLength);
-    lightBot.ctx.beginPath();
-    lightBot.ctx.moveTo(p1.x, p1.y);
-    lightBot.ctx.lineTo(p2.x, p2.y);
-    lightBot.ctx.lineTo(p3.x, p3.y);
-    lightBot.ctx.lineTo(p4.x, p4.y);
-    lightBot.ctx.lineTo(p1.x, p1.y);
-    lightBot.ctx.fill();
-    lightBot.ctx.stroke();
+    app.ctx.fillStyle = colorSide;
+    var p1 = app.projection.project(this.x * edgeLength, 0, this.y * edgeLength);
+    var p2 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
+    var p3 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
+    var p4 = app.projection.project(this.x * edgeLength, 0, (this.y+1) * edgeLength);
+    app.ctx.beginPath();
+    app.ctx.moveTo(p1.x, p1.y);
+    app.ctx.lineTo(p2.x, p2.y);
+    app.ctx.lineTo(p3.x, p3.y);
+    app.ctx.lineTo(p4.x, p4.y);
+    app.ctx.lineTo(p1.x, p1.y);
+    app.ctx.fill();
+    app.ctx.stroke();
   }
 
   function stepBox() {}
@@ -127,8 +133,8 @@
   }
 
   function draw() {
-    lightBot.ctx.strokeStyle = strokeColor;
-    lightBot.ctx.lineWidth = strokeWidth;
+    app.ctx.strokeStyle = strokeColor;
+    app.ctx.lineWidth = strokeWidth;
     this.drawTopFace();
     this.drawFrontFace();
     this.drawSideFace();
@@ -143,14 +149,16 @@
     return edgeLength;
   }
 
-  lightBot.Box.prototype.step = stepBox;
-  lightBot.Box.prototype.drawTopFace = drawTopFaceBox;
-  lightBot.Box.prototype.drawFrontFace = drawFrontFaceBox;
-  lightBot.Box.prototype.drawSideFace = drawSideFaceBox;
-  lightBot.Box.prototype.draw = draw;
-  lightBot.Box.prototype.getHeight = getHeight;
-  lightBot.Box.prototype.getEdgeLength = getEdgeLength;
+  Box.prototype.step = stepBox;
+  Box.prototype.drawTopFace = drawTopFaceBox;
+  Box.prototype.drawFrontFace = drawFrontFaceBox;
+  Box.prototype.drawSideFace = drawSideFaceBox;
+  Box.prototype.draw = draw;
+  Box.prototype.getHeight = getHeight;
+  Box.prototype.getEdgeLength = getEdgeLength;
 
-  lightBot.LightBox.prototype.step = stepLightBox;
-  lightBot.LightBox.prototype.drawTopFace = drawTopFaceLightBox;
-})();
+  LightBox.prototype.step = stepLightBox;
+  LightBox.prototype.drawTopFace = drawTopFaceLightBox;
+
+  return { Box: Box, LightBox: LightBox };
+}

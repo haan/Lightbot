@@ -1,7 +1,9 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
+// Tile type: a box that can be lit/unlit. Extends `Box`.
 
-(function() {
+export function createLightBox(params) {
+  var Box = params && params.Box ? params.Box : null;
+  if (!Box) throw new Error("createLightBox: missing Box");
+
   function LightBox(height, x, y) {
     this.lightOn = false;
     this.height = height;
@@ -16,7 +18,7 @@
   }
 
 
-  LightBox.prototype = new lightBot.Box();
+  LightBox.prototype = new Box();
   LightBox.prototype.constructor = LightBox;
-  lightBot.LightBox = LightBox;
-})();
+  return LightBox;
+}

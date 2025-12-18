@@ -1,7 +1,10 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
-
-(function() {
+// Achievement dialog queue: shows unlocked achievements one by one.
+export function extendAchievementsView(params) {
+  if (!params) throw new Error("extendAchievementsView: missing params");
+  var achievements = params.achievements;
+  var dialogs = params.dialogs;
+  if (!achievements) throw new Error("extendAchievementsView: missing achievements");
+  if (!dialogs) throw new Error("extendAchievementsView: missing dialogs");
 
   var queue = null;
 
@@ -14,11 +17,12 @@
       var achievement = queue.shift();
       var messageEl = document.querySelector("#achievementDialog .message");
       if (messageEl) messageEl.textContent = achievement.message;
-      if (lightBot.ui.dialogs) lightBot.ui.dialogs.open('achievementDialog');
+      dialogs.open('achievementDialog');
     } else {
       queue = null;
     }
   }
 
-  lightBot.achievements.display = display;
-})();
+  achievements.display = display;
+  return achievements;
+}

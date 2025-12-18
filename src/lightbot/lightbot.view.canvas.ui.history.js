@@ -1,9 +1,8 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
-
+// SPA-like navigation using the HTML5 History API while keeping a hash-based URL for file://.
 var _historyInitialized = false;
 
-export function initHistory() {
+export function initHistory(app) {
+  if (!app || !app.ui) return;
   if (_historyInitialized) return;
   _historyInitialized = true;
 
@@ -49,29 +48,29 @@ export function initHistory() {
 
   function applyState(state) {
     if (!state || !state.page) {
-      lightBot.ui.showWelcomeScreen(true);
+      app.ui.showWelcomeScreen(true);
       return;
     }
 
     switch (state.page) {
       case "welcomeScreen":
-        lightBot.ui.showWelcomeScreen(true);
+        app.ui.showWelcomeScreen(true);
         break;
       case "helpScreen":
-        lightBot.ui.showHelpScreen(true);
+        app.ui.showHelpScreen(true);
         break;
       case "achievementsScreen":
-        lightBot.ui.showAchievementsScreen(true);
+        app.ui.showAchievementsScreen(true);
         break;
       case "levelSelectScreen":
-        lightBot.ui.showLevelSelectScreen(true);
+        app.ui.showLevelSelectScreen(true);
         break;
       case "gameScreen":
-        lightBot.ui.showGameScreen(state.level, true);
+        app.ui.showGameScreen(state.level, true);
         break;
       default:
         console.error("Unknown history page: " + state.page);
-        lightBot.ui.showWelcomeScreen(true);
+        app.ui.showWelcomeScreen(true);
         break;
     }
   }
@@ -102,7 +101,7 @@ export function initHistory() {
     }
   }
 
-  lightBot.ui.History = {
+  app.ui.History = {
     pushState: function (data) {
       safePushState(data);
     }

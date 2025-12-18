@@ -1,7 +1,14 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
+// Map model: holds level definitions, builds the in-memory tile grid, and resets/completes levels.
 
-(function() {
+export function createMap(params) {
+  if (!params) throw new Error("createMap: missing params");
+  var bot = params.bot;
+  var Box = params.Box;
+  var LightBox = params.LightBox;
+  if (!bot) throw new Error("createMap: missing bot");
+  if (!Box) throw new Error("createMap: missing Box");
+  if (!LightBox) throw new Error("createMap: missing LightBox");
+
   var map = {};
 
   // all the maps of the game
@@ -329,7 +336,7 @@
       levelNumber = x;
 
       // set the bot starting direction
-      lightBot.bot.init(maps[x].direction, maps[x].position);
+      bot.init(maps[x].direction, maps[x].position);
 
       // set the level medals
       medals = maps[x].medals;
@@ -339,7 +346,7 @@
       levelSize.y = maps[x].map.length;
 
       mapRef = new Array(levelSize.x);
-      for (i = 0; i < levelSize.x; i++) {
+      for (var i = 0; i < levelSize.x; i++) {
         mapRef[i] = new Array(levelSize.y);
       }
 
@@ -350,16 +357,16 @@
         for (var j = 0; j < maps[x].map[i].length; j++) {
           switch (maps[x].map[i][j].t) {
             case 'b':
-              mapRef[j][maps[x].map.length - i - 1] = new lightBot.Box(maps[x].map[i][j].h, j, maps[x].map.length - i - 1);
+              mapRef[j][maps[x].map.length - i - 1] = new Box(maps[x].map[i][j].h, j, maps[x].map.length - i - 1);
               break;
             case 'l':
-              mapRef[j][maps[x].map.length - i - 1] = new lightBot.LightBox(maps[x].map[i][j].h, j, maps[x].map.length - i - 1);
+              mapRef[j][maps[x].map.length - i - 1] = new LightBox(maps[x].map[i][j].h, j, maps[x].map.length - i - 1);
               nbrLights++;
               break;
             default:
               // output error and fall back to box element
               console.error('Map contains unsupported element: ' + maps[x].map[i][j].t);
-              mapRef[j][maps.map.length - i - 1] = new lightBot.Box(maps[x].map[i][j].h, j, maps[x].map.length - i - 1);
+              mapRef[j][maps[x].map.length - i - 1] = new Box(maps[x].map[i][j].h, j, maps[x].map.length - i - 1);
               break;
           }
         }
@@ -372,7 +379,7 @@
   };
 
   map.reset = function() {
-    lightBot.bot.reset();
+    bot.reset();
     for (var i = 0; i < levelSize.x; i++) {
       for (var j = 0; j < levelSize.y; j++) {
         mapRef[i][j].reset();
@@ -409,5 +416,5 @@
     levelNumber = null; // by setting levelNumber to null, the map is marked as completed
   };
 
-  lightBot.map = map;
-})();
+  return map;
+}

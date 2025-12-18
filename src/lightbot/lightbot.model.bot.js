@@ -1,7 +1,16 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
+// Bot model: maintains current position/direction and executes a queue of instructions.
 
-(function() {
+export function createBot(params) {
+  if (!params) throw new Error("createBot: missing params");
+  var directions = params.directions;
+  var getMap = params.getMap;
+  var instructions = params.instructions;
+  var LightBox = params.LightBox;
+  if (!directions) throw new Error("createBot: missing directions");
+  if (typeof getMap !== "function") throw new Error("createBot: missing getMap()");
+  if (!instructions) throw new Error("createBot: missing instructions");
+  if (!LightBox) throw new Error("createBot: missing LightBox");
+
   function cloneShallowIncludingInherited(obj) {
     var out = {};
     for (var k in obj) out[k] = obj[k];
@@ -24,14 +33,19 @@
     return out;
   }
 
+  function map() {
+    return getMap();
+  }
+
   var bot = {
     startingPos: {x: 0, y: 0}, // save initial position for reset
     currentPos: {x: 0, y: 0}, // current bot position on the map
-    startingDirection: lightBot.directions.se, // save initial direction for reset
-    direction: lightBot.directions.se, // current direction the bot is facing
+    startingDirection: directions.se, // save initial direction for reset
+    direction: directions.se, // current direction the bot is facing
     instructionQueue: [], // saves the instruction queue. useful for post-executing analysis
     executionQueue: [], // current instruction execution queue
     executionMode: false, // boolean flag indicating whether the bot is in execution mode
+    instructions: instructions,
     init: function(direction, position) {
       this.startingPos = cloneShallowIncludingInherited(position);
       this.currentPos = cloneShallowIncludingInherited(position);
@@ -67,22 +81,22 @@
       if (this.executionQueue.length > 0) {
         var instruction = this.executionQueue.shift();
         switch (instruction.name) {
-          case lightBot.bot.instructions.WalkInstruction.instructionName:
+          case instructions.WalkInstruction.instructionName:
             this.walk();
             break;
-          case lightBot.bot.instructions.JumpInstruction.instructionName:
+          case instructions.JumpInstruction.instructionName:
             this.jump();
             break;
-          case lightBot.bot.instructions.LightInstruction.instructionName:
+          case instructions.LightInstruction.instructionName:
             this.light();
             break;
-          case lightBot.bot.instructions.TurnLeftInstruction.instructionName:
+          case instructions.TurnLeftInstruction.instructionName:
             this.turnLeft();
             break;
-          case lightBot.bot.instructions.TurnRightInstruction.instructionName:
+          case instructions.TurnRightInstruction.instructionName:
             this.turnRight();
             break;
-          case lightBot.bot.instructions.RepeatInstruction.instructionName:
+          case instructions.RepeatInstruction.instructionName:
             if (instruction.counter > 1) {
               instruction.counter--;
               this.executionQueue.unshift(instruction);
@@ -105,24 +119,26 @@
       }
     },
     walk: function() {
+      var m = map();
+      if (!m) return;
       switch (this.direction) {
-        case lightBot.directions.se:
-          if (this.currentPos.y > 0 && lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height === lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y-1].height) {
+        case directions.se:
+          if (this.currentPos.y > 0 && m.getMapRef()[this.currentPos.x][this.currentPos.y].height === m.getMapRef()[this.currentPos.x][this.currentPos.y-1].height) {
             this.currentPos.y--;
           }
           break;
-        case lightBot.directions.ne:
-          if (this.currentPos.x+1 < lightBot.map.getLevelSize().x && lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height === lightBot.map.getMapRef()[this.currentPos.x+1][this.currentPos.y].height) {
+        case directions.ne:
+          if (this.currentPos.x+1 < m.getLevelSize().x && m.getMapRef()[this.currentPos.x][this.currentPos.y].height === m.getMapRef()[this.currentPos.x+1][this.currentPos.y].height) {
             this.currentPos.x++;
           }
           break;
-        case lightBot.directions.nw:
-          if (this.currentPos.y+1 < lightBot.map.getLevelSize().y && lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height === lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y+1].height) {
+        case directions.nw:
+          if (this.currentPos.y+1 < m.getLevelSize().y && m.getMapRef()[this.currentPos.x][this.currentPos.y].height === m.getMapRef()[this.currentPos.x][this.currentPos.y+1].height) {
             this.currentPos.y++;
           }
           break;
-        case lightBot.directions.sw:
-          if (this.currentPos.x > 0 && lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height === lightBot.map.getMapRef()[this.currentPos.x-1][this.currentPos.y].height) {
+        case directions.sw:
+          if (this.currentPos.x > 0 && m.getMapRef()[this.currentPos.x][this.currentPos.y].height === m.getMapRef()[this.currentPos.x-1][this.currentPos.y].height) {
             this.currentPos.x--;
           }
           break;
@@ -132,24 +148,26 @@
       }
     },
     jump: function() {
+      var m = map();
+      if (!m) return;
       switch (this.direction) {
-        case lightBot.directions.se:
-          if (this.currentPos.y > 0 && (lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y-1].height - lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height === 1 || lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height > lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y-1].height)) {
+        case directions.se:
+          if (this.currentPos.y > 0 && (m.getMapRef()[this.currentPos.x][this.currentPos.y-1].height - m.getMapRef()[this.currentPos.x][this.currentPos.y].height === 1 || m.getMapRef()[this.currentPos.x][this.currentPos.y].height > m.getMapRef()[this.currentPos.x][this.currentPos.y-1].height)) {
             this.currentPos.y--;
           }
           break;
-        case lightBot.directions.ne:
-          if (this.currentPos.x+1 < lightBot.map.getLevelSize().x && (lightBot.map.getMapRef()[this.currentPos.x+1][this.currentPos.y].height - lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height === 1 || lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height > lightBot.map.getMapRef()[this.currentPos.x+1][this.currentPos.y].height)) {
+        case directions.ne:
+          if (this.currentPos.x+1 < m.getLevelSize().x && (m.getMapRef()[this.currentPos.x+1][this.currentPos.y].height - m.getMapRef()[this.currentPos.x][this.currentPos.y].height === 1 || m.getMapRef()[this.currentPos.x][this.currentPos.y].height > m.getMapRef()[this.currentPos.x+1][this.currentPos.y].height)) {
             this.currentPos.x++;
           }
           break;
-        case lightBot.directions.nw:
-          if (this.currentPos.y+1 < lightBot.map.getLevelSize().y && (lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y+1].height - lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height === 1 || lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height > lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y+1].height)) {
+        case directions.nw:
+          if (this.currentPos.y+1 < m.getLevelSize().y && (m.getMapRef()[this.currentPos.x][this.currentPos.y+1].height - m.getMapRef()[this.currentPos.x][this.currentPos.y].height === 1 || m.getMapRef()[this.currentPos.x][this.currentPos.y].height > m.getMapRef()[this.currentPos.x][this.currentPos.y+1].height)) {
             this.currentPos.y++;
           }
           break;
-        case lightBot.directions.sw:
-          if (this.currentPos.x > 0 && lightBot.map.getLevelSize().x && (lightBot.map.getMapRef()[this.currentPos.x-1][this.currentPos.y].height - lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height === 1 || lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].height > lightBot.map.getMapRef()[this.currentPos.x-1][this.currentPos.y].height)) {
+        case directions.sw:
+          if (this.currentPos.x > 0 && m.getLevelSize().x && (m.getMapRef()[this.currentPos.x-1][this.currentPos.y].height - m.getMapRef()[this.currentPos.x][this.currentPos.y].height === 1 || m.getMapRef()[this.currentPos.x][this.currentPos.y].height > m.getMapRef()[this.currentPos.x-1][this.currentPos.y].height)) {
             this.currentPos.x--;
           }
           break;
@@ -159,8 +177,10 @@
       }
     },
     light: function() {
-      var tmp = lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y];
-      if (tmp instanceof lightBot.LightBox) {
+      var m = map();
+      if (!m) return;
+      var tmp = m.getMapRef()[this.currentPos.x][this.currentPos.y];
+      if (tmp instanceof LightBox) {
         tmp.toggleLight();
       }
     },
@@ -181,7 +201,7 @@
         var x = 0;
         for (var i = 0; i < a.length; i++) {
           x++;
-          if (a[i] instanceof lightBot.bot.instructions.RepeatInstruction) {
+          if (a[i] instanceof instructions.RepeatInstruction) {
             x += count(a[i].body);
           }
         }
@@ -191,5 +211,5 @@
     }
   };
 
-  lightBot.bot = bot;
-})();
+  return bot;
+}

@@ -1,8 +1,5 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
-
-(function() {
-
+// Centralized audio/video helpers (menu/game music + help videos).
+export function createMedia() {
   var media = {
     audioEl: null,
     videoEl: null,
@@ -130,11 +127,5 @@
     }
   };
 
-  lightBot.ui.media = media;
-})();
-
-export function initMedia() {
-  if (!lightBot || !lightBot.ui || !lightBot.ui.media) return;
-  if (typeof lightBot.ui.media.init !== "function") return;
-  lightBot.ui.media.init();
+  return media;
 }

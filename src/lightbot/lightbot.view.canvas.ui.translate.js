@@ -1,7 +1,6 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
-
+// i18next setup and DOM translation pass for elements with `data-i18n*` attributes.
 import i18next from "i18next";
+import { LIGHTBOT_TRANSLATIONS } from "../locales/translations.js";
 
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach(function (element) {
@@ -21,7 +20,7 @@ export function initI18n() {
       lng: "en",
       resources: {
         en: {
-          translation: globalThis.LIGHTBOT_TRANSLATIONS,
+          translation: LIGHTBOT_TRANSLATIONS,
         },
       },
     })

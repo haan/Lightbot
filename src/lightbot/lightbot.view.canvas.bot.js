@@ -1,7 +1,17 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
+// Bot rendering "view" extension: sprite loading, animation state machine, and drawing.
+export function extendBotView(params) {
+  if (!params) throw new Error("extendBotView: missing params");
+  var app = params.app;
+  var bot = params.bot;
+  var map = params.map;
+  var animations = params.animations;
+  var instructions = params.instructions;
+  if (!app) throw new Error("extendBotView: missing app");
+  if (!bot) throw new Error("extendBotView: missing bot");
+  if (!map) throw new Error("extendBotView: missing map");
+  if (!animations) throw new Error("extendBotView: missing animations");
+  if (!instructions) throw new Error("extendBotView: missing instructions");
 
-(function() {
   // bot state
   var readyForNextInstruction = true;
 
@@ -12,12 +22,12 @@
   // bot animation
   var currentStep = 0; // # of frames since animation started
   var currentFrame = 0; // current animation frame
-  var animation = lightBot.bot.animations.stand; // current animation
+  var animation = animations.stand; // current animation
   var movement = {dX: 0, dY: 0, dZ: 0}; // controls bot movement during animations
 
   function getAnimationDuration() {
     // If speed is 2x, duration is halved. If speed is 0.5x, duration is doubled.
-    return animation.duration / lightBot.speedMultiplier;
+    return animation.duration / app.speedMultiplier;
   }
 
   function animate(instruction, oldPos, newPos) {
@@ -27,31 +37,31 @@
     // decide what to animate
     switch (instruction.name) {
       // walk
-      case lightBot.bot.instructions.WalkInstruction.instructionName:
-        setAnimation(lightBot.bot.animations.walk);
-        setMovement((oldPos.x - newPos.x) * lightBot.map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength(), 0, (oldPos.y - newPos.y) * lightBot.map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength());
+      case instructions.WalkInstruction.instructionName:
+        setAnimation(animations.walk);
+        setMovement((oldPos.x - newPos.x) * map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength(), 0, (oldPos.y - newPos.y) * map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength());
         break;
       // jump
-      case lightBot.bot.instructions.JumpInstruction.instructionName:
-        var heightDiff = (lightBot.map.getMapRef()[newPos.x][newPos.y].getHeight() - lightBot.map.getMapRef()[oldPos.x][oldPos.y].getHeight()) * lightBot.map.getMapRef()[newPos.x][newPos.y].getEdgeLength();
+      case instructions.JumpInstruction.instructionName:
+        var heightDiff = (map.getMapRef()[newPos.x][newPos.y].getHeight() - map.getMapRef()[oldPos.x][oldPos.y].getHeight()) * map.getMapRef()[newPos.x][newPos.y].getEdgeLength();
         if (heightDiff > 0) {
-          setAnimation(lightBot.bot.animations.jumpUp);
+          setAnimation(animations.jumpUp);
         } else if (heightDiff < 0) {
-          setAnimation(lightBot.bot.animations.jumpDown);
+          setAnimation(animations.jumpDown);
         } else {
           // here we could implement a special animation if the bot can't jump up
-          setAnimation(lightBot.bot.animations.jumpUp);
+          setAnimation(animations.jumpUp);
         }
-        setMovement((oldPos.x - newPos.x) * lightBot.map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength(), heightDiff, (oldPos.y - newPos.y) * lightBot.map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength());
+        setMovement((oldPos.x - newPos.x) * map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength(), heightDiff, (oldPos.y - newPos.y) * map.getMapRef()[oldPos.x][oldPos.y].getEdgeLength());
         break;
       // light
-      case lightBot.bot.instructions.LightInstruction.instructionName:
-        setAnimation(lightBot.bot.animations.light);
+      case instructions.LightInstruction.instructionName:
+        setAnimation(animations.light);
         break;
       // turn left, turn right, repeat
-      case lightBot.bot.instructions.TurnLeftInstruction.instructionName:
-      case lightBot.bot.instructions.TurnRightInstruction.instructionName:
-      case lightBot.bot.instructions.RepeatInstruction.instructionName:
+      case instructions.TurnLeftInstruction.instructionName:
+      case instructions.TurnRightInstruction.instructionName:
+      case instructions.RepeatInstruction.instructionName:
         // no animation for turning
         break;
       default:
@@ -61,12 +71,12 @@
   }
 
   function step() {
-    if (currentStep >= getAnimationDuration() || !lightBot.bot.isInExecutionMode()) {
+    if (currentStep >= getAnimationDuration() || !bot.isInExecutionMode()) {
       // set the bot to ready
       readyForNextInstruction = true;
 
       // set new animation
-      setAnimation(lightBot.bot.animations.stand);
+      setAnimation(animations.stand);
       setMovement(0, 0, 0);
 
     } else {
@@ -112,16 +122,16 @@
   function draw() {
     var offset = getMovementOffset();
 
-    var p = lightBot.projection.project((this.currentPos.x) * lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].getEdgeLength() + (movement.dX - offset.x),
-                                        lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].getHeight() * lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].getEdgeLength() + (-movement.dY + offset.y),
-                                        (this.currentPos.y) * lightBot.map.getMapRef()[this.currentPos.x][this.currentPos.y].getEdgeLength() + (movement.dZ - offset.z));
+    var p = app.projection.project((this.currentPos.x) * map.getMapRef()[this.currentPos.x][this.currentPos.y].getEdgeLength() + (movement.dX - offset.x),
+                                        map.getMapRef()[this.currentPos.x][this.currentPos.y].getHeight() * map.getMapRef()[this.currentPos.x][this.currentPos.y].getEdgeLength() + (-movement.dY + offset.y),
+                                        (this.currentPos.y) * map.getMapRef()[this.currentPos.x][this.currentPos.y].getEdgeLength() + (movement.dZ - offset.z));
     var srcX = animation.sX + currentFrame * animation.width;
     var srcY = this.direction * animation.height;
     var dX = p.x - animation.width / 2; // center image horizontally
     var dY = p.y - animation.height;
 
     // round dX and dY down to avoid anti-aliasing when drawing the sprite
-    lightBot.ctx.drawImage(image, srcX, srcY, animation.width, animation.height, Math.floor(dX), Math.floor(dY), animation.width, animation.height);
+    app.ctx.drawImage(image, srcX, srcY, animation.width, animation.height, Math.floor(dX), Math.floor(dY), animation.width, animation.height);
   }
 
   function setAnimation(a) {
@@ -152,13 +162,15 @@
     return readyForNextInstruction;
   }
 
-  lightBot.bot.animate = animate;
-  lightBot.bot.step = step;
-  lightBot.bot.draw = draw;
-  lightBot.bot.getAnimation = getAnimation;
-  lightBot.bot.setAnimation = setAnimation;
-  lightBot.bot.getCurrentStep = getCurrentStep;
-  lightBot.bot.getMovement = getMovement;
-  lightBot.bot.setMovement = setMovement;
-  lightBot.bot.isReadyForNextInstruction = isReadyForNextInstruction;
-})();
+  bot.animate = animate;
+  bot.step = step;
+  bot.draw = draw;
+  bot.getAnimation = getAnimation;
+  bot.setAnimation = setAnimation;
+  bot.getCurrentStep = getCurrentStep;
+  bot.getMovement = getMovement;
+  bot.setMovement = setMovement;
+  bot.isReadyForNextInstruction = isReadyForNextInstruction;
+
+  return bot;
+}

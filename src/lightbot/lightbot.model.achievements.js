@@ -1,7 +1,15 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
+// Achievements: check completion criteria and persist unlocked achievements in localStorage.
 
-(function() {
+export function createAchievements(params) {
+  if (!params) throw new Error("createAchievements: missing params");
+  var bot = params.bot;
+  var map = params.map;
+  var medals = params.medals;
+  var storage = params.storage || localStorage;
+  if (!bot) throw new Error("createAchievements: missing bot");
+  if (!map) throw new Error("createAchievements: missing map");
+  if (!medals) throw new Error("createAchievements: missing medals");
+
   var achievements = {
     achievementsList: [
       {
@@ -17,7 +25,7 @@
         title: 'Momma\'s Boy',
         message: 'Earn a gold medal.',
         check: function() {
-          if (lightBot.bot.getNumberOfInstructions() <= lightBot.map.getMedals().gold) {
+          if (bot.getNumberOfInstructions() <= map.getMedals().gold) {
             return true;
           }
           return false;
@@ -61,7 +69,7 @@
         title: 'Nerd',
         message: 'Earn bronze medals on all levels.',
         check: function() {
-          return getMedalCount(lightBot.medals.bronze) === lightBot.map.getNbrOfLevels();
+          return getMedalCount(medals.bronze) === map.getNbrOfLevels();
         }
       },
       {
@@ -69,7 +77,7 @@
         title: 'Elite',
         message: 'Earn silver medals on all levels.',
         check: function() {
-          return getMedalCount(lightBot.medals.silver) === lightBot.map.getNbrOfLevels();
+          return getMedalCount(medals.silver) === map.getNbrOfLevels();
         }
       },
       {
@@ -77,18 +85,18 @@
         title: 'H4X0R',
         message: 'Earn gold medals on all levels.',
         check: function() {
-          return getMedalCount(lightBot.medals.gold) === lightBot.map.getNbrOfLevels();
+          return getMedalCount(medals.gold) === map.getNbrOfLevels();
         }
       }
     ],
     hasAchievement: function(n) {
-      return localStorage.getItem(n);
+      return storage.getItem(n);
     },
     awardAchievements: function() {
       var achievementsAwarded = [];
       for (var i = 0; i < this.achievementsList.length; i++) {
         if (!this.hasAchievement(this.achievementsList[i].name) && this.achievementsList[i].check()) {
-          localStorage.setItem(this.achievementsList[i].name, true);
+          storage.setItem(this.achievementsList[i].name, true);
           achievementsAwarded.push(this.achievementsList[i]);
         }
       }
@@ -101,8 +109,8 @@
 
   function getCompletedLevelCount() {
     var count = 0;
-    for (var i = 0; i < lightBot.map.getNbrOfLevels(); i++) {
-      if (localStorage.getItem('lightbot_level_' + i)) {
+    for (var i = 0; i < map.getNbrOfLevels(); i++) {
+      if (storage.getItem('lightbot_level_' + i)) {
         count++;
       }
     }
@@ -111,13 +119,13 @@
 
   function getMedalCount(quality) {
     var count = 0;
-    for (var i = 0; i < lightBot.map.getNbrOfLevels(); i++) {
-      if (localStorage.getItem('lightbot_level_' + i) && parseInt(localStorage.getItem('lightbot_level_' + i), 10) >= quality) {
+    for (var i = 0; i < map.getNbrOfLevels(); i++) {
+      if (storage.getItem('lightbot_level_' + i) && parseInt(storage.getItem('lightbot_level_' + i), 10) >= quality) {
         count++;
       }
     }
     return count;
   }
 
-  lightBot.achievements = achievements;
-})();
+  return achievements;
+}

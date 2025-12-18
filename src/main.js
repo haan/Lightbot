@@ -1,39 +1,14 @@
+// Vite entry point: create the app instance, initialize UI/i18n/history, then start the canvas render loop.
 import "./styles/main.css";
-
-import "@fontsource/pt-sans/400.css";
-import "@fontsource/pt-sans/700.css";
-import "@fontsource/lato/400.css";
-import "@fontsource/lato/900.css";
 
 document.documentElement.style.setProperty("--lb-achievement-bg", 'url("img/achievement.png")');
 document.documentElement.style.setProperty("--lb-medals-bg", 'url("img/medals.png")');
 
 import { themeChange } from "theme-change";
 
-import "./locales/translations.js";
-
-import "./lightbot/lightbot.model.game.js";
-import "./lightbot/lightbot.model.directions.js";
-import "./lightbot/lightbot.model.bot.js";
-import "./lightbot/lightbot.model.bot.instructions.js";
-import "./lightbot/lightbot.model.map.js";
-import "./lightbot/lightbot.model.map.state.js";
-import "./lightbot/lightbot.model.box.js";
-import "./lightbot/lightbot.model.lightbox.js";
-import "./lightbot/lightbot.model.medals.js";
-import "./lightbot/lightbot.model.achievements.js";
-import "./lightbot/lightbot.view.canvas.ui.js";
-import "./lightbot/lightbot.view.canvas.ui.editor.js";
-import "./lightbot/lightbot.view.canvas.map.js";
-import "./lightbot/lightbot.view.canvas.box.js";
-import "./lightbot/lightbot.view.canvas.bot.animations.js";
-import "./lightbot/lightbot.view.canvas.bot.js";
-import "./lightbot/lightbot.view.canvas.projection.js";
-import "./lightbot/lightbot.view.canvas.medals.js";
-import "./lightbot/lightbot.view.canvas.achievements.js";
+import { createApp } from "./lightbot/app.js";
 
 import { initCanvasView } from "./lightbot/lightbot.view.canvas.js";
-import { initMedia } from "./lightbot/lightbot.view.canvas.ui.media.js";
 import { initI18n } from "./lightbot/lightbot.view.canvas.ui.translate.js";
 import { initDialogs } from "./lightbot/lightbot.view.canvas.ui.dialogs.js";
 import { initHistory } from "./lightbot/lightbot.view.canvas.ui.history.js";
@@ -47,19 +22,24 @@ function runWhenDomReady(fn) {
 }
 
 async function boot() {
-  themeChange();
+  // `createApp()` is the composition root: it wires together all models + UI + rendering extensions.
+  var app = createApp();
+  themeChange(false);
 
-  initMedia();
-  initDialogs();
+  // Hook up DOM elements and event handlers once the document is ready.
+  if (app.ui && app.ui.media && typeof app.ui.media.init === "function") app.ui.media.init();
+  initDialogs({ ui: app.ui, achievements: app.achievements });
 
+  // Apply translations before we initialize UI controls that use i18next.t().
   await initI18n();
 
-  lightBot.ui.editor.initEditor();
-  lightBot.ui.initButtons();
-  lightBot.ui.initSlider();
+  app.ui.editor.initEditor();
+  app.ui.initButtons();
+  app.ui.initSlider();
 
-  initCanvasView();
-  initHistory();
+  // Start the render/update loop and then apply the initial route.
+  initCanvasView(app);
+  initHistory(app);
 }
 
 runWhenDomReady(function () {

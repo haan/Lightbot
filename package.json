@@ -9,7 +9,7 @@
     "build": "vite build --config vite.offline.config.js",
     "build:web": "vite build --outDir dist-web",
     "preview": "vite preview",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist dist-web"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
@@ -27,8 +27,6 @@
   },
   "homepage": "https://github.com/haan/Lightbot#readme",
   "dependencies": {
-    "@fontsource/lato": "^5.2.6",
-    "@fontsource/pt-sans": "^5.2.6",
     "i18next": "^25.5.2",
     "sortablejs": "^1.15.6",
     "theme-change": "^2.5.0"

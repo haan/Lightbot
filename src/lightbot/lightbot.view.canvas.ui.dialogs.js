@@ -1,6 +1,4 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
-
+// Thin wrapper around native `<dialog>` for open/close + close-event wiring.
 function getDialog(id) {
   var el = document.getElementById(id);
   if (!el) return null;
@@ -20,24 +18,31 @@ function closeDialog(id) {
   if (dialog.open) dialog.close();
 }
 
-export function initDialogs() {
+export function createDialogs() {
+  return {
+    open: openDialog,
+    close: closeDialog,
+  };
+}
+
+export function initDialogs(params) {
+  if (!params) return;
+  var ui = params.ui;
+  var achievements = params.achievements;
+  if (!ui || !achievements) return;
+
   var levelComplete = getDialog("levelCompleteDialog");
   if (levelComplete) {
     levelComplete.addEventListener("close", function () {
-      lightBot.ui.showLevelSelectScreen();
+      ui.showLevelSelectScreen();
     });
   }
 
   var achievementDialog = getDialog("achievementDialog");
   if (achievementDialog) {
     achievementDialog.addEventListener("close", function () {
-      lightBot.achievements.display();
+      achievements.display();
     });
   }
 }
-
-lightBot.ui.dialogs = {
-  open: openDialog,
-  close: closeDialog,
-};
 

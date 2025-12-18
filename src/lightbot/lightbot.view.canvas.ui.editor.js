@@ -1,9 +1,14 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
-
+// Drag/drop editor for the program: uses SortableJS and persists per-level state to localStorage.
 import Sortable from "sortablejs";
 
-(function () {
+export function createEditor(params) {
+  if (!params) throw new Error("createEditor: missing params");
+  var map = params.map;
+  var instructions = params.instructions;
+  var storage = params.storage || localStorage;
+  if (!map) throw new Error("createEditor: missing map");
+  if (!instructions) throw new Error("createEditor: missing instructions");
+
   function forEachNode(list, fn) {
     if (!list) return;
     for (var i = 0; i < list.length; i++) fn(list[i], i);
@@ -96,7 +101,7 @@ import Sortable from "sortablejs";
         var t = e.target;
         if (!t) return;
         if (t.tagName === "INPUT" && t.type === "number") {
-          lightBot.ui.editor.saveProgram();
+          editor.saveProgram();
         }
       });
 
@@ -107,24 +112,25 @@ import Sortable from "sortablejs";
         if (!btn || !container.contains(btn)) return;
         var li = btn.closest("li");
         if (li) li.remove();
-        lightBot.ui.editor._cleanupProgramSortables();
-        lightBot.ui.editor.saveProgram();
+        editor._cleanupProgramSortables();
+        editor.saveProgram();
       });
 
-      lightBot.ui.editor.makeDroppable();
+      editor.makeDroppable();
     },
 
     saveProgram: function () {
       var mainProgramList = getMainProgramList();
       if (!mainProgramList) return;
 
+      // Persist the program as HTML (including repeat counts) so it can be restored per level.
       var inputs = mainProgramList.querySelectorAll('input[type="number"]');
       forEachNode(inputs, function (input) {
         input.setAttribute("value", input.value);
       });
 
-      localStorage.setItem(
-        "lightbot_program_level_" + lightBot.map.getLevelNumber(),
+      storage.setItem(
+        "lightbot_program_level_" + map.getLevelNumber(),
         mainProgramList.innerHTML
       );
     },
@@ -133,11 +139,13 @@ import Sortable from "sortablejs";
       var mainProgramList = getMainProgramList();
       if (!mainProgramList) return;
 
-      var saved = localStorage.getItem("lightbot_program_level_" + lightBot.map.getLevelNumber());
+      // Restore the saved HTML snippet for this level into the program list.
+      var saved = storage.getItem("lightbot_program_level_" + map.getLevelNumber());
       if (saved) {
         mainProgramList.insertAdjacentHTML("beforeend", saved);
       }
 
+      // Strip any transient drag/drop CSS classes so the restored DOM isn't "stuck" in a drag state.
       var classesToRemove = ["lb-drop-active", "lb-drop-hover", "sortable-ghost", "sortable-chosen", "lb-dragging"];
       var targets = [mainProgramList];
       var descendants = mainProgramList.querySelectorAll("*");
@@ -296,7 +304,7 @@ import Sortable from "sortablejs";
     },
 
     getInstructions: function (sourceItems) {
-      var instructions = [];
+      var out = [];
 
       for (var i = 0; i < sourceItems.length; i++) {
         var li = sourceItems[i];
@@ -306,15 +314,15 @@ import Sortable from "sortablejs";
         if (!p || !p.classList) continue;
 
         if (p.classList.contains("walk")) {
-          instructions.push(new lightBot.bot.instructions.WalkInstruction());
+          out.push(new instructions.WalkInstruction());
         } else if (p.classList.contains("jump")) {
-          instructions.push(new lightBot.bot.instructions.JumpInstruction());
+          out.push(new instructions.JumpInstruction());
         } else if (p.classList.contains("light")) {
-          instructions.push(new lightBot.bot.instructions.LightInstruction());
+          out.push(new instructions.LightInstruction());
         } else if (p.classList.contains("turnLeft")) {
-          instructions.push(new lightBot.bot.instructions.TurnLeftInstruction());
+          out.push(new instructions.TurnLeftInstruction());
         } else if (p.classList.contains("turnRight")) {
-          instructions.push(new lightBot.bot.instructions.TurnRightInstruction());
+          out.push(new instructions.TurnRightInstruction());
         } else if (p.classList.contains("repeat")) {
           var input = li.querySelector('input[type="number"]');
           var counter = input ? input.value : 2;
@@ -326,13 +334,13 @@ import Sortable from "sortablejs";
               if (bChild && bChild.tagName === "LI") bodyLis.push(bChild);
             }
           }
-          var body = lightBot.ui.editor.getInstructions(bodyLis);
-          instructions.push(new lightBot.bot.instructions.RepeatInstruction(counter, body));
+          var body = editor.getInstructions(bodyLis);
+          out.push(new instructions.RepeatInstruction(counter, body));
         }
       }
-      return instructions;
+      return out;
     },
   };
 
-  lightBot.ui.editor = editor;
-})();
+  return editor;
+}

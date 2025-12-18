@@ -1,7 +1,6 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
+// Instruction "classes" used by both the editor (to build a program) and the bot (to execute it).
 
-(function() {
+export function createBotInstructions() {
   var instructions = {};
 
   function Instruction(name) {
@@ -49,5 +48,5 @@
   instructions.WhileInstruction.prototype = new Instruction(instructions.WhileInstruction.instructionName);
   instructions.WhileInstruction.prototype.constructor = instructions.WhileInstruction;
 
-  lightBot.bot.instructions = instructions;
-})();
+  return instructions;
+}

@@ -1,6 +1,5 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
+// Direction constants for the isometric grid. Used by the bot movement logic and renderer.
 
-(function() {
-  lightBot.directions = {"se": 0, "ne": 1, "nw": 2, "sw": 3};
-})();
+export function createDirections() {
+  return { se: 0, ne: 1, nw: 2, sw: 3 };
+}

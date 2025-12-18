@@ -1,4 +1,5 @@
-window.LIGHTBOT_TRANSLATIONS = {
+// i18n resource table used by i18next. Keys match `data-i18n` / `data-i18n-title` attributes in `index.html`.
+export const LIGHTBOT_TRANSLATIONS = {
   "title": "LightBot v1.3",
   "controls": {
     "run": "Run",

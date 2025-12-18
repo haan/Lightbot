@@ -1,13 +1,11 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
+// Tile type: a regular (non-light) box on the map.
 
-(function() {
+export function createBox() {
   function Box(height, x, y) {
     this.height = height;
     this.x = x;
     this.y = y;
     this.reset = function() {};
   }
-
-  lightBot.Box = Box;
-})();
+  return Box;
+}

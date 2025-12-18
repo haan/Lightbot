@@ -1,7 +1,6 @@
-/*jsl:option explicit*/
-/*jsl:import lightbot.model.game.js*/
-
-export function canvasView(canvas) {
+// Canvas renderer + main simulation tick (60fps); drives `app.step()` and `app.draw()`.
+export function canvasView(app, canvas) {
+  var lightBot = app;
   // set the rendering context
   lightBot.ctx = canvas.getContext('2d');
 
