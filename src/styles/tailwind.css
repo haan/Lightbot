@@ -106,7 +106,7 @@
 
   /* Instruction palette/program differences */
   #instructionsContainer .lb-instruction-delete {
-    display: none;
+    display: none !important;
   }
 
   /* don't show a repeat-body in the instruction palette */
@@ -119,8 +119,12 @@
     @apply select-none;
   }
 
+  .lb-instruction-label {
+    @apply text-xs py-1;
+  }
+
   .lb-instruction-row {
-    @apply flex items-center justify-between gap-2 border border-base-300 bg-base-100 px-2 py-1 text-sm font-semibold rounded-[var(--rounded-btn)];
+    @apply flex content-center items-center justify-between gap-2 border border-base-300 bg-base-100 px-2 py-1 text-sm font-semibold rounded-[var(--rounded-btn)];
   }
 
   #instructionsContainer .lb-instruction-row {
@@ -146,6 +150,6 @@
   }
 
   .lb-repeat-body-inner > ul {
-    min-height: 3.75rem;
+    min-height: 2.5rem;
   }
 }

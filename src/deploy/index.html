@@ -367,11 +367,13 @@
                   </li>
                   <li class="lb-instruction">
                     <p class="repeat lb-instruction-row">
-                      <span class="lb-instruction-label" data-i18n="instructions.repeat.label"></span>
-                      <span class="lb-repeat-count flex items-center gap-2">
-                        <input type="number" min="1" max="99" step="1" value="2"
-                          class="input input-bordered input-xs w-16" />
-                        <span class="text-xs opacity-70" data-i18n="instructions.repeat.times"></span>
+                      <span class="lb-repeat-left flex items-center gap-2">
+                        <span class="lb-instruction-label" data-i18n="instructions.repeat.label"></span>
+                        <span class="lb-repeat-count flex items-center gap-2">
+                          <input type="number" min="1" max="99" step="1" value="2"
+                            class="input input-bordered input-xs w-16" />
+                          <span class="text-xs opacity-70" data-i18n="instructions.repeat.times"></span>
+                        </span>
                       </span>
                       <button type="button" class="lb-instruction-delete btn btn-ghost btn-xs btn-square"
                         title="Remove">

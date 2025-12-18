@@ -6,6 +6,27 @@
   var editor = {
     _instructionSortable: null,
     _programSortables: [],
+    _normalizeRepeatRows: function (root) {
+      var scope = root ? $(root) : $(document);
+      scope.find('p.repeat.lb-instruction-row').each(function () {
+        var row = $(this);
+        if (row.children('.lb-repeat-left').length) return;
+
+        var label = row.children('.lb-instruction-label').first();
+        var count = row.children('.lb-repeat-count').first();
+        if (!label.length || !count.length) return;
+
+        var left = $('<span class="lb-repeat-left flex items-center gap-2"></span>');
+        left.append(label).append(count);
+
+        var deleteBtn = row.children('.lb-instruction-delete').first();
+        if (deleteBtn.length) {
+          deleteBtn.before(left);
+        } else {
+          row.prepend(left);
+        }
+      });
+    },
     _getMainProgramList: function () {
       return $('#programContainer .card-body > .droppable > ul').first();
     },
@@ -42,6 +63,7 @@
         .find('*')
         .removeClass('lb-drop-active lb-drop-hover sortable-ghost sortable-chosen lb-dragging');
       $('#programContainer').find('li.placeholder').remove();
+      this._normalizeRepeatRows($('#programContainer'));
       this.makeDroppable();
     },
     _cleanupProgramSortables: function () {

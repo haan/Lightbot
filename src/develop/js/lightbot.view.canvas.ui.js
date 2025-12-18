@@ -11,8 +11,12 @@
       btn.toggleClass('btn-primary', !isRunning);
       btn.toggleClass('btn-error', isRunning);
       btn.attr('title', isRunning ? i18next.t('stop') : i18next.t('gameScreen.run'));
-      btn.find('.lb-run-icon').toggleClass('hidden', isRunning);
-      btn.find('.lb-stop-icon').toggleClass('hidden', !isRunning);
+
+      // jQuery 1.7 does not reliably toggle classes on SVG elements
+      var runIcon = btn[0].querySelector('.lb-run-icon');
+      if (runIcon && runIcon.classList) runIcon.classList.toggle('hidden', isRunning);
+      var stopIcon = btn[0].querySelector('.lb-stop-icon');
+      if (stopIcon && stopIcon.classList) stopIcon.classList.toggle('hidden', !isRunning);
     },
     showWelcomeScreen: function (hist) {
       lightBot.ui.media.playMenuAudio();
