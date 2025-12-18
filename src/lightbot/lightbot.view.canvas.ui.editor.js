@@ -35,12 +35,12 @@
     },
     initEditor: function () {
       // save the program when the value of input[type=number] changes
-      $("#programContainer").delegate(':input[type="number"]', "change", function () {
+      $("#programContainer").on("change", ':input[type="number"]', function () {
         lightBot.ui.editor.saveProgram();
       });
 
       // delete icon for instructions in the program
-      $("#programContainer").delegate(".lb-instruction-delete", "click", function () {
+      $("#programContainer").on("click", ".lb-instruction-delete", function () {
         $(this).closest('li').remove();
         lightBot.ui.editor._cleanupProgramSortables();
         lightBot.ui.editor.saveProgram();

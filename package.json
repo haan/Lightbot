@@ -27,6 +27,9 @@
   },
   "homepage": "https://github.com/haan/Lightbot#readme",
   "dependencies": {
+    "jquery": "^3.7.1",
+    "i18next": "^25.5.2",
+    "jplayer": "^2.9.2",
     "sortablejs": "^1.15.6",
     "theme-change": "^2.5.0"
   }

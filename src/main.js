@@ -1,5 +1,7 @@
 import "./styles/main.css";
 
+import "./bootstrap.js";
+
 document.documentElement.style.setProperty("--lb-achievement-bg", 'url("img/achievement.png")');
 document.documentElement.style.setProperty("--lb-medals-bg", 'url("img/medals.png")');
 document.documentElement.style.setProperty("--lb-video-play-button-bg", 'url("img/video_play_button.png")');
@@ -9,11 +11,6 @@ themeChange();
 
 import Sortable from "sortablejs";
 globalThis.Sortable = Sortable;
-
-import "./vendor/jquery-1.7.min.js";
-import "./vendor/i18next.min.js";
-import "./vendor/jquery.jplayer.min.js";
-import "./vendor/jquery.history.js";
 
 import "./locales/translations.js";
 

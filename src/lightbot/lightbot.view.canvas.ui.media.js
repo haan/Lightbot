@@ -36,10 +36,10 @@ $(document).ready(function() {
 
   if ($.jPlayer && $.jPlayer.event) {
     $('#audioPlayer')
-      .bind($.jPlayer.event.play + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); })
-      .bind($.jPlayer.event.playing + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); })
-      .bind($.jPlayer.event.pause + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); })
-      .bind($.jPlayer.event.ended + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); });
+      .on($.jPlayer.event.play + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); })
+      .on($.jPlayer.event.playing + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); })
+      .on($.jPlayer.event.pause + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); })
+      .on($.jPlayer.event.ended + '.lightbot', function () { lightBot.ui.media.syncAudioButtonState(); });
   }
 
   lightBot.ui.media.syncAudioButtonState();
