@@ -5,6 +5,15 @@
 @source "../index.html";
 @source "../src/**/*.js";
 
+@layer base {
+  html {
+    font-family: "PT Sans", ui-sans-serif, system-ui, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Lato", ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
 @plugin "daisyui/theme" {
   name: "lightbot";
   prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */

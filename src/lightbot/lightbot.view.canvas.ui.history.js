@@ -1,7 +1,12 @@
 /*jsl:option explicit*/
 /*jsl:import lightbot.model.game.js*/
 
-document.addEventListener("DOMContentLoaded", function () {
+var _historyInitialized = false;
+
+export function initHistory() {
+  if (_historyInitialized) return;
+  _historyInitialized = true;
+
   function stateToHash(state) {
     if (!state || !state.page) return "#/welcome";
 
@@ -123,4 +128,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
   safeReplaceState(initialState);
   applyState(initialState);
-});
+}

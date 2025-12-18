@@ -23,7 +23,7 @@
       {webm: "media/video/repeat.webm", mp4: "media/video/repeat.mp4", ogv: "media/video/repeat.ogv"},
       {webm: "media/video/medal.webm", mp4: "media/video/medal.mp4", ogv: "media/video/medal.ogv"}
     ],
-    audioEnabled: true,
+    audioEnabled: false,
     init: function () {
       this.audioEl = document.getElementById("audioPlayer");
       this.videoEl = document.getElementById("videoPlayer");
@@ -31,6 +31,7 @@
       var self = this;
       if (this.audioEl) {
         this.audioEl.loop = true;
+        this.audioEl.muted = true;
         ["play", "playing", "pause", "ended"].forEach(function (evt) {
           self.audioEl.addEventListener(evt, function () { self.syncAudioButtonState(); });
         });
@@ -90,22 +91,23 @@
       return !this.audioEl.paused;
     },
     syncAudioButtonState: function () {
-      var isPlaying = this._isActuallyPlaying();
+      var isEnabled = !!this.audioEnabled;
       var buttons = document.querySelectorAll('.audioToggleButton');
       for (var i = 0; i < buttons.length; i++) {
         var btn = buttons[i];
         if (!btn) continue;
-        btn.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
+        btn.setAttribute('aria-pressed', isEnabled ? 'true' : 'false');
 
         var onIcon = btn.querySelector('.lb-audio-on');
         var offIcon = btn.querySelector('.lb-audio-off');
 
-        if (onIcon && onIcon.classList) onIcon.classList.toggle('hidden', !isPlaying);
-        if (offIcon && offIcon.classList) offIcon.classList.toggle('hidden', isPlaying);
+        if (onIcon && onIcon.classList) onIcon.classList.toggle('hidden', !isEnabled);
+        if (offIcon && offIcon.classList) offIcon.classList.toggle('hidden', isEnabled);
       }
     },
     toggleAudioOn: function() {
       this.audioEnabled = true;
+      if (this.audioEl) this.audioEl.muted = false;
       this._tryPlayAudio();
       this.syncAudioButtonState();
       var self = this;
@@ -113,7 +115,10 @@
     },
     toggleAudioOff: function() {
       this.audioEnabled = false;
-      if (this.audioEl) this.audioEl.pause();
+      if (this.audioEl) {
+        this.audioEl.pause();
+        this.audioEl.muted = true;
+      }
       this.syncAudioButtonState();
     },
     toggleAudio: function() {
@@ -126,8 +131,10 @@
   };
 
   lightBot.ui.media = media;
-
-  document.addEventListener("DOMContentLoaded", function () {
-    lightBot.ui.media.init();
-  });
 })();
+
+export function initMedia() {
+  if (!lightBot || !lightBot.ui || !lightBot.ui.media) return;
+  if (typeof lightBot.ui.media.init !== "function") return;
+  lightBot.ui.media.init();
+}

@@ -21,10 +21,24 @@ function offlineIndexPlugin() {
       const sourceIndexPath = path.resolve(process.cwd(), "index.html");
       let html = fs.readFileSync(sourceIndexPath, "utf8");
 
-      html = html.replace(
-        /<script\s+type="module"\s+src="\/src\/main\.js"><\/script>\s*/i,
-        `<link rel="stylesheet" href="${cssFile}">\n  <script src="${jsFile}"></script>\n`
-      );
+      const offlineEntry =
+        `  <link rel="stylesheet" href="${cssFile}">\n` +
+        `  <script src="${jsFile}"></script>\n`;
+
+      const startMarker = "<!-- lightbot:entry:start -->";
+      const endMarker = "<!-- lightbot:entry:end -->";
+
+      if (html.includes(startMarker) && html.includes(endMarker)) {
+        const start = html.indexOf(startMarker);
+        const end = html.indexOf(endMarker) + endMarker.length;
+        html = html.slice(0, start) + offlineEntry + html.slice(end);
+      } else {
+        // Fallback for older index.html versions without markers.
+        html = html.replace(
+          /<script\b[^>]*\btype=["']module["'][^>]*>\s*<\/script>\s*/i,
+          offlineEntry
+        );
+      }
 
       fs.writeFileSync(path.join(distDir, "index.html"), html);
     },

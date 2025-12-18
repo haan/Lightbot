@@ -3,8 +3,8 @@
 
 import { canvasView } from "./lightbot.view.canvas.game.js";
 
-document.addEventListener("DOMContentLoaded", function () {
+export function initCanvasView() {
   var canvas = document.getElementById("gameCanvas");
-  if (!canvas) return;
-  canvasView(canvas);
-});
+  if (!canvas) return null;
+  return canvasView(canvas);
+}
