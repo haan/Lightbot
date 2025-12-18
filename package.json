@@ -4,23 +4,18 @@
   "description": "Lightbot is an educational game about programming designed for introductory courses to logical thinking.",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf deploy && shx mkdir -p deploy/js deploy/css",
-    "build:js": "google-closure-compiler --flagfile gcc-flags.txt",
-    "build:css": "tailwindcss -i src/styles/tailwind.css -o deploy/css/lightbot.min.css --minify",
-    "develop": "tailwindcss -i src/styles/tailwind.css -o src/develop/css/output.css --watch",
-    "copy:base": "copyfiles -u 2 src/deploy/index.html src/develop/img/** src/develop/media/** src/develop/js/jquery-1.7.min.js src/develop/js/jquery.jplayer.min.js src/develop/js/jquery.history.js src/develop/js/i18next.min.js src/develop/js/Sortable.min.js src/develop/js/theme-change.min.js src/develop/js/locales/** deploy",
-    "build": "npm-run-all clean --parallel build:* copy:*"
+    "dev": "vite",
+    "build": "vite build --config vite.offline.config.js",
+    "build:web": "vite build --outDir dist-web",
+    "preview": "vite preview",
+    "clean": "rimraf dist"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.0.0",
-    "copyfiles": "^2.4.1",
+    "@tailwindcss/vite": "^4.0.0",
     "daisyui": "^5.0.0",
-    "google-closure-compiler": "^20251111.0.0",
-    "npm-run-all": "^4.1.5",
     "rimraf": "^6.1.2",
-    "shx": "^0.4.0",
-    "theme-change": "^2.5.0",
-    "tailwindcss": "^4.0.0"
+    "tailwindcss": "^4.0.0",
+    "vite": "^7.2.7"
   },
   "repository": {
     "type": "git",
@@ -32,6 +27,7 @@
   },
   "homepage": "https://github.com/haan/Lightbot#readme",
   "dependencies": {
-    "sortablejs": "^1.15.6"
+    "sortablejs": "^1.15.6",
+    "theme-change": "^2.5.0"
   }
 }

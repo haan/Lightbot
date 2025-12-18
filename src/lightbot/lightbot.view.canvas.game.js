@@ -1,7 +1,7 @@
 /*jsl:option explicit*/
 /*jsl:import lightbot.model.game.js*/
 
-var canvasView = function(canvas) {
+globalThis.canvasView = function(canvas) {
   // set the rendering context
   lightBot.ctx = canvas.get(0).getContext('2d');
 

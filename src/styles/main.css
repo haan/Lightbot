@@ -1,10 +1,10 @@
-@import "../develop/css/jplayer.css";
+@import "./jplayer.css";
 @import "tailwindcss";
 @plugin "daisyui" {
   themes: all;
 }
-@source "../develop/**/*.{html,js}";
-@source "../deploy/**/*.html";
+@source "../index.html";
+@source "../src/**/*.js";
 
 @plugin "daisyui/theme" {
   name: "lightbot";
@@ -58,13 +58,13 @@
 /* Non-Tailwind assets / legacy helpers kept as small component classes */
 @layer components {
   .achievement {
-    background-image: url('../img/achievement.png');
+    background-image: var(--lb-achievement-bg);
     width: 32px;
     height: 32px;
   }
 
   .medal {
-    background-image: url('../img/medals.png');
+    background-image: var(--lb-medals-bg);
     width: 32px;
     height: 32px;
   }

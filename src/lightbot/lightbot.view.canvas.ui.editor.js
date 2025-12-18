@@ -58,10 +58,27 @@
       localStorage.setItem('lightbot_program_level_' + lightBot.map.getLevelNumber(), mainProgramList.html());
     },
     loadProgram: function () {
-      this._getMainProgramList()
-        .append(localStorage.getItem('lightbot_program_level_' + lightBot.map.getLevelNumber()))
-        .find('*')
-        .removeClass('lb-drop-active lb-drop-hover sortable-ghost sortable-chosen lb-dragging');
+      var mainProgramList = this._getMainProgramList();
+      var saved = localStorage.getItem('lightbot_program_level_' + lightBot.map.getLevelNumber());
+      if (saved) {
+        mainProgramList.append(saved);
+      }
+
+      var rootEl = mainProgramList.get(0);
+      var classesToRemove = ['lb-drop-active', 'lb-drop-hover', 'sortable-ghost', 'sortable-chosen', 'lb-dragging'];
+      if (rootEl && rootEl.querySelectorAll) {
+        var targets = [rootEl];
+        var descendants = rootEl.querySelectorAll('*');
+        for (var i = 0; i < descendants.length; i++) targets.push(descendants[i]);
+
+        for (var t = 0; t < targets.length; t++) {
+          var el = targets[t];
+          if (!el || !el.classList) continue;
+          for (var c = 0; c < classesToRemove.length; c++) {
+            el.classList.remove(classesToRemove[c]);
+          }
+        }
+      }
       $('#programContainer').find('li.placeholder').remove();
       this._normalizeRepeatRows($('#programContainer'));
       this.makeDroppable();

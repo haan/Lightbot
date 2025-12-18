@@ -95,11 +95,15 @@ a.jp-video-play-icon {
 	left:50%;
 	top:50%;
 
-	background: url("../img/video_play_button.png") 0 0 no-repeat;
+	background-image: var(--lb-video-play-button-bg);
+	background-position: 0 0;
+	background-repeat: no-repeat;
 	text-indent:-9999px;
 }
 div.jp-video-play:hover a.jp-video-play-icon {
-	background: url("../img/video_play_button.png") 0 -50px no-repeat;
+	background-image: var(--lb-video-play-button-bg);
+	background-position: 0 -50px;
+	background-repeat: no-repeat;
 }
 
 div.jp-jplayer audio,

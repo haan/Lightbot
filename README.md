@@ -21,32 +21,19 @@ No installation or account is required for the online version.
 
 ## Downloading and running Lightbot locally
 
-To get a downloadable, offline version:
-
-1. Go to the **Releases** page of this repository on GitHub.
-2. Download the latest Lightbot release archive (ZIP).
-3. Extract the ZIP file.
-4. Open `index.html` from the extracted folder in a modern web browser  
-   (Chrome, Firefox, Edge, Safari).
-
-Lightbot is a fully static web app: you only need to open `index.html`.  
-No web server or backend is required.
+The production build in `dist/` is fully static: you can open `dist/index.html` directly in a browser (no server required).
 
 ---
 
 ## Localizing the downloaded version
 
-You can translate Lightbot into your own language **using only the deploy ZIP**.  
-
-In the extracted folder you will find a file:
+Translations live in:
 
 ```text
-js/locales/translations.js
+src/locales/translations.js
 ```
 
-This file contains the texts used in the game.
-
-1. Open `js/locales/translations.js` in a text editor.
+1. Open `src/locales/translations.js` in a text editor.
 2. You will see a JavaScript object similar to this:
 
    ```js
@@ -84,7 +71,7 @@ This file contains the texts used in the game.
    ```
 
 4. Save the file.
-5. Reload `index.html` in your browser. The game interface should now appear in your language.
+5. Reload the page (or rebuild). The game interface should now appear in your language.
 
 ---
 
@@ -107,28 +94,23 @@ If you prefer to build the game yourself (or modify the code):
    npm install
    ```
 
-3. **Build the game**
+3. **Start the dev server**
+
+   ```bash
+   npm run dev
+   ```
+
+4. **Build the game**
 
    ```bash
    npm run build
    ```
 
-   This will:
+   This outputs a production build to `dist/`.
 
-   - Minify and bundle the JavaScript into `deploy/js/lightbot.min.js`
-   - Minify the CSS into `deploy/css/lightbot.min.css`
-   - Copy images, audio and other assets into `deploy/`
-   - Copy the production `index.html` into `deploy/index.html`
+5. **Run locally**
 
-4. **Run locally**
-
-   Open:
-
-   ```text
-   deploy/index.html
-   ```
-
-   in your browser to play the game from your local build.
+   Open `dist/index.html` in your browser.
 
 ---
 
