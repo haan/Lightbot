@@ -111,13 +111,15 @@
   }
 
   .lb-drop-active {
+    /* Draw the highlight inside the element so overflow containers don't clip it. */
     outline: 2px solid color-mix(in oklab, var(--color-primary) 35%, transparent);
-    outline-offset: 2px;
+    outline-offset: -2px;
   }
 
   .lb-drop-hover {
+    /* Draw the highlight inside the element so overflow containers don't clip it. */
     outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
+    outline-offset: -2px;
   }
 
   /* Instruction palette/program differences */
