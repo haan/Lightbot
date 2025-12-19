@@ -25,53 +25,29 @@ The production build in `dist/` is fully static: you can open `dist/index.html` 
 
 ---
 
-## Localizing the downloaded version
+## Localization
+
+The downloadable `dist/` build is static, so translations are not added by editing files after download.
+If you want to contribute a new language, add it in the source and rebuild.
 
 Translations live in:
 
 ```text
-src/locales/translations.js
+src/locales/translations.en.js
+src/locales/translations.de.js
 ```
 
-1. Open `src/locales/translations.js` in a text editor.
-2. You will see a JavaScript object similar to this:
+### Best practice for contributing a new language
 
-   ```js
-   window.LIGHTBOT_TRANSLATIONS = {
-      "title": "LightBot v1.1",
-      "controls": {
-         "run": "Run",
-         "stop": "Stop"
-      },
-      "welcomeScreen": {
-         "start": "Start Game",
-         "toggleAudio": "Toggle Audio",
-         "help": "Help",
-         "achievements": "Achievements"
-      }
-     // ...
-   };
-   ```
+1. Copy an existing file (for example `translations.en.js`) to a new file like `translations.fr.js`.
+2. Translate only the **values** (right-hand side). Keep all keys exactly the same.
+3. Add the new language to the i18n resources in `src/lightbot/lightbot.view.canvas.ui.translate.js`.
+4. Add the language option to the language selector in `index.html`.
+5. Open a Pull Request with the new file.
 
-3. **Do not change the keys** (`menu.play`, `welcome.title`, etc.).  
-   Only change the text on the right-hand side to your language. For example:
+If you don't want to open a PR, you can send the translated file to me and I'll add it, but a PR is preferred
+so the change is tracked and reviewed.
 
-   ```js
-   window.LIGHTBOT_TRANSLATIONS = {
-     "menu": {
-       "play": "Spielen",
-       "options": "Optionen",
-       "exit": "Beenden"
-     },
-     "welcome": {
-       "title": "Willkommen bei Lightbot",
-       "subtitle": "Lerne, wie ein Programmierer zu denken!"
-     }
-   };
-   ```
-
-4. Save the file.
-5. Reload the page (or rebuild). The game interface should now appear in your language.
 
 ---
 

@@ -46,7 +46,7 @@ export function createUi(params) {
 
       btn.classList.toggle("btn-primary", !isRunning);
       btn.classList.toggle("btn-error", isRunning);
-      btn.setAttribute("title", isRunning ? i18next.t("stop") : i18next.t("gameScreen.run"));
+      btn.setAttribute("title", isRunning ? i18next.t("controls.stop") : i18next.t("gameScreen.run"));
 
       var runIcon = btn.querySelector(".lb-run-icon");
       if (runIcon && runIcon.classList) runIcon.classList.toggle("hidden", isRunning);
@@ -104,11 +104,13 @@ export function createUi(params) {
 
         var title = document.createElement("div");
         title.className = "font-bold";
-        title.textContent = listItems[i].title;
+        var titleKey = listItems[i].i18nKey ? listItems[i].i18nKey + ".title" : "";
+        title.textContent = titleKey ? i18next.t(titleKey) : listItems[i].title || listItems[i].name;
 
         var message = document.createElement("div");
         message.className = "text-sm opacity-70";
-        message.textContent = listItems[i].message;
+        var messageKey = listItems[i].i18nKey ? listItems[i].i18nKey + ".message" : "";
+        message.textContent = messageKey ? i18next.t(messageKey) : listItems[i].message || "";
 
         content.appendChild(title);
         content.appendChild(message);

@@ -14,16 +14,14 @@ export function createAchievements(params) {
     achievementsList: [
       {
         name: 'lightbot_achievement_complete_level',
-        title: 'Finish Him',
-        message: 'Complete a level.',
+        i18nKey: 'achievements.completeLevel',
         check: function() {
           return true;
         }
       },
       {
         name: 'lightbot_achievement_earn_gold_medal',
-        title: 'Momma\'s Boy',
-        message: 'Earn a gold medal.',
+        i18nKey: 'achievements.earnGoldMedal',
         check: function() {
           if (bot.getNumberOfInstructions() <= map.getMedals().gold) {
             return true;
@@ -33,8 +31,7 @@ export function createAchievements(params) {
       },
       {
         name: 'lightbot_achievement_complete_levels_5',
-        title: 'Ambitious',
-        message: 'Complete 5 levels.',
+        i18nKey: 'achievements.completeLevels5',
         check: function() {
           if (getCompletedLevelCount() >= 5) {
             return true;
@@ -44,8 +41,7 @@ export function createAchievements(params) {
       },
       {
         name: 'lightbot_achievement_complete_levels_10',
-        title: 'Dedicated',
-        message: 'Complete 10 levels.',
+        i18nKey: 'achievements.completeLevels10',
         check: function() {
           if (getCompletedLevelCount() >= 10) {
             return true;
@@ -55,8 +51,7 @@ export function createAchievements(params) {
       },
       {
         name: 'lightbot_achievement_complete_levels_15',
-        title: 'Addicted',
-        message: 'Complete 15 levels.',
+        i18nKey: 'achievements.completeLevels15',
         check: function() {
           if (getCompletedLevelCount() >= 15) {
             return true;
@@ -66,24 +61,21 @@ export function createAchievements(params) {
       },
       {
         name: 'lightbot_achievement_complete_levels_bronze',
-        title: 'Nerd',
-        message: 'Earn bronze medals on all levels.',
+        i18nKey: 'achievements.completeLevelsBronze',
         check: function() {
           return getMedalCount(medals.bronze) === map.getNbrOfLevels();
         }
       },
       {
         name: 'lightbot_achievement_complete_levels_silver',
-        title: 'Elite',
-        message: 'Earn silver medals on all levels.',
+        i18nKey: 'achievements.completeLevelsSilver',
         check: function() {
           return getMedalCount(medals.silver) === map.getNbrOfLevels();
         }
       },
       {
         name: 'lightbot_achievement_complete_levels_gold',
-        title: 'H4X0R',
-        message: 'Earn gold medals on all levels.',
+        i18nKey: 'achievements.completeLevelsGold',
         check: function() {
           return getMedalCount(medals.gold) === map.getNbrOfLevels();
         }

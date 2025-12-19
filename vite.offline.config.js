@@ -80,7 +80,9 @@ export default defineConfig({
       entry: path.resolve(repoRoot, "src/main.js"),
       name: "Lightbot",
       formats: ["iife"],
-      fileName: "lightbot",
+      fileName: function () {
+        return "lightbot.min.js";
+      },
     },
     rollupOptions: {
       output: {

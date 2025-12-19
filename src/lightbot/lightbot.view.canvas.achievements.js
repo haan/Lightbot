@@ -1,4 +1,5 @@
 // Achievement dialog queue: shows unlocked achievements one by one.
+import i18next from "i18next";
 export function extendAchievementsView(params) {
   if (!params) throw new Error("extendAchievementsView: missing params");
   var achievements = params.achievements;
@@ -16,7 +17,10 @@ export function extendAchievementsView(params) {
     if (queue.length > 0) {
       var achievement = queue.shift();
       var messageEl = document.querySelector("#achievementDialog .message");
-      if (messageEl) messageEl.textContent = achievement.message;
+      if (messageEl) {
+        var messageKey = achievement.i18nKey ? achievement.i18nKey + ".message" : "";
+        messageEl.textContent = messageKey ? i18next.t(messageKey) : achievement.message || "";
+      }
       dialogs.open('achievementDialog');
     } else {
       queue = null;

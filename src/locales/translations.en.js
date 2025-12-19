@@ -1,6 +1,5 @@
 // i18n resource table used by i18next. Keys match `data-i18n` / `data-i18n-title` attributes in `index.html`.
-export const LIGHTBOT_TRANSLATIONS = {
-  "title": "LightBot v1.3",
+export const LIGHTBOT_TRANSLATIONS_EN = {
   "controls": {
     "run": "Run",
     "stop": "Stop"
@@ -9,7 +8,8 @@ export const LIGHTBOT_TRANSLATIONS = {
     "start": "Start Game",
     "toggleAudio": "Toggle Audio",
     "help": "Help",
-    "achievements": "Achievements"
+    "achievements": "Achievements",
+    "language": "Language"
   },
   "levelSelectScreen": {
     "title": "Level select",
@@ -18,6 +18,40 @@ export const LIGHTBOT_TRANSLATIONS = {
   "achievementsScreen": {
     "title": "Achievements",
     "mainMenu": "Main Menu"
+  },
+  "achievements": {
+    "completeLevel": {
+      "title": "Finish Him",
+      "message": "Complete a level."
+    },
+    "earnGoldMedal": {
+      "title": "Momma's Boy",
+      "message": "Earn a gold medal."
+    },
+    "completeLevels5": {
+      "title": "Ambitious",
+      "message": "Complete 5 levels."
+    },
+    "completeLevels10": {
+      "title": "Dedicated",
+      "message": "Complete 10 levels."
+    },
+    "completeLevels15": {
+      "title": "Addicted",
+      "message": "Complete 15 levels."
+    },
+    "completeLevelsBronze": {
+      "title": "Nerd",
+      "message": "Earn bronze medals on all levels."
+    },
+    "completeLevelsSilver": {
+      "title": "Elite",
+      "message": "Earn silver medals on all levels."
+    },
+    "completeLevelsGold": {
+      "title": "H4X0R",
+      "message": "Earn gold medals on all levels."
+    }
   },
   "helpScreen": {
     "mainMenu": "Main Menu",
