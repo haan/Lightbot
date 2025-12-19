@@ -13,10 +13,14 @@ export function extendBoxView(params) {
   var heightScale = 0.5;
 
   // visual values
-  var colorTop = "#c9d3d9"; //#ffa605"; // color of top face
-  var colorFront = "#adb8bd"; // "#e28b00"; // color of front face
-  var colorSide = "#e5f0f5"; // "#ffc133"; // color of side face
-  var strokeColor = "#485256"; // color of the stroke
+  var defaultTop = "#c9d3d9"; //#ffa605"; // color of top face
+  var defaultFront = "#adb8bd"; // "#e28b00"; // color of front face
+  var defaultSide = "#e5f0f5"; // "#ffc133"; // color of side face
+  var colorTop = defaultTop;
+  var colorFront = defaultFront;
+  var colorSide = defaultSide;
+  var defaultStroke = "#485256"; // color of the stroke
+  var strokeColor = defaultStroke;
   var strokeWidth = 0.5; // width of the stroke
 
   // visual values (lightBox)
@@ -24,6 +28,44 @@ export function extendBoxView(params) {
   var colorTopLightOnOverlay = "#FEFBAF"; // "#ffff7c";
   var colorTopLightOff = "#0468fb";
   var colorTopLightOffOverlay = "#4c81ff";
+
+  function readThemeColor(names, fallback) {
+    if (typeof window === "undefined" || !window.getComputedStyle) return fallback;
+    var root = document.documentElement;
+    if (!root) return fallback;
+    var styles = window.getComputedStyle(root);
+    for (var i = 0; i < names.length; i++) {
+      var value = styles.getPropertyValue(names[i]);
+      if (value) {
+        var trimmed = value.trim();
+        if (trimmed) return trimmed;
+      }
+    }
+    return fallback;
+  }
+
+  function syncThemeColors() {
+    // Use theme background colors for base boxes: top=base-200, side=base-100, front=base-300.
+    colorTop = readThemeColor(["--color-base-200", "--b2"], defaultTop);
+    colorSide = readThemeColor(["--color-base-300", "--b3"], defaultSide);
+    colorFront = readThemeColor(["--color-base-100", "--b1"], defaultFront);
+    strokeColor = readThemeColor(["--color-base-content", "--bc"], defaultStroke);
+  }
+
+  function observeThemeChanges() {
+    if (typeof MutationObserver === "undefined") return;
+    var root = document.documentElement;
+    if (!root) return;
+    var observer = new MutationObserver(function (mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        if (mutations[i].attributeName === "data-theme") {
+          syncThemeColors();
+          break;
+        }
+      }
+    });
+    observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+  }
 
   // pulse values (pulse is the lighter color in the middle of the top face)
   var pulseSize = 0.5; // this represents the minimum percentage of surface that will be covered (0=disappears completely,1=always entire face), same for all lightboxes
@@ -159,6 +201,9 @@ export function extendBoxView(params) {
 
   LightBox.prototype.step = stepLightBox;
   LightBox.prototype.drawTopFace = drawTopFaceLightBox;
+
+  syncThemeColors();
+  observeThemeChanges();
 
   return { Box: Box, LightBox: LightBox };
 }
