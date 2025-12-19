@@ -32,6 +32,7 @@ function applyTranslations() {
 
 function resolveLanguage(language) {
   if (!language) return null;
+  // normalize "en-US" to "en" when we only have base language keys.
   var normalized = String(language).toLowerCase();
   if (TRANSLATION_RESOURCES[normalized]) return normalized;
   var shortCode = normalized.split("-")[0];

@@ -24,12 +24,10 @@ export function createMedals(params) {
       } else if (nbrInstructions <= lvlMedals.bronze) {
         medal = this.bronze;
       }
+      // only store the result if it's an improvement.
       if (!storage.getItem('lightbot_level_' + map.getLevelNumber()) || parseInt(storage.getItem('lightbot_level_' + map.getLevelNumber()), 10) < medal) {
         storage.setItem('lightbot_level_' + map.getLevelNumber(), medal);
       }
-      /*if (!$.cookie('lightbot_level_' + lightBot.map.getLevelNumber()) || parseInt($.cookie('lightbot_level_' + lightBot.map.getLevelNumber()), 10) < medal) {
-        $.cookie('lightbot_level_' + lightBot.map.getLevelNumber(), medal, { expires: 365 });
-      }*/
       return medal;
     }
   };

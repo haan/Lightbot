@@ -7,10 +7,10 @@ export function canvasView(app, canvas) {
   // refresh rate and rendering loop
   var fps = 60;
   var fpsDelay = 1000 / fps;
-  var fpsTimer = window.setInterval(update, fpsDelay);
+  var renderTimer = null;
 
   // distance between lowest point in the map and the bottom edge
-  var offsetY = 50;
+  var offsetY = 100;
 
   // create projection
   lightBot.projection = new lightBot.Projection(canvas.height, canvas.width / 2, offsetY);
@@ -33,7 +33,7 @@ export function canvasView(app, canvas) {
       lightBot.bot.animate(instruction, oldPos, newPos);
     }
     // check if map has been completed here
-    if (lightBot.map.ready() && lightBot.map.state.check(lightBot.map.state.allLightsOn)) {
+    if (lightBot.map.ready() && lightBot.map.state.allLightsOn()) {
 
       // stop the bot
       lightBot.bot.clearExecutionQueue();
@@ -167,5 +167,19 @@ export function canvasView(app, canvas) {
   lightBot.step = step;
   lightBot.draw = draw;
 
-  return {};
+  function stop() {
+    if (renderTimer == null) return;
+    window.clearInterval(renderTimer);
+    renderTimer = null;
+  }
+
+  function start() {
+    if (renderTimer != null) return;
+    renderTimer = window.setInterval(update, fpsDelay);
+  }
+
+  return {
+    stop: stop,
+    start: start
+  };
 };

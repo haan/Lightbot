@@ -95,9 +95,5 @@ export function createApp() {
     dialogs: dialogs,
   });
 
-  app.ui.dialogs = dialogs;
-  app.ui.media = media;
-  app.ui.editor = editor;
-
   return app;
 }

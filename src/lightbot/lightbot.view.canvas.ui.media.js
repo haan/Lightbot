@@ -9,16 +9,16 @@ export function createMedia() {
       game: "media/audio/game.mp3"
     },
     video: [
-      {webm: "media/video/goal.webm", mp4: "media/video/goal.mp4", ogv: "media/video/goal.ogv"},
-      {webm: "media/video/howto.webm", mp4: "media/video/howto.mp4", ogv: "media/video/howto.ogv"},
-      {webm: "media/video/objects.webm", mp4: "media/video/objects.mp4", ogv: "media/video/objects.ogv"},
-      {webm: "media/video/walk.webm", mp4: "media/video/walk.mp4", ogv: "media/video/walk.ogv"},
-      {webm: "media/video/turnRight.webm", mp4: "media/video/turnRight.mp4", ogv: "media/video/turnRight.ogv"},
-      {webm: "media/video/turnLeft.webm", mp4: "media/video/turnLeft.mp4", ogv: "media/video/turnLeft.ogv"},
-      {webm: "media/video/jump.webm", mp4: "media/video/jump.mp4", ogv: "media/video/jump.ogv"},
-      {webm: "media/video/light.webm", mp4: "media/video/light.mp4", ogv: "media/video/light.ogv"},
-      {webm: "media/video/repeat.webm", mp4: "media/video/repeat.mp4", ogv: "media/video/repeat.ogv"},
-      {webm: "media/video/medal.webm", mp4: "media/video/medal.mp4", ogv: "media/video/medal.ogv"}
+      {webm: "media/video/goal.webm", mp4: "media/video/goal.mp4"},
+      {webm: "media/video/howto.webm", mp4: "media/video/howto.mp4"},
+      {webm: "media/video/objects.webm", mp4: "media/video/objects.mp4"},
+      {webm: "media/video/walk.webm", mp4: "media/video/walk.mp4"},
+      {webm: "media/video/turnRight.webm", mp4: "media/video/turnRight.mp4"},
+      {webm: "media/video/turnLeft.webm", mp4: "media/video/turnLeft.mp4"},
+      {webm: "media/video/jump.webm", mp4: "media/video/jump.mp4"},
+      {webm: "media/video/light.webm", mp4: "media/video/light.mp4"},
+      {webm: "media/video/repeat.webm", mp4: "media/video/repeat.mp4"},
+      {webm: "media/video/medal.webm", mp4: "media/video/medal.mp4"}
     ],
     audioEnabled: false,
     init: function () {
@@ -64,12 +64,12 @@ export function createMedia() {
       var item = this.video[x];
       if (!item) return;
 
+      // reset sources so the browser reloads the selected clip.
       while (this.videoEl.firstChild) this.videoEl.removeChild(this.videoEl.firstChild);
 
       var sources = [
         { src: item.webm, type: "video/webm" },
-        { src: item.mp4, type: "video/mp4" },
-        { src: item.ogv, type: "video/ogg" }
+        { src: item.mp4, type: "video/mp4" }
       ];
 
       for (var i = 0; i < sources.length; i++) {
@@ -81,11 +81,6 @@ export function createMedia() {
       }
 
       this.videoEl.load();
-    },
-    _isActuallyPlaying: function () {
-      if (!this.audioEnabled) return false;
-      if (!this.audioEl) return false;
-      return !this.audioEl.paused;
     },
     syncAudioButtonState: function () {
       var isEnabled = !!this.audioEnabled;

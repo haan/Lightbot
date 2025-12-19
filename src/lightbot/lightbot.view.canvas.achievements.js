@@ -10,6 +10,7 @@ export function extendAchievementsView(params) {
   var queue = null;
 
   function display(achievements) {
+    // queue new achievements so the dialog can show them one at a time.
     if (achievements) {
       queue = achievements;
     }

@@ -40,13 +40,5 @@ export function createBotInstructions() {
   instructions.RepeatInstruction.prototype = new Instruction(instructions.RepeatInstruction.instructionName);
   instructions.RepeatInstruction.prototype.constructor = instructions.RepeatInstruction;
 
-  instructions.WhileInstruction = function(condition, body) {
-    this.condition = condition;
-    this.body = body;
-  };
-  instructions.WhileInstruction.instructionName = 'while';
-  instructions.WhileInstruction.prototype = new Instruction(instructions.WhileInstruction.instructionName);
-  instructions.WhileInstruction.prototype.constructor = instructions.WhileInstruction;
-
   return instructions;
 }

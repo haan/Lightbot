@@ -6,6 +6,8 @@ export function createEditor(params) {
   var map = params.map;
   var instructions = params.instructions;
   var storage = params.storage || localStorage;
+  var PROGRAM_STORAGE_PREFIX = "lightbot_program_level_";
+  var PROGRAM_STORAGE_VERSION = 1;
   if (!map) throw new Error("createEditor: missing map");
   if (!instructions) throw new Error("createEditor: missing instructions");
 
@@ -15,6 +17,7 @@ export function createEditor(params) {
   }
 
   function getMainProgramList() {
+    // main program list only (not nested repeat bodies).
     var container = document.getElementById("programContainer");
     if (!container) return null;
     return container.querySelector(".card-body > .droppable > ul");
@@ -22,6 +25,138 @@ export function createEditor(params) {
 
   function getAllProgramLists() {
     return document.querySelectorAll("#programContainer ul");
+  }
+
+  function getStorageKey() {
+    // per-level storage key for the player's program.
+    return PROGRAM_STORAGE_PREFIX + map.getLevelNumber();
+  }
+
+  function getListItems(listEl) {
+    var items = [];
+    if (listEl && listEl.children) {
+      for (var i = 0; i < listEl.children.length; i++) {
+        var child = listEl.children[i];
+        if (child && child.tagName === "LI") items.push(child);
+      }
+    }
+    return items;
+  }
+
+  function normalizeRepeatCount(value) {
+    // keep repeat counts in a safe, UI-friendly range.
+    var parsed = parseInt(value, 10);
+    if (!isFinite(parsed)) return 2;
+    if (parsed < 1) return 1;
+    if (parsed > 99) return 99;
+    return parsed;
+  }
+
+  function getInstructionTemplate(type) {
+    // clone from the palette so labels stay localized and markup stays consistent.
+    var list = document.querySelector("#instructionsContainer ul");
+    if (!list) return null;
+    var p = list.querySelector("p." + type);
+    if (!p || !p.closest) return null;
+    return p.closest("li");
+  }
+
+  function cloneInstructionTemplate(type) {
+    var source = getInstructionTemplate(type);
+    return source ? source.cloneNode(true) : null;
+  }
+
+  function getProgramDataFromItems(sourceItems) {
+    // serialize the DOM instruction list into JSON-friendly data.
+    var out = [];
+
+    for (var i = 0; i < sourceItems.length; i++) {
+      var li = sourceItems[i];
+      if (!li || !li.querySelector) continue;
+
+      var p = li.querySelector("p");
+      if (!p || !p.classList) continue;
+
+      if (p.classList.contains("walk")) {
+        out.push({ type: "walk" });
+      } else if (p.classList.contains("jump")) {
+        out.push({ type: "jump" });
+      } else if (p.classList.contains("light")) {
+        out.push({ type: "light" });
+      } else if (p.classList.contains("turnLeft")) {
+        out.push({ type: "turnLeft" });
+      } else if (p.classList.contains("turnRight")) {
+        out.push({ type: "turnRight" });
+      } else if (p.classList.contains("repeat")) {
+        var input = li.querySelector('input[type="number"]');
+        var count = normalizeRepeatCount(input ? input.value : 2);
+        var bodyUl = li.querySelector(".lb-repeat-body ul");
+        var bodyItems = getListItems(bodyUl);
+        // recurse into the repeat body.
+        var body = getProgramDataFromItems(bodyItems);
+        out.push({ type: "repeat", count: count, body: body });
+      }
+    }
+
+    return out;
+  }
+
+  function getProgramDataFromList(listEl) {
+    return getProgramDataFromItems(getListItems(listEl));
+  }
+
+  function buildProgramListFromData(listEl, data) {
+    // rebuild the DOM from stored program data (including nested repeats).
+    if (!listEl || !Array.isArray(data)) return;
+    for (var i = 0; i < data.length; i++) {
+      var entry = data[i] || {};
+      var type = entry.type || entry.name;
+      if (typeof type !== "string") continue;
+
+      var li = cloneInstructionTemplate(type);
+      if (!li) continue;
+
+      if (type === "repeat") {
+        var input = li.querySelector('input[type="number"]');
+        var count = normalizeRepeatCount(entry.count != null ? entry.count : entry.counter);
+        if (input) {
+          input.value = String(count);
+          input.setAttribute("value", String(count));
+        }
+
+        var bodyUl = li.querySelector(".lb-repeat-body ul");
+        if (bodyUl) {
+          bodyUl.textContent = "";
+          buildProgramListFromData(bodyUl, Array.isArray(entry.body) ? entry.body : []);
+        }
+      }
+
+      listEl.appendChild(li);
+    }
+  }
+
+  function parseStoredProgram(raw) {
+    if (!raw) return null;
+    var trimmed = String(raw).trim();
+    if (!trimmed) return null;
+
+    // only accept json payloads; legacy html is treated as invalid.
+    var parsed = null;
+    try {
+      parsed = JSON.parse(trimmed);
+    } catch (e) {
+      parsed = null;
+    }
+
+    if (Array.isArray(parsed)) {
+      // legacy json array format (pre-versioning).
+      return { program: parsed, version: PROGRAM_STORAGE_VERSION, migrated: false };
+    }
+    if (parsed && typeof parsed === "object" && Array.isArray(parsed.program)) {
+      return { program: parsed.program, version: parsed.version || PROGRAM_STORAGE_VERSION, migrated: false };
+    }
+
+    return null;
   }
 
   function addClassAllProgramLists(className) {
@@ -43,6 +178,7 @@ export function createEditor(params) {
     _programSortables: [],
 
     _normalizeRepeatRows: function (root) {
+      // ensure repeat label + count are grouped after drag/restore.
       var scope = root || document;
       var rows = scope.querySelectorAll("p.repeat.lb-instruction-row");
 
@@ -83,20 +219,14 @@ export function createEditor(params) {
 
     getProgramInstructions: function () {
       var list = getMainProgramList();
-      var items = [];
-      if (list && list.children) {
-        for (var i = 0; i < list.children.length; i++) {
-          var child = list.children[i];
-          if (child && child.tagName === "LI") items.push(child);
-        }
-      }
-      return this.getInstructions(items);
+      return this.getInstructions(getListItems(list));
     },
 
     initEditor: function () {
       var container = document.getElementById("programContainer");
       if (!container) return;
 
+      // persist repeat count changes.
       container.addEventListener("change", function (e) {
         var t = e.target;
         if (!t) return;
@@ -105,6 +235,7 @@ export function createEditor(params) {
         }
       });
 
+      // handle remove buttons inside the program.
       container.addEventListener("click", function (e) {
         var target = e.target;
         if (!target || !target.closest) return;
@@ -123,15 +254,21 @@ export function createEditor(params) {
       var mainProgramList = getMainProgramList();
       if (!mainProgramList) return;
 
-      // Persist the program as HTML (including repeat counts) so it can be restored per level.
-      var inputs = mainProgramList.querySelectorAll('input[type="number"]');
-      forEachNode(inputs, function (input) {
-        input.setAttribute("value", input.value);
-      });
+      var program = getProgramDataFromList(mainProgramList);
+      var key = getStorageKey();
+
+      if (!program.length) {
+        // drop empty programs to keep storage tidy.
+        storage.removeItem(key);
+        return;
+      }
 
       storage.setItem(
-        "lightbot_program_level_" + map.getLevelNumber(),
-        mainProgramList.innerHTML
+        key,
+        JSON.stringify({
+          version: PROGRAM_STORAGE_VERSION,
+          program: program,
+        })
       );
     },
 
@@ -139,11 +276,20 @@ export function createEditor(params) {
       var mainProgramList = getMainProgramList();
       if (!mainProgramList) return;
 
-      // Restore the saved HTML snippet for this level into the program list.
-      var saved = storage.getItem("lightbot_program_level_" + map.getLevelNumber());
-      if (saved) {
-        mainProgramList.insertAdjacentHTML("beforeend", saved);
+      var key = getStorageKey();
+      var saved = storage.getItem(key);
+      if (!saved) return;
+
+      var parsed = parseStoredProgram(saved);
+      if (!parsed) {
+        // legacy html or corrupt data: wipe the program for this level.
+        storage.removeItem(key);
+        return;
       }
+      if (!parsed.program || !parsed.program.length) return;
+
+      // rebuild the dom from templates so translations match the current language.
+      buildProgramListFromData(mainProgramList, parsed.program);
 
       // Strip any transient drag/drop CSS classes so the restored DOM isn't "stuck" in a drag state.
       var classesToRemove = ["lb-drop-active", "lb-drop-hover", "sortable-ghost", "sortable-chosen", "lb-dragging"];
@@ -165,6 +311,7 @@ export function createEditor(params) {
     },
 
     _cleanupProgramSortables: function () {
+      // destroy Sortable instances for lists that were removed from the DOM.
       var kept = [];
       for (var i = 0; i < this._programSortables.length; i++) {
         var instance = this._programSortables[i];
@@ -181,6 +328,7 @@ export function createEditor(params) {
     _ensureInstructionSortable: function () {
       if (this._instructionSortable) return;
 
+      // instructions palette is clone-only; never reorders.
       var instructionList = document.querySelector("#instructionsContainer ul");
       if (!instructionList) return;
 
@@ -221,6 +369,7 @@ export function createEditor(params) {
     },
 
     _ensureProgramSortables: function (rootEl) {
+      // attach Sortable to each program list (main + nested repeats).
       var lists = [];
       if (rootEl) {
         if (rootEl.tagName && rootEl.tagName.toLowerCase() === "ul") {
@@ -272,6 +421,7 @@ export function createEditor(params) {
             }
           },
           onAdd: function (evt) {
+            // repeats can introduce nested program lists on drop.
             if (evt.item && evt.item.querySelector && evt.item.querySelector("div.droppable ul")) {
               self._ensureProgramSortables(evt.item);
             }
@@ -306,6 +456,7 @@ export function createEditor(params) {
     },
 
     getInstructions: function (sourceItems) {
+      // convert DOM instructions into bot instruction instances.
       var out = [];
 
       for (var i = 0; i < sourceItems.length; i++) {

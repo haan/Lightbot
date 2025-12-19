@@ -322,12 +322,6 @@ export function createMap(params) {
   var medals = null; // medals for the level
   var levelNumber = null; // what level is the user currently playing
 
-  /*map.loadMaps = function() {
-    $.getJSON('maps/maps.txt', function(data){
-      maps = data;
-    });
-  };*/
-
   map.loadMap = function(x) {
     if (!maps) {
       console.error('Map list is empty');
@@ -350,9 +344,9 @@ export function createMap(params) {
         mapRef[i] = new Array(levelSize.y);
       }
 
-      var botInMap = false;
       var nbrLights = 0;
 
+      // map data is authored top-down; flip y when building mapRef.
       for (var i = 0; i < maps[x].map.length; i++){
         for (var j = 0; j < maps[x].map[i].length; j++) {
           switch (maps[x].map[i][j].t) {

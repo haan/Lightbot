@@ -18,6 +18,7 @@ export function createBot(params) {
   }
 
   function cloneInstructionDeep(instruction) {
+    // clone repeat bodies so execution can mutate counters safely.
     if (!instruction) return instruction;
 
     var out = cloneShallowIncludingInherited(instruction);
@@ -63,9 +64,6 @@ export function createBot(params) {
     clearExecutionQueue: function() {
       this.executionQueue.length = 0;
     },
-    queueInstruction: function(instruction) {
-      this.instructionQueue.push(instruction);
-    },
     queueInstructions: function(instructions) {
       this.instructionQueue = this.instructionQueue.concat(instructions);
     },
@@ -101,6 +99,7 @@ export function createBot(params) {
               instruction.counter--;
               this.executionQueue.unshift(instruction);
             }
+            // expand the repeat body onto the execution queue.
             for (var i = instruction.body.length - 1; i >= 0 ; i--) {
               var tmp = instruction.body[i];
               var tmp2 = cloneInstructionDeep(tmp);

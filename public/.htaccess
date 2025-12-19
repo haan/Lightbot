@@ -7,6 +7,5 @@ AddType audio/wav wav
  
 AddType video/mp4 mp4
 AddType video/mp4 m4v
-AddType video/ogg ogv
 AddType video/webm webm
 AddType video/webm webmv

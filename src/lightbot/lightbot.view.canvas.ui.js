@@ -25,25 +25,36 @@ export function createUi(params) {
   }
 
   function hideAllScreens() {
+    // hide all screens before showing the next one.
     var screens = document.querySelectorAll(".lb-screen");
     for (var i = 0; i < screens.length; i++) screens[i].classList.add("hidden");
   }
 
   function showScreen(id) {
+    // show a single screen by id.
     var el = document.getElementById(id);
     if (el) el.classList.remove("hidden");
   }
 
   var ui = {
     History: null,
+    renderLoop: null,
     dialogs: dialogs,
     media: media,
     editor: editor,
+
+    _setRenderLoopState: function (isRunning) {
+      var loop = ui.renderLoop;
+      if (!loop) return;
+      if (isRunning && typeof loop.start === "function") loop.start();
+      if (!isRunning && typeof loop.stop === "function") loop.stop();
+    },
 
     _setRunButtonState: function (isRunning) {
       var btn = document.getElementById("runButton");
       if (!btn) return;
 
+      // switch button style, tooltip, and icons based on run state.
       btn.classList.toggle("btn-primary", !isRunning);
       btn.classList.toggle("btn-error", isRunning);
       btn.setAttribute("title", isRunning ? i18next.t("controls.stop") : i18next.t("gameScreen.run"));
@@ -56,6 +67,7 @@ export function createUi(params) {
 
     showWelcomeScreen: function (hist) {
       media.playMenuAudio();
+      ui._setRenderLoopState(false);
 
       if (hist == null && ui.History) ui.History.pushState({ page: "welcomeScreen" });
       document.title = "Lightbot - Welcome";
@@ -66,6 +78,7 @@ export function createUi(params) {
 
     showHelpScreen: function (hist) {
       media.playMenuAudio();
+      ui._setRenderLoopState(false);
 
       if (hist == null && ui.History) ui.History.pushState({ page: "helpScreen" });
       document.title = "Lightbot - Help";
@@ -73,6 +86,7 @@ export function createUi(params) {
       hideAllScreens();
       showScreen("helpScreen");
 
+      // default the accordion to the first topic and load its video.
       var firstRadio = document.querySelector('#helpScreenAccordion [data-video="0"] input[type="radio"]');
       if (firstRadio) firstRadio.checked = true;
       if (typeof media.playVideo === "function") media.playVideo(0);
@@ -80,11 +94,13 @@ export function createUi(params) {
 
     showAchievementsScreen: function (hist) {
       media.playMenuAudio();
+      ui._setRenderLoopState(false);
 
       var list = document.getElementById("achievementsList");
       if (list) list.textContent = "";
 
       var listItems = achievements.getAchievementsList();
+      // rebuild the achievements list in the current language.
       for (var i = 0; i < listItems.length; i++) {
         var enabled = !!achievements.hasAchievement(listItems[i].name);
         if (!list) continue;
@@ -129,10 +145,12 @@ export function createUi(params) {
 
     showLevelSelectScreen: function (hist) {
       media.playMenuAudio();
+      ui._setRenderLoopState(false);
 
       var levelList = document.getElementById("levelList");
       if (levelList) levelList.textContent = "";
 
+      // build the level tiles with medal state from storage.
       for (var i = 0; i < map.getNbrOfLevels(); i++) {
         var item = parseInt(storage.getItem("lightbot_level_" + i), 10);
         var medal = "";
@@ -189,6 +207,7 @@ export function createUi(params) {
 
       hideAllScreens();
 
+      // clear program list before loading saved instructions.
       var programList = document.querySelector("#programContainer ul");
       if (programList) programList.textContent = "";
 
@@ -199,6 +218,7 @@ export function createUi(params) {
 
       ui._setRunButtonState(false);
       showScreen("gameScreen");
+      ui._setRenderLoopState(true);
     },
 
     initButtons: function () {
@@ -232,6 +252,7 @@ export function createUi(params) {
         levelList.addEventListener("click", function (e) {
           var tile = e.target && e.target.closest ? e.target.closest(".lb-level-tile") : null;
           if (!tile) return;
+          // open the selected level.
           ui.showGameScreen(parseInt(tile.getAttribute("data-level"), 10));
         });
       }
@@ -247,9 +268,11 @@ export function createUi(params) {
       if (runButton) {
         runButton.addEventListener("click", function () {
           if (bot.isInExecutionMode()) {
+            // stop execution and reset the map.
             map.reset();
             ui._setRunButtonState(false);
           } else {
+            // queue current program and start execution.
             var program = editor.getProgramInstructions();
             bot.queueInstructions(program);
             bot.execute();
@@ -261,6 +284,7 @@ export function createUi(params) {
       var clearButton = document.getElementById("clearButton");
       if (clearButton) {
         clearButton.addEventListener("click", function () {
+          // wipe the program and persist the empty state.
           var list = document.querySelector("#programContainer ul");
           if (list) list.textContent = "";
           editor.saveProgram();
@@ -286,6 +310,7 @@ export function createUi(params) {
       var slider = document.getElementById("speedSlider");
       if (!slider) return;
 
+      // keep the slider in sync with the current speed setting.
       slider.value = String(speed.get());
       slider.addEventListener("input", function () {
         speed.set(parseFloat(slider.value));

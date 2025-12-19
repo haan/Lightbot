@@ -100,6 +100,7 @@ export function createAchievements(params) {
   };
 
   function getCompletedLevelCount() {
+    // count completed levels from storage.
     var count = 0;
     for (var i = 0; i < map.getNbrOfLevels(); i++) {
       if (storage.getItem('lightbot_level_' + i)) {
@@ -110,6 +111,7 @@ export function createAchievements(params) {
   }
 
   function getMedalCount(quality) {
+    // count levels at or above the requested medal quality.
     var count = 0;
     for (var i = 0; i < map.getNbrOfLevels(); i++) {
       if (storage.getItem('lightbot_level_' + i) && parseInt(storage.getItem('lightbot_level_' + i), 10) >= quality) {

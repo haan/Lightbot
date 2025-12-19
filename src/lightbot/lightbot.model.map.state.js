@@ -17,9 +17,6 @@ export function createMapState(params) {
         }
       }
       return true;
-    },
-    check: function(functionToCheck) {
-      return functionToCheck();
     }
   };
 
