@@ -21,33 +21,34 @@ No installation or account is required for the online version.
 
 ## Downloading and running Lightbot locally
 
-The production build in `dist/` is fully static: you can open `dist/index.html` directly in a browser (no server required).
+1. Download the latest release from the Releases page.
+2. Unpack the archive.
+3. Open `index.html` in your browser (no server required).
 
 ---
 
 ## Localization
 
-The downloadable `dist/` build is static, so translations are not added by editing files after download.
-If you want to contribute a new language, add it in the source and rebuild.
+The release build is static, so you cannot add a new localization by editing files after download.
+New languages must be added in the source and released as part of the project.
 
 Translations live in:
 
 ```text
 src/locales/translations.en.js
 src/locales/translations.de.js
+src/locales/translations.fr.js
 ```
 
 ### Best practice for contributing a new language
 
-1. Copy an existing file (for example `translations.en.js`) to a new file like `translations.fr.js`.
+1. Copy an existing file (for example `translations.en.js`) to a new file like `translations.it.js`.
 2. Translate only the **values** (right-hand side). Keep all keys exactly the same.
 3. Add the new language to the i18n resources in `src/lightbot/lightbot.view.canvas.ui.translate.js`.
 4. Add the language option to the language selector in `index.html`.
 5. Open a Pull Request with the new file.
 
-If you don't want to open a PR, you can send the translated file to me and I'll add it, but a PR is preferred
-so the change is tracked and reviewed.
-
+Only Pull Requests are accepted for new translations.
 
 ---
 
