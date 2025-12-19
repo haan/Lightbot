@@ -1,8 +1,9 @@
 // Vite entry point: create the app instance, initialize UI/i18n/history, then start the canvas render loop.
 import "./styles/main.css";
 
-document.documentElement.style.setProperty("--lb-achievement-bg", 'url("img/achievement.png")');
-document.documentElement.style.setProperty("--lb-medals-bg", 'url("img/medals.png")');
+var assetBaseUrl = import.meta.env.BASE_URL || "/";
+document.documentElement.style.setProperty("--lb-achievement-bg", 'url("' + assetBaseUrl + 'img/achievement.png")');
+document.documentElement.style.setProperty("--lb-medals-bg", 'url("' + assetBaseUrl + 'img/medals.png")');
 
 import { themeChange } from "theme-change";
 
