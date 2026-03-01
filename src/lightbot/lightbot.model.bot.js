@@ -106,7 +106,6 @@ export function createBot(params) {
               this.executionQueue.unshift(tmp2);
             }
             return this.executeNextInstruction();
-            break;
           default:
             console.error('Bot executeNextInstruction: unknown instruction "' + instruction.name + '"');
             break;

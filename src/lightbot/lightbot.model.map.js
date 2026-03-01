@@ -347,7 +347,7 @@ export function createMap(params) {
       var nbrLights = 0;
 
       // map data is authored top-down; flip y when building mapRef.
-      for (var i = 0; i < maps[x].map.length; i++){
+      for (i = 0; i < maps[x].map.length; i++){
         for (var j = 0; j < maps[x].map[i].length; j++) {
           switch (maps[x].map[i][j].t) {
             case 'b':
