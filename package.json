@@ -32,6 +32,6 @@
   "dependencies": {
     "i18next": "^25.5.2",
     "sortablejs": "^1.15.6",
-    "theme-change": "^2.5.0"
+    "theme-change": "^3.0.4"
   }
 }
