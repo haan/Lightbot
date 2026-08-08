@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --config vite.offline.config.js",
+    "build": "vite build --config vite.offline.config.mjs",
     "build:web": "vite build --outDir dist-web",
     "preview": "vite preview",
     "clean": "rimraf dist dist-web",
@@ -18,8 +18,8 @@
     "eslint": "10.0.2",
     "rimraf": "^6.1.2",
     "tailwindcss": "^4.0.0",
-    "vite": "^8.0.16",
-    "vite-plugin-singlefile": "^2.0.0"
+    "vite": "^8.2.1",
+    "vite-plugin-singlefile": "^2.3.3"
   },
   "repository": {
     "type": "git",
