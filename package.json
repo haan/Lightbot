@@ -13,11 +13,11 @@
     "lint": "eslint ."
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.0.0",
-    "daisyui": "^5.0.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "daisyui": "^5.7.16",
     "eslint": "10.0.2",
     "rimraf": "^6.1.2",
-    "tailwindcss": "^4.0.0",
+    "tailwindcss": "^4.3.3",
     "vite": "^8.2.1",
     "vite-plugin-singlefile": "^2.3.3"
   },
