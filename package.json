@@ -16,10 +16,10 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "daisyui": "^5.7.47",
-    "eslint": "10.11.0",
+    "eslint": "10.12.0",
     "rimraf": "^6.1.2",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.3.1",
+    "vite": "^8.3.4",
     "vite-plugin-singlefile": "^2.3.3"
   },
   "repository": {
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/haan/Lightbot#readme",
   "dependencies": {
-    "i18next": "^26.3.6",
+    "i18next": "^26.4.4",
     "sortablejs": "^1.15.6",
     "theme-change": "^3.0.4"
   }
