@@ -65,10 +65,14 @@ If you prefer to build the game yourself (or modify the code):
 
 2. **Install dependencies**
 
-   Make sure you have [Node.js](https://nodejs.org/) installed, then run:
+   Install [Node.js](https://nodejs.org/) 26.12.1 or a newer 26.x release
+   and npm 11.19.0. The version in `.nvmrc` is also used by CI and release builds.
+   With nvm-windows, run `nvm install 26.12.1` and `nvm use 26.12.1`;
+   with nvm on macOS/Linux, run `nvm install` and `nvm use`.
+   Check `node --version`, then run:
 
    ```bash
-   npm install
+   npm ci
    ```
 
 3. **Start the dev server**
@@ -88,6 +92,20 @@ If you prefer to build the game yourself (or modify the code):
 5. **Run locally**
 
    Open `dist/index.html` in your browser.
+
+### Runtime security
+
+Node.js 26.12.1 includes the fix for the Brotli decoder vulnerability
+[CVE-2026-111497](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases).
+The Node engine requirement and `.npmrc` reject unsupported runtimes during dependency
+installation. After upgrading Node, restart development and preview servers so they
+use the patched runtime. `npm audit` checks package dependencies, not Node's bundled
+Brotli decoder.
+
+Lightbot's web and offline builds are static browser assets; the repository contains
+no Python application or Node production backend. This update protects the Node
+development, build, and CI environment. Any separately managed hosting software or
+reverse proxy needs its own vendor updates.
 
 ---
 
