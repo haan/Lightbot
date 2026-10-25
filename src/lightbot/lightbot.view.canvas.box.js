@@ -14,11 +14,7 @@ export function extendBoxView(params) {
 
   // visual values
   var defaultTop = "#c9d3d9"; //#ffa605"; // color of top face
-  var defaultFront = "#adb8bd"; // "#e28b00"; // color of front face
-  var defaultSide = "#e5f0f5"; // "#ffc133"; // color of side face
   var colorTop = defaultTop;
-  var colorFront = defaultFront;
-  var colorSide = defaultSide;
   var defaultStroke = "#485256"; // color of the stroke
   var strokeColor = defaultStroke;
   var strokeWidth = 0.5; // width of the stroke
@@ -45,10 +41,8 @@ export function extendBoxView(params) {
   }
 
   function syncThemeColors() {
-    // Use theme background colors for base boxes: top=base-200, side=base-100, front=base-300.
+    // Use one theme surface with consistent lighting on each orientation.
     colorTop = readThemeColor(["--color-base-200", "--b2"], defaultTop);
-    colorSide = readThemeColor(["--color-base-300", "--b3"], defaultSide);
-    colorFront = readThemeColor(["--color-base-100", "--b1"], defaultFront);
     strokeColor = readThemeColor(["--color-base-content", "--bc"], defaultStroke);
   }
 
@@ -68,10 +62,38 @@ export function extendBoxView(params) {
   }
 
   // pulse values (pulse is the lighter color in the middle of the top face)
-  var pulseSize = 0.5; // this represents the minimum percentage of surface that will be covered (0=disappears completely,1=always entire face), same for all lightboxes
-  var animationFrames = 30; // # of frames for the pulse to fully grow/shrink, same for all lightboxes
+  var animationFrames = 60; // slower, restrained pulse inside a fixed inset panel
   LightBox.prototype.pulseGrowing = true; // controls the growth/shrink of the pulse animation
   LightBox.prototype.currentAnimationFrame = 0; // current animation frame, used internally to control the animation
+
+  function fillFace(tint, opacity, edgeOpacity) {
+    app.ctx.fillStyle = colorTop;
+    app.ctx.fill();
+    app.ctx.save();
+    app.ctx.fillStyle = tint;
+    app.ctx.globalAlpha = opacity;
+    app.ctx.fill();
+    app.ctx.globalAlpha = edgeOpacity;
+    app.ctx.stroke();
+    app.ctx.restore();
+  }
+
+  function topInset(tile, inset) {
+    var height = tile.getHeight() * edgeLength;
+    var points = [
+      [tile.x * edgeLength + inset, tile.y * edgeLength + inset],
+      [(tile.x + 1) * edgeLength - inset, tile.y * edgeLength + inset],
+      [(tile.x + 1) * edgeLength - inset, (tile.y + 1) * edgeLength - inset],
+      [tile.x * edgeLength + inset, (tile.y + 1) * edgeLength - inset],
+    ];
+    app.ctx.beginPath();
+    points.forEach(function (point, index) {
+      var p = app.projection.project(point[0], height, point[1]);
+      if (index === 0) app.ctx.moveTo(p.x, p.y);
+      else app.ctx.lineTo(p.x, p.y);
+    });
+    app.ctx.closePath();
+  }
 
   function drawTopFaceBox() {
     // top face: p1 is front left and rest is counter-clockwise
@@ -86,45 +108,35 @@ export function extendBoxView(params) {
     app.ctx.lineTo(p3.x, p3.y);
     app.ctx.lineTo(p4.x, p4.y);
     app.ctx.lineTo(p1.x, p1.y);
-    app.ctx.fill();
-    app.ctx.stroke();
+    fillFace("#ffffff", 0.07, 0.48);
   }
 
   function drawTopFaceLightBox() {
-    // top face: p1 is front left and rest is counter-clockwise
+    // Keep the tile's rim visible so the light reads as part of its surface.
+    drawTopFaceBox.call(this);
+    app.ctx.save();
+    topInset(this, 3);
+    app.ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
+    app.ctx.fill();
+    topInset(this, 5);
     app.ctx.fillStyle = this.lightOn ? colorTopLightOn : colorTopLightOff;
-    var p1 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    var p2 = app.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
-    var p3 = app.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
-    var p4 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
-    app.ctx.beginPath();
-    app.ctx.moveTo(p1.x, p1.y);
-    app.ctx.lineTo(p2.x, p2.y);
-    app.ctx.lineTo(p3.x, p3.y);
-    app.ctx.lineTo(p4.x, p4.y);
-    app.ctx.lineTo(p1.x, p1.y);
+    if (this.lightOn) {
+      app.ctx.shadowColor = "rgba(255, 229, 69, 0.4)";
+      app.ctx.shadowBlur = 6;
+    }
     app.ctx.fill();
-    app.ctx.stroke();
+    app.ctx.shadowBlur = 0;
 
-    // top face overlay: p1 is front left and rest is counter-clockwise
-    var overlayOffset = (1-(this.currentAnimationFrame / animationFrames)) * ((1-pulseSize) * edgeLength / 2);
+    var phase = this.currentAnimationFrame / animationFrames;
+    var pulse = (1 - Math.cos(phase * Math.PI)) / 2;
+    topInset(this, 11 - pulse * 3);
     app.ctx.fillStyle = this.lightOn ? colorTopLightOnOverlay : colorTopLightOffOverlay;
-    p1 = app.projection.project(this.x * edgeLength + overlayOffset, this.getHeight() * edgeLength, this.y * edgeLength + overlayOffset);
-    p2 = app.projection.project((this.x+1) * edgeLength - overlayOffset, this.getHeight() * edgeLength, this.y * edgeLength + overlayOffset);
-    p3 = app.projection.project((this.x+1) * edgeLength - overlayOffset, this.getHeight() * edgeLength, (this.y+1) * edgeLength - overlayOffset);
-    p4 = app.projection.project(this.x * edgeLength + overlayOffset, this.getHeight() * edgeLength, (this.y+1) * edgeLength - overlayOffset);
-    app.ctx.beginPath();
-    app.ctx.moveTo(p1.x, p1.y);
-    app.ctx.lineTo(p2.x, p2.y);
-    app.ctx.lineTo(p3.x, p3.y);
-    app.ctx.lineTo(p4.x, p4.y);
-    app.ctx.lineTo(p1.x, p1.y);
     app.ctx.fill();
+    app.ctx.restore();
   }
 
   function drawFrontFaceBox() {
     // front face: p1 is bottom left and rest is counter-clockwise;
-    app.ctx.fillStyle = colorFront;
     var p1 = app.projection.project(this.x * edgeLength, 0, this.y * edgeLength);
     var p2 = app.projection.project((this.x+1) * edgeLength, 0, this.y * edgeLength);
     var p3 = app.projection.project((this.x+1) * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
@@ -135,13 +147,11 @@ export function extendBoxView(params) {
     app.ctx.lineTo(p3.x, p3.y);
     app.ctx.lineTo(p4.x, p4.y);
     app.ctx.lineTo(p1.x, p1.y);
-    app.ctx.fill();
-    app.ctx.stroke();
+    fillFace("#000000", 0.24, 0.38);
   }
 
   function drawSideFaceBox() {
     // left side face: p1 is bottom front and rest is counter-clockwise;
-    app.ctx.fillStyle = colorSide;
     var p1 = app.projection.project(this.x * edgeLength, 0, this.y * edgeLength);
     var p2 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, this.y * edgeLength);
     var p3 = app.projection.project(this.x * edgeLength, this.getHeight() * edgeLength, (this.y+1) * edgeLength);
@@ -152,8 +162,7 @@ export function extendBoxView(params) {
     app.ctx.lineTo(p3.x, p3.y);
     app.ctx.lineTo(p4.x, p4.y);
     app.ctx.lineTo(p1.x, p1.y);
-    app.ctx.fill();
-    app.ctx.stroke();
+    fillFace("#000000", 0.10, 0.38);
   }
 
   function stepBox() {}

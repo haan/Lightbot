@@ -67,8 +67,9 @@ function updateLanguageSelect(language) {
 function updateRunButtonTitle() {
   var btn = document.getElementById("runButton");
   if (!btn) return;
-  var isRunning = btn.classList.contains("btn-error");
-  btn.setAttribute("title", i18next.t(isRunning ? "controls.stop" : "gameScreen.run"));
+  var label = btn.querySelector(".lb-run-label");
+  var key = label ? label.getAttribute("data-i18n") : "gameScreen.run";
+  btn.setAttribute("title", i18next.t(key));
 }
 
 function handleLanguageChange(language) {

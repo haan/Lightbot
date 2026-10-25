@@ -20,7 +20,7 @@ export function createEditor(params) {
     // main program list only (not nested repeat bodies).
     var container = document.getElementById("programContainer");
     if (!container) return null;
-    return container.querySelector(".card-body > .droppable > ul");
+    return container.querySelector(".game-program-body > .droppable > ul");
   }
 
   function getAllProgramLists() {
@@ -176,6 +176,54 @@ export function createEditor(params) {
   var editor = {
     _instructionSortable: null,
     _programSortables: [],
+    _executing: false,
+    _activeRow: null,
+    _suppressClickUntil: 0,
+
+    _prepareProgramRows: function () {
+      document.querySelectorAll("#programContainer .lb-instruction-row").forEach(function (row) {
+        // Palette rows add commands; program rows are drag handles with their own controls.
+        row.removeAttribute("role");
+        row.removeAttribute("tabindex");
+      });
+    },
+
+    setExecuting: function (executing) {
+      this._executing = executing;
+      var palette = document.getElementById("instructionsContainer");
+      var program = getMainProgramList();
+      if (palette) palette.inert = executing;
+      if (program) program.inert = executing;
+      if (this._instructionSortable) this._instructionSortable.option("disabled", executing);
+      this._programSortables.forEach(function (sortable) { sortable.option("disabled", executing); });
+      if (!executing) {
+        this._activeRow = null;
+        document.querySelectorAll("#programContainer .is-active, #programContainer .is-blocked").forEach(function (row) {
+          row.classList.remove("is-active", "is-blocked");
+          row.removeAttribute("aria-current");
+        });
+      }
+    },
+
+    highlightInstruction: function (instruction, blocked) {
+      if (this._activeRow) {
+        this._activeRow.classList.remove("is-active");
+        this._activeRow.removeAttribute("aria-current");
+      }
+      var row = instruction && instruction.sourceElement;
+      this._activeRow = row || null;
+      if (!row) return;
+      row.classList.add("is-active");
+      row.setAttribute("aria-current", "step");
+      if (blocked) row.classList.add("is-blocked");
+      var scrollBox = document.querySelector(".game-program-scroll");
+      if (scrollBox) {
+        var bounds = scrollBox.getBoundingClientRect();
+        var rowBounds = row.getBoundingClientRect();
+        if (rowBounds.bottom > bounds.bottom - 8) scrollBox.scrollTop += rowBounds.bottom - bounds.bottom + 8;
+        if (rowBounds.top < bounds.top + 8) scrollBox.scrollTop -= bounds.top - rowBounds.top + 8;
+      }
+    },
 
     _normalizeRepeatRows: function (root) {
       // ensure repeat label + count are grouped after drag/restore.
@@ -226,19 +274,52 @@ export function createEditor(params) {
       var container = document.getElementById("programContainer");
       if (!container) return;
 
+      var palette = document.getElementById("instructionsContainer");
+      function addFromPalette(e) {
+        if (editor._executing || Date.now() < editor._suppressClickUntil) return;
+        if (e.target.closest("input, button")) return;
+        var row = e.target.closest(".lb-instruction-row");
+        if (!row || !palette.contains(row)) return;
+        if (e.type === "keydown" && e.key !== "Enter" && e.key !== " ") return;
+        e.preventDefault();
+        var list = getMainProgramList();
+        if (!list) return;
+        var item = row.closest("li").cloneNode(true);
+        list.appendChild(item);
+        editor._prepareProgramRows();
+        editor.makeDroppable();
+        editor.saveProgram();
+        var scrollBox = list.parentElement;
+        scrollBox.scrollTop = scrollBox.scrollHeight;
+      }
+      if (palette) {
+        palette.addEventListener("click", addFromPalette);
+        palette.addEventListener("keydown", addFromPalette);
+      }
+
       // persist repeat count changes.
       container.addEventListener("change", function (e) {
+        if (editor._executing) return;
         var t = e.target;
         if (!t) return;
         if (t.tagName === "INPUT" && t.type === "number") {
+          t.value = String(normalizeRepeatCount(t.value));
           editor.saveProgram();
         }
       });
 
       // handle remove buttons inside the program.
       container.addEventListener("click", function (e) {
+        if (editor._executing) return;
         var target = e.target;
         if (!target || !target.closest) return;
+        var stepButton = target.closest("[data-repeat-step]");
+        if (stepButton && container.contains(stepButton)) {
+          var count = stepButton.closest(".lb-repeat-count").querySelector("input");
+          count.value = String(normalizeRepeatCount(normalizeRepeatCount(count.value) + Number(stepButton.getAttribute("data-repeat-step"))));
+          editor.saveProgram();
+          return;
+        }
         var btn = target.closest(".lb-instruction-delete");
         if (!btn || !container.contains(btn)) return;
         var li = btn.closest("li");
@@ -251,6 +332,7 @@ export function createEditor(params) {
     },
 
     saveProgram: function () {
+      this._prepareProgramRows();
       var mainProgramList = getMainProgramList();
       if (!mainProgramList) return;
 
@@ -307,6 +389,7 @@ export function createEditor(params) {
       forEachNode(placeholders, function (li) { li.remove(); });
 
       this._normalizeRepeatRows(document.getElementById("programContainer"));
+      this._prepareProgramRows();
       this.makeDroppable();
     },
 
@@ -341,7 +424,7 @@ export function createEditor(params) {
         sort: false,
         draggable: "li",
         handle: "p",
-        filter: "input, .lb-instruction-delete",
+        filter: "input, .lb-repeat-count, .lb-instruction-delete",
         preventOnFilter: false,
         emptyInsertThreshold: 5,
         swapThreshold: 0.5,
@@ -353,6 +436,7 @@ export function createEditor(params) {
           addClassAllProgramLists("lb-drop-active");
         },
         onEnd: function () {
+          editor._suppressClickUntil = Date.now() + 200;
           var lists = getAllProgramLists();
           forEachNode(lists, function (el) {
             if (!el || !el.classList) return;
@@ -396,7 +480,7 @@ export function createEditor(params) {
           sort: true,
           draggable: "li",
           handle: "p",
-          filter: "input, .lb-instruction-delete",
+          filter: "input, .lb-repeat-count, .lb-instruction-delete",
           preventOnFilter: false,
           emptyInsertThreshold: 5,
           swapThreshold: 0.5,
@@ -466,6 +550,8 @@ export function createEditor(params) {
         var p = li.querySelector("p");
         if (!p || !p.classList) continue;
 
+        var previousLength = out.length;
+
         if (p.classList.contains("walk")) {
           out.push(new instructions.WalkInstruction());
         } else if (p.classList.contains("jump")) {
@@ -478,7 +564,7 @@ export function createEditor(params) {
           out.push(new instructions.TurnRightInstruction());
         } else if (p.classList.contains("repeat")) {
           var input = li.querySelector('input[type="number"]');
-          var counter = input ? input.value : 2;
+          var counter = normalizeRepeatCount(input ? input.value : 2);
           var bodyUl = li.querySelector(".lb-repeat-body ul");
           var bodyLis = [];
           if (bodyUl && bodyUl.children) {
@@ -490,6 +576,9 @@ export function createEditor(params) {
           var body = editor.getInstructions(bodyLis);
           out.push(new instructions.RepeatInstruction(counter, body));
         }
+        // Execution clones retain this reference, including instructions inside repeats.
+        // Persistence serializes only command data, never DOM references.
+        if (out.length > previousLength) out[out.length - 1].sourceElement = p;
       }
       return out;
     },

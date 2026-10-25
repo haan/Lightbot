@@ -611,4 +611,108 @@
   .lb-repeat-body-inner>ul {
     min-height: 2.5rem;
   }
+
+  /* Gameplay is a fixed workspace: only the program itself scrolls. */
+  .game-screen { padding: 16px; overflow: hidden; }
+  .game-layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; grid-template-rows: minmax(0, 1fr); gap: 20px; height: 100%; }
+  .game-board { display: flex; flex-direction: column; gap: 12px; min-width: 0; min-height: 0; }
+  .game-board-header, .game-navigation, .game-program-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .game-board-header, .game-palette-header { height: 38px; flex: 0 0 38px; }
+  .game-board-header h1 { font-size: 22px; font-weight: 800; letter-spacing: .035em; text-transform: uppercase; }
+  .game-navigation { gap: 6px; }
+  .game-navigation .btn { border-radius: 2px; background: var(--color-base-200); border-color: color-mix(in srgb, var(--color-primary) 20%, transparent); box-shadow: none; font-weight: 400; }
+  #canvasContainer { flex: 1; min-height: 0; display: grid; place-items: center; overflow: hidden; border-radius: 3px; background: color-mix(in srgb, var(--color-base-200) 40%, var(--color-base-100)); }
+  #gameCanvas { width: 100%; height: 100%; object-fit: contain; }
+  .game-workspace { display: flex; flex-direction: column; gap: 16px; min-height: 0; padding-left: 18px; border-left: 1px solid color-mix(in srgb, var(--color-base-content) 14%, transparent); }
+  .game-workspace h2 { font-size: 15px; font-weight: 750; }
+  .game-hint { font-size: 11px; line-height: 1.5; color: color-mix(in srgb, var(--color-base-content) 65%, var(--color-base-100)); }
+  #instructionsContainer { flex: 0 0 auto; }
+  .game-palette-header { display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 12px; }
+  .command-palette { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  #instructionsContainer .lb-instruction-row {
+    min-height: 46px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px 4px;
+    gap: 2px;
+    background: var(--color-base-200);
+    border-radius: 2px;
+    border-color: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+  #instructionsContainer .instruction-symbol { width: 18px; height: 18px; flex-basis: 18px; }
+  #instructionsContainer .lb-instruction-label { padding: 0; line-height: 1.2; text-align: center; }
+  #instructionsContainer .lb-repeat-left { flex: 0 0 auto; justify-content: center; }
+  #instructionsContainer .lb-repeat-count { display: none; }
+  .instruction-symbol { width: 20px; height: 20px; flex: 0 0 20px; color: var(--color-primary); }
+  .lb-instruction-label { font-weight: 500; }
+  #instructionsContainer .lb-instruction-row:hover { background: var(--color-base-300); border-color: var(--color-primary); }
+  .lb-repeat-left { flex: 1; min-width: 0; justify-content: space-between; gap: 4px; }
+  .lb-repeat-count {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    height: 26px;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 25%, transparent);
+    border-radius: 2px;
+    background: var(--color-base-100);
+    overflow: hidden;
+  }
+  .lb-repeat-count input {
+    appearance: textfield;
+    width: 26px;
+    min-width: 0;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--color-base-content);
+    font: inherit;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+  .lb-repeat-count input::-webkit-inner-spin-button,
+  .lb-repeat-count input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+  .lb-repeat-count button { width: 20px; height: 24px; padding: 0; color: var(--color-base-content); font-size: 14px; cursor: pointer; }
+  .lb-repeat-count button:hover { background: var(--color-base-300); }
+  .game-screen .lb-repeat-count :is(button, input):focus-visible { outline-offset: -2px; }
+  .game-program { flex: 1; min-height: 0; }
+  .game-program-body {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100%;
+    min-height: 0;
+    gap: 10px;
+  }
+  .game-program-header { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; }
+  .game-program-header #clearButton { grid-column: 3; }
+  #clearButton { font-size: 11px; font-weight: 400; opacity: .75; height: 28px; min-height: 28px; padding: 4px; }
+  .game-execution { display: grid; grid-template-columns: minmax(142px, 1fr) 40px minmax(0, 1fr); align-items: end; gap: 8px; flex: 0 0 auto; }
+  .game-reset { width: 40px; height: 42px; min-height: 42px; border-radius: 2px; box-shadow: none; }
+  .game-run { min-height: 42px; height: 42px; border-radius: 2px; font-size: 13px; letter-spacing: .035em; text-transform: uppercase; box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--color-primary) 45%, var(--color-base-100)); }
+  #speedControl { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+  #speedControl label { font-size: 11px; opacity: .75; }
+  #speedSlider { width: 100%; }
+  #gameRunStatus { text-align: right; }
+  .game-program-scroll { position: relative; flex: 1; min-height: 0; overflow: auto; scrollbar-gutter: stable; padding: 4px; border: 1px solid color-mix(in srgb, var(--color-primary) 15%, transparent); background: color-mix(in srgb, var(--color-base-200) 25%, var(--color-base-100)); }
+  #mainProgram { min-height: 100%; }
+  .program-empty { display: none; position: absolute; inset: 28px 20px auto; pointer-events: none; text-align: center; font-size: 12px; line-height: 1.7; opacity: .5; }
+  #mainProgram:empty + .program-empty { display: block; }
+  #programContainer ul { counter-reset: program-step; }
+  #programContainer li { counter-increment: program-step; margin-bottom: 5px; }
+  #programContainer .lb-instruction-row { min-height: 38px; justify-content: flex-start; gap: 8px; padding: 5px 6px; background: var(--color-base-200); border-color: transparent; border-radius: 2px; }
+  #programContainer .lb-instruction-row::before { content: counter(program-step, decimal-leading-zero); flex: 0 0 20px; font-size: 10px; font-weight: 400; font-variant-numeric: tabular-nums; opacity: .5; }
+  #programContainer .instruction-symbol { width: 16px; height: 16px; flex-basis: 16px; }
+  #programContainer .lb-instruction-delete { margin-left: auto; flex-shrink: 0; opacity: .45; }
+  #programContainer .lb-instruction-delete:hover, #programContainer .lb-instruction-delete:focus-visible { opacity: 1; }
+  #programContainer .lb-instruction:has(> .repeat) { border: 0; border-left: 2px solid var(--color-base-300); border-radius: 0; background: transparent; }
+  #programContainer .lb-repeat-body-inner { margin: 0 0 0 10px; padding: 5px 0 0 4px; border: 0; border-radius: 0; background: transparent; }
+  #programContainer .lb-instruction-row.is-active { background: color-mix(in srgb, var(--color-primary) 28%, var(--color-base-200)); }
+  #programContainer .lb-instruction-row.is-blocked { border-color: var(--color-warning); }
+  .game-screen.is-executing #instructionsContainer { opacity: .45; }
+  .game-screen.is-executing .lb-instruction-row { cursor: default; }
+  .game-screen.is-executing .lb-instruction-delete { visibility: hidden; }
+  .game-screen :is(button, input, [role="button"]):focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
 }

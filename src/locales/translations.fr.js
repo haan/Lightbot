@@ -126,6 +126,25 @@ export const LIGHTBOT_TRANSLATIONS_FR = {
     }
   },
   "gameScreen": {
+    "decreaseRepeat": "Diminuer le nombre de répétitions",
+    "increaseRepeat": "Augmenter le nombre de répétitions",
+    "status": { "running": "En cours…", "paused": "En pause", "finished": "Terminé", "blocked": "Bloqué" },
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "runAgain": "Relancer",
+    "paused": "En pause · Réinitialiser pour modifier",
+    "addHint": "Cliquer pour ajouter · Glisser pour déplacer",
+    "ready": "Prêt à démarrer",
+    "running": "Exécution…",
+    "finished": "Programme terminé · Réinitialiser pour modifier",
+    "blocked": "Mouvement bloqué · Vérifiez l’étape surlignée",
+    "reset": "Réinitialiser",
+    "remove": "Supprimer l’instruction",
+    "commands": {
+      "walk": "Avancer",
+      "turnRight": "Droite",
+      "turnLeft": "Gauche"
+    },
     "back": "Retour",
     "toggleAudio": "Activer/Désactiver l'audio",
     "clear": "Effacer",

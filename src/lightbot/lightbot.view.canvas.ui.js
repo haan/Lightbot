@@ -57,6 +57,39 @@ export function createUi(params) {
     dialogs: dialogs,
     media: media,
     editor: editor,
+    _executionBlocked: false,
+    _programFinished: false,
+
+    _setGameStatus: function (key) {
+      var status = document.getElementById("gameRunStatus");
+      if (!status) return;
+      status.hidden = key === "ready";
+      if (status.hidden) {
+        status.textContent = "";
+        status.removeAttribute("data-i18n");
+        status.removeAttribute("data-i18n-title");
+        status.removeAttribute("title");
+        return;
+      }
+      if (status.getAttribute("data-i18n") === "gameScreen.status." + key && status.textContent) return;
+      status.setAttribute("data-i18n", "gameScreen.status." + key);
+      status.setAttribute("data-i18n-title", "gameScreen." + key);
+      status.setAttribute("title", i18next.t("gameScreen." + key));
+      status.textContent = i18next.t("gameScreen.status." + key);
+    },
+
+    onInstruction: function (instruction, blocked) {
+      editor.highlightInstruction(instruction, blocked);
+      if (blocked) ui._executionBlocked = true;
+      ui._setGameStatus(blocked ? "blocked" : "running");
+    },
+
+    onProgramFinished: function () {
+      if (ui._programFinished) return;
+      ui._programFinished = true;
+      ui._setGameStatus(ui._executionBlocked ? "blocked" : "finished");
+      ui._updateExecutionButton();
+    },
 
     _setRenderLoopState: function (isRunning) {
       var loop = ui.renderLoop;
@@ -65,19 +98,37 @@ export function createUi(params) {
       if (!isRunning && typeof loop.stop === "function") loop.stop();
     },
 
-    _setRunButtonState: function (isRunning) {
+    _updateExecutionButton: function () {
       var btn = document.getElementById("runButton");
       if (!btn) return;
-
-      // switch button style, tooltip, and icons based on run state.
-      btn.classList.toggle("btn-primary", !isRunning);
-      btn.classList.toggle("btn-error", isRunning);
-      btn.setAttribute("title", isRunning ? i18next.t("controls.stop") : i18next.t("gameScreen.run"));
-
+      var started = bot.isInExecutionMode();
+      var canPause = started && !ui._programFinished && !bot.isPaused();
+      var key = "gameScreen." + (ui._programFinished ? "runAgain" : bot.isPaused() ? "resume" : started ? "pause" : "run");
+      btn.setAttribute("data-i18n-title", key);
+      btn.setAttribute("title", i18next.t(key));
+      var label = btn.querySelector(".lb-run-label");
+      if (label) {
+        label.setAttribute("data-i18n", key);
+        label.textContent = i18next.t(key);
+      }
       var runIcon = btn.querySelector(".lb-run-icon");
-      if (runIcon && runIcon.classList) runIcon.classList.toggle("hidden", isRunning);
-      var stopIcon = btn.querySelector(".lb-stop-icon");
-      if (stopIcon && stopIcon.classList) stopIcon.classList.toggle("hidden", !isRunning);
+      if (runIcon) runIcon.classList.toggle("hidden", canPause);
+      var pauseIcon = btn.querySelector(".lb-pause-icon");
+      if (pauseIcon) pauseIcon.classList.toggle("hidden", !canPause);
+      var reset = document.getElementById("resetButton");
+      if (reset) reset.disabled = !started;
+    },
+
+    _setRunButtonState: function (isRunning) {
+      var screen = document.getElementById("gameScreen");
+      if (screen) screen.classList.toggle("is-executing", isRunning);
+      var clear = document.getElementById("clearButton");
+      if (clear) clear.disabled = isRunning;
+      editor.setExecuting(isRunning);
+      ui._executionBlocked = false;
+      ui._programFinished = false;
+      ui._setGameStatus(isRunning ? "running" : "ready");
+      ui._updateExecutionButton();
     },
 
     showWelcomeScreen: function (hist) {
@@ -272,6 +323,8 @@ export function createUi(params) {
 
       if (hist == null && ui.History) ui.History.pushState({ page: "gameScreen", level: level });
       document.title = "Lightbot - Level " + level;
+      var levelTitle = document.getElementById("gameLevelTitle");
+      if (levelTitle) levelTitle.textContent = i18next.t("levelSelectScreen.level", { number: level });
 
       hideAllScreens();
 
@@ -335,13 +388,24 @@ export function createUi(params) {
       var runButton = document.getElementById("runButton");
       if (runButton) {
         runButton.addEventListener("click", function () {
-          if (bot.isInExecutionMode()) {
-            // stop execution and reset the map.
-            map.reset();
-            ui._setRunButtonState(false);
+          if (bot.isInExecutionMode() && !ui._programFinished) {
+            if (bot.isPaused()) {
+              bot.resume();
+              ui._setGameStatus("running");
+            } else {
+              bot.pause();
+              ui._setGameStatus("paused");
+            }
+            ui._updateExecutionButton();
           } else {
+            // Reruns always start with a fresh puzzle and freshly compiled repeat counters.
+            if (ui._programFinished) {
+              map.reset();
+              editor.setExecuting(false);
+            }
             // queue current program and start execution.
             var program = editor.getProgramInstructions();
+            if (!program.length) return;
             bot.queueInstructions(program);
             bot.execute();
             ui._setRunButtonState(true);
@@ -349,9 +413,19 @@ export function createUi(params) {
         });
       }
 
+      var resetButton = document.getElementById("resetButton");
+      if (resetButton) {
+        resetButton.addEventListener("click", function () {
+          if (!bot.isInExecutionMode()) return;
+          map.reset();
+          ui._setRunButtonState(false);
+        });
+      }
+
       var clearButton = document.getElementById("clearButton");
       if (clearButton) {
         clearButton.addEventListener("click", function () {
+          if (bot.isInExecutionMode()) return;
           // wipe the program and persist the empty state.
           var list = document.querySelector("#programContainer ul");
           if (list) list.textContent = "";

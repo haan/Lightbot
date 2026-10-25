@@ -58,10 +58,14 @@ export function extendBotView(params) {
       case instructions.LightInstruction.instructionName:
         setAnimation(animations.light);
         break;
-      // turn left, turn right, repeat
+      // Briefly hold on repeat expansion before executing its body.
+      case instructions.RepeatInstruction.instructionName:
+        setAnimation(animations.stand);
+        setMovement(0, 0, 0);
+        break;
+      // turn left, turn right
       case instructions.TurnLeftInstruction.instructionName:
       case instructions.TurnRightInstruction.instructionName:
-      case instructions.RepeatInstruction.instructionName:
         // no animation for turning
         break;
       default:
@@ -71,6 +75,7 @@ export function extendBotView(params) {
   }
 
   function step() {
+    if (bot.isPaused()) return;
     if (currentStep >= getAnimationDuration() || !bot.isInExecutionMode()) {
       // set the bot to ready
       readyForNextInstruction = true;

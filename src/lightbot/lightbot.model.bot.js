@@ -46,6 +46,7 @@ export function createBot(params) {
     instructionQueue: [], // saves the instruction queue. useful for post-executing analysis
     executionQueue: [], // current instruction execution queue
     executionMode: false, // boolean flag indicating whether the bot is in execution mode
+    executionPaused: false,
     instructions: instructions,
     init: function(direction, position) {
       this.startingPos = cloneShallowIncludingInherited(position);
@@ -60,6 +61,7 @@ export function createBot(params) {
       this.instructionQueue.length = 0;
       this.executionQueue.length = 0;
       this.executionMode = false;
+      this.executionPaused = false;
     },
     clearExecutionQueue: function() {
       this.executionQueue.length = 0;
@@ -72,10 +74,21 @@ export function createBot(params) {
     },
     execute: function() {
       this.executionMode = true;
+      this.executionPaused = false;
       this.executionQueue = this.instructionQueue.slice(); // copy instructionQueue into executionQueue
+    },
+    pause: function() {
+      if (this.executionMode) this.executionPaused = true;
+    },
+    resume: function() {
+      this.executionPaused = false;
+    },
+    isPaused: function() {
+      return this.executionPaused;
     },
     // executes and returns the next instruction
     executeNextInstruction: function() {
+      if (this.executionPaused) return null;
       if (this.executionQueue.length > 0) {
         var instruction = this.executionQueue.shift();
         switch (instruction.name) {
@@ -105,7 +118,8 @@ export function createBot(params) {
               var tmp2 = cloneInstructionDeep(tmp);
               this.executionQueue.unshift(tmp2);
             }
-            return this.executeNextInstruction();
+            // Expanding a repeat is its own step. Its body runs on subsequent ticks.
+            break;
           default:
             console.error('Bot executeNextInstruction: unknown instruction "' + instruction.name + '"');
             break;
