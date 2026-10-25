@@ -36,6 +36,21 @@ export function createUi(params) {
     if (el) el.classList.remove("hidden");
   }
 
+  function selectHelpTopic(radio) {
+    var topic = radio.closest("[data-help-topic]");
+    if (!topic) return;
+    var key = "helpScreen." + topic.getAttribute("data-help-topic");
+    var title = document.getElementById("helpDetailTitle");
+    var content = document.getElementById("helpDetailContent");
+    // Keep translation keys in sync so a language change also updates this lesson.
+    title.setAttribute("data-i18n", key + ".title");
+    title.textContent = i18next.t(key + ".title");
+    content.setAttribute("data-i18n", key + ".content");
+    content.textContent = i18next.t(key + ".content");
+    document.getElementById("helpDetail").scrollTop = 0;
+    media.playVideo(Number(topic.getAttribute("data-video")));
+  }
+
   var ui = {
     History: null,
     renderLoop: null,
@@ -86,10 +101,13 @@ export function createUi(params) {
       hideAllScreens();
       showScreen("helpScreen");
 
-      // default the accordion to the first topic and load its video.
-      var firstRadio = document.querySelector('#helpScreenAccordion [data-video="0"] input[type="radio"]');
-      if (firstRadio) firstRadio.checked = true;
-      if (typeof media.playVideo === "function") media.playVideo(0);
+      // Open the first lesson with its matching explanation and demonstration.
+      var firstRadio = document.querySelector('#helpTopics [data-video="0"] input[type="radio"]');
+      if (firstRadio) {
+        firstRadio.checked = true;
+        selectHelpTopic(firstRadio);
+        document.getElementById("helpTopics").scrollTop = 0;
+      }
     },
 
     showAchievementsScreen: function (hist) {
@@ -100,41 +118,59 @@ export function createUi(params) {
       if (list) list.textContent = "";
 
       var listItems = achievements.getAchievementsList();
+      var unlockedCount = 0;
       // rebuild the achievements list in the current language.
       for (var i = 0; i < listItems.length; i++) {
         var enabled = !!achievements.hasAchievement(listItems[i].name);
+        if (enabled) unlockedCount++;
         if (!list) continue;
 
         var li = document.createElement("li");
-        li.className = "list-row " + (enabled ? "" : "opacity-40") + " py-3";
+        li.className = "achievement-row" + (enabled ? " achievement-row--unlocked" : "");
 
-        var imgWrap = document.createElement("div");
         var img = document.createElement("img");
-        img.className = "size-10 rounded-box";
+        img.className = "achievement-icon";
         img.src = "img/achievements/" + listItems[i].name + ".png";
         img.alt = "";
-        imgWrap.appendChild(img);
+        img.width = 40;
+        img.height = 40;
 
         var content = document.createElement("div");
-        content.className = "flex-1";
+        content.className = "achievement-copy";
 
-        var title = document.createElement("div");
-        title.className = "font-bold";
+        var title = document.createElement("h2");
         var titleKey = listItems[i].i18nKey ? listItems[i].i18nKey + ".title" : "";
         title.textContent = titleKey ? i18next.t(titleKey) : listItems[i].title || listItems[i].name;
+        if (titleKey) title.setAttribute("data-i18n", titleKey);
 
-        var message = document.createElement("div");
-        message.className = "text-sm opacity-70";
+        var message = document.createElement("p");
         var messageKey = listItems[i].i18nKey ? listItems[i].i18nKey + ".message" : "";
         message.textContent = messageKey ? i18next.t(messageKey) : listItems[i].message || "";
+        if (messageKey) message.setAttribute("data-i18n", messageKey);
+
+        var status = document.createElement("span");
+        status.className = "achievement-status";
+        var statusKey = "achievementsScreen." + (enabled ? "unlocked" : "locked");
+        status.setAttribute("data-i18n", statusKey);
+        status.textContent = i18next.t(statusKey);
 
         content.appendChild(title);
         content.appendChild(message);
 
-        li.appendChild(imgWrap);
+        li.appendChild(img);
         li.appendChild(content);
+        li.appendChild(status);
         list.appendChild(li);
       }
+
+      var count = document.getElementById("achievementCount");
+      if (count) count.textContent = unlockedCount + " / " + listItems.length;
+      var progress = document.getElementById("achievementProgress");
+      if (progress) {
+        progress.max = Math.max(1, listItems.length);
+        progress.value = unlockedCount;
+      }
+      if (list) list.scrollTop = 0;
 
       if (hist == null && ui.History) ui.History.pushState({ page: "achievementsScreen" });
       document.title = "Lightbot - Achievements";
@@ -149,32 +185,31 @@ export function createUi(params) {
 
       var levelList = document.getElementById("levelList");
       if (levelList) levelList.textContent = "";
+      var totalLevels = map.getNbrOfLevels();
+      var completedLevels = 0;
 
       // build the level tiles with medal state from storage.
-      for (var i = 0; i < map.getNbrOfLevels(); i++) {
+      for (var i = 0; i < totalLevels; i++) {
         var item = parseInt(storage.getItem("lightbot_level_" + i), 10);
         var medal = "";
-
-        if (!levelList) continue;
-        var tile = document.createElement("div");
-        tile.className =
-          "lb-level-tile relative select-none w-34 h-30 rounded-box bg-base-200 hover:bg-base-300 shadow cursor-pointer flex items-center justify-center text-4xl font-black";
-        if (item) tile.classList.add("lb-level-tile--completed");
-        tile.dataset.level = String(i);
-        tile.textContent = String(i);
+        var statusKey = "levelSelectScreen.incomplete";
 
         if (item) {
           switch (item) {
             case medals.gold:
               medal = "medal-gold";
+              statusKey = "levelSelectScreen.gold";
               break;
             case medals.silver:
               medal = "medal-silver";
+              statusKey = "levelSelectScreen.silver";
               break;
             case medals.bronze:
               medal = "medal-bronze";
+              statusKey = "levelSelectScreen.bronze";
               break;
             case medals.noMedal:
+              statusKey = "levelSelectScreen.completed";
               break;
             default:
               console.error('Unknown medal "' + item + '"');
@@ -182,13 +217,46 @@ export function createUi(params) {
           }
         }
 
+        var completed = statusKey !== "levelSelectScreen.incomplete";
+        if (completed) completedLevels++;
+        if (!levelList) continue;
+
+        var tile = document.createElement("button");
+        tile.type = "button";
+        tile.className = "lb-level-tile" + (completed ? " lb-level-tile--completed" : "");
+        tile.dataset.level = String(i);
+        tile.setAttribute("aria-label", i18next.t("levelSelectScreen.level", { number: i }) + ", " + i18next.t(statusKey));
+
+        var number = document.createElement("span");
+        number.className = "level-number";
+        number.textContent = String(i);
+        tile.appendChild(number);
+
+        var footer = document.createElement("span");
+        footer.className = "level-tile-footer";
+        footer.setAttribute("aria-hidden", "true");
+        var status = document.createElement("span");
+        status.className = "sr-only";
+        status.setAttribute("data-i18n", statusKey);
+        status.textContent = i18next.t(statusKey);
+        footer.appendChild(status);
+
         if (medal) {
           var medalEl = document.createElement("span");
           medalEl.className = "medal " + medal;
-          tile.appendChild(medalEl);
+          medalEl.setAttribute("aria-hidden", "true");
+          footer.appendChild(medalEl);
         }
+        tile.appendChild(footer);
         levelList.appendChild(tile);
       }
+
+      var completedCount = document.getElementById("levelCompletedCount");
+      if (completedCount) completedCount.textContent = i18next.t("levelSelectScreen.progress", {
+        completed: completedLevels,
+        total: totalLevels,
+      });
+      if (levelList) levelList.scrollTop = 0;
 
       if (hist == null && ui.History) ui.History.pushState({ page: "levelSelectScreen" });
       document.title = "Lightbot - Level Select";
@@ -291,17 +359,14 @@ export function createUi(params) {
         });
       }
 
-      // Help accordion: swap the demo video when selecting a help topic.
-      var accordion = document.getElementById("helpScreenAccordion");
-      if (accordion) {
-        accordion.addEventListener("change", function (e) {
+      // Native radio controls support both clicking and arrow-key topic selection.
+      var helpTopics = document.getElementById("helpTopics");
+      if (helpTopics) {
+        helpTopics.addEventListener("change", function (e) {
           var target = e.target;
           if (!target || target.tagName !== "INPUT") return;
           if (target.type !== "radio" || !target.checked) return;
-          var holder = target.closest ? target.closest("[data-video]") : null;
-          if (!holder) return;
-          var idx = parseInt(holder.getAttribute("data-video"), 10);
-          if (!isNaN(idx)) media.playVideo(idx);
+          selectHelpTopic(target);
         });
       }
     },

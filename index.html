@@ -24,215 +24,243 @@
     <audio id="audioPlayer" preload="auto"></audio>
   </div>
 
-  <div id="lightbot" class="relative w-[980px] h-[740px]">
-
-    <div id="credits" class="absolute top-0 inset-x-0 h-5 text-center text-xs opacity-70">
-      Developed by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Interface by <a
-        href="http://www.zententia.net">Zenobia Homan</a>. Robot by <a
-        href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Music by <a
-        href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>. Original concept: <a
-        href="http://lightbot.com/" target="_blank">lightbot.com</a>.
-    </div>
+  <div id="lightbot" class="relative w-[980px] h-[740px] shrink-0">
 
     <div id="welcomeScreen"
-      class="lb-screen absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow overflow-hidden bg-no-repeat bg-left-top bg-cover"
+      class="lb-screen absolute top-5 inset-x-0 bottom-4 rounded-box shadow overflow-hidden bg-no-repeat bg-cover"
       style="background-image: url('img/welcome_screen_bg.png');">
-      <div class="absolute bottom-4 left-4 flex flex-wrap gap-2">
-        <button class="helpButton btn btn-sm gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-            <path fill-rule="evenodd"
-              d="M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0Zm-6 3.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM7.293 5.293a1 1 0 1 1 .99 1.667c-.459.134-1.033.566-1.033 1.29v.25a.75.75 0 1 0 1.5 0v-.115a2.5 2.5 0 1 0-2.518-4.153.75.75 0 1 0 1.061 1.06Z"
-              clip-rule="evenodd" />
-          </svg>
-          <span data-i18n="welcomeScreen.help"></span>
-        </button>
-        <button class="achievementsButton btn btn-sm gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
-            <path fill-rule="evenodd"
-              d="M12 1.69a.494.494 0 0 0-.438-.494 32.352 32.352 0 0 0-7.124 0A.494.494 0 0 0 4 1.689v.567c-.811.104-1.612.24-2.403.406a.75.75 0 0 0-.595.714 4.5 4.5 0 0 0 4.35 4.622A3.99 3.99 0 0 0 7 8.874V10H6a1 1 0 0 0-1 1v2h-.667C3.597 13 3 13.597 3 14.333c0 .368.298.667.667.667h8.666a.667.667 0 0 0 .667-.667c0-.736-.597-1.333-1.333-1.333H11v-2a1 1 0 0 0-1-1H9V8.874a3.99 3.99 0 0 0 1.649-.876 4.5 4.5 0 0 0 4.35-4.622.75.75 0 0 0-.596-.714A30.897 30.897 0 0 0 12 2.256v-.567ZM4 3.768c-.49.066-.976.145-1.458.235a3.004 3.004 0 0 0 1.64 2.192A3.999 3.999 0 0 1 4 5V3.769Zm8 0c.49.066.976.145 1.458.235a3.004 3.004 0 0 1-1.64 2.192C11.936 5.818 12 5.416 12 5V3.769Z"
-              clip-rule="evenodd" />
-          </svg>
-          <span data-i18n="welcomeScreen.achievements"></span>
-        </button>
-        <button class="levelSelectButton btn btn-sm btn-primary gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
+      <h1 class="sr-only">Lightbot</h1>
+      <div class="welcome-panel">
+        <button class="welcome-button levelSelectButton welcome-start">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-current">
             <path d="M8 5v14l11-7-11-7Z" />
           </svg>
           <span data-i18n="welcomeScreen.start"></span>
         </button>
-        <button class="audioToggleButton btn btn-sm btn-square" data-i18n-title="welcomeScreen.toggleAudio"
-          title="Toggle audio">
-          <svg class="lb-audio-on hidden size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path
-              d="M10.5 3.75a.75.75 0 0 0-1.264-.546L5.203 7H2.667a.75.75 0 0 0-.7.48A6.985 6.985 0 0 0 1.5 10c0 .887.165 1.737.468 2.52.111.29.39.48.7.48h2.535l4.033 3.796a.75.75 0 0 0 1.264-.546V3.75ZM16.45 5.05a.75.75 0 0 0-1.06 1.061 5.5 5.5 0 0 1 0 7.778.75.75 0 0 0 1.06 1.06 7 7 0 0 0 0-9.899Z" />
-            <path
-              d="M14.329 7.172a.75.75 0 0 0-1.061 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 0 0 1.06 1.06 4 4 0 0 0 0-5.656Z" />
-          </svg>
-          <svg class="lb-audio-off size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-            fill="currentColor">
-            <path
-              d="M10.047 3.062a.75.75 0 0 1 .453.688v12.5a.75.75 0 0 1-1.264.546L5.203 13H2.667a.75.75 0 0 1-.7-.48A6.985 6.985 0 0 1 1.5 10c0-.887.165-1.737.468-2.52a.75.75 0 0 1 .7-.48h2.535l4.033-3.796a.75.75 0 0 1 .811-.142ZM13.78 7.22a.75.75 0 1 0-1.06 1.06L14.44 10l-1.72 1.72a.75.75 0 0 0 1.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 1 0 1.06-1.06L16.56 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L15.5 8.94l-1.72-1.72Z" />
-          </svg>
-        </button>
-        <select id="languageSelect" class="select select-sm w-36 bg-base-100/80 backdrop-blur shadow"
-          data-i18n-title="welcomeScreen.language" title="Language">
-          <option value="en">English</option>
-          <option value="de">Deutsch</option>
-          <option value="fr">Français</option>
-        </select>
-        <select data-choose-theme class="select select-sm w-36 bg-base-100/80 backdrop-blur shadow">
-          <option value="lightbot">lightbot</option>
-          <option value="light">light</option>
-          <option value="dark">dark</option>
-          <option value="cupcake">cupcake</option>
-          <option value="bumblebee">bumblebee</option>
-          <option value="emerald">emerald</option>
-          <option value="corporate">corporate</option>
-          <option value="synthwave">synthwave</option>
-          <option value="retro">retro</option>
-          <option value="cyberpunk">cyberpunk</option>
-          <option value="valentine">valentine</option>
-          <option value="halloween">halloween</option>
-          <option value="garden">garden</option>
-          <option value="forest">forest</option>
-          <option value="aqua">aqua</option>
-          <option value="lofi">lofi</option>
-          <option value="pastel">pastel</option>
-          <option value="wireframe">wireframe</option>
-          <option value="black">black</option>
-          <option value="luxury">luxury</option>
-          <option value="dracula">dracula</option>
-          <option value="cmyk">cmyk</option>
-          <option value="autumn">autumn</option>
-          <option value="business">business</option>
-          <option value="acid">acid</option>
-          <option value="lemonade">lemonade</option>
-          <option value="night">night</option>
-          <option value="coffee">coffee</option>
-          <option value="winter">winter</option>
-        </select>
+        <div class="welcome-tools">
+          <button class="welcome-button helpButton">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" >
+              <path fill-rule="evenodd"
+                d="M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0Zm-6 3.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM7.293 5.293a1 1 0 1 1 .99 1.667c-.459.134-1.033.566-1.033 1.29v.25a.75.75 0 1 0 1.5 0v-.115a2.5 2.5 0 1 0-2.518-4.153.75.75 0 1 0 1.061 1.06Z"
+                clip-rule="evenodd" />
+            </svg>
+            <span data-i18n="welcomeScreen.help"></span>
+          </button>
+          <button class="welcome-button achievementsButton">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" >
+              <path fill-rule="evenodd"
+                d="M12 1.69a.494.494 0 0 0-.438-.494 32.352 32.352 0 0 0-7.124 0A.494.494 0 0 0 4 1.689v.567c-.811.104-1.612.24-2.403.406a.75.75 0 0 0-.595.714 4.5 4.5 0 0 0 4.35 4.622A3.99 3.99 0 0 0 7 8.874V10H6a1 1 0 0 0-1 1v2h-.667C3.597 13 3 13.597 3 14.333c0 .368.298.667.667.667h8.666a.667.667 0 0 0 .667-.667c0-.736-.597-1.333-1.333-1.333H11v-2a1 1 0 0 0-1-1H9V8.874a3.99 3.99 0 0 0 1.649-.876 4.5 4.5 0 0 0 4.35-4.622.75.75 0 0 0-.596-.714A30.897 30.897 0 0 0 12 2.256v-.567ZM4 3.768c-.49.066-.976.145-1.458.235a3.004 3.004 0 0 0 1.64 2.192A3.999 3.999 0 0 1 4 5V3.769Zm8 0c.49.066.976.145 1.458.235a3.004 3.004 0 0 1-1.64 2.192C11.936 5.818 12 5.416 12 5V3.769Z"
+                clip-rule="evenodd" />
+            </svg>
+            <span data-i18n="welcomeScreen.achievements"></span>
+          </button>
+          <button class="welcome-button audioToggleButton" data-i18n-title="welcomeScreen.toggleAudio"
+            title="Toggle audio">
+            <svg aria-hidden="true" class="lb-audio-on hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                d="M10.5 3.75a.75.75 0 0 0-1.264-.546L5.203 7H2.667a.75.75 0 0 0-.7.48A6.985 6.985 0 0 0 1.5 10c0 .887.165 1.737.468 2.52.111.29.39.48.7.48h2.535l4.033 3.796a.75.75 0 0 0 1.264-.546V3.75ZM16.45 5.05a.75.75 0 0 0-1.06 1.061 5.5 5.5 0 0 1 0 7.778.75.75 0 0 0 1.06 1.06 7 7 0 0 0 0-9.899Z" />
+              <path
+                d="M14.329 7.172a.75.75 0 0 0-1.061 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 0 0 1.06 1.06 4 4 0 0 0 0-5.656Z" />
+            </svg>
+            <svg aria-hidden="true" class="lb-audio-off" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+              fill="currentColor">
+              <path
+                d="M10.047 3.062a.75.75 0 0 1 .453.688v12.5a.75.75 0 0 1-1.264.546L5.203 13H2.667a.75.75 0 0 1-.7-.48A6.985 6.985 0 0 1 1.5 10c0-.887.165-1.737.468-2.52a.75.75 0 0 1 .7-.48h2.535l4.033-3.796a.75.75 0 0 1 .811-.142ZM13.78 7.22a.75.75 0 1 0-1.06 1.06L14.44 10l-1.72 1.72a.75.75 0 0 0 1.06 1.06l1.72-1.72 1.72 1.72a.75.75 0 1 0 1.06-1.06L16.56 10l1.72-1.72a.75.75 0 0 0-1.06-1.06L15.5 8.94l-1.72-1.72Z" />
+            </svg>
+            <span class="sr-only" data-i18n="welcomeScreen.sound"></span>
+          </button>
+          <label for="languageSelect" class="sr-only" data-i18n="welcomeScreen.language"></label>
+          <select id="languageSelect" class="welcome-select"
+            data-i18n-title="welcomeScreen.language" title="Language">
+            <option value="en">English</option>
+            <option value="de">Deutsch</option>
+            <option value="fr">Français</option>
+          </select>
+          <label for="themeSelect" class="sr-only" data-i18n="welcomeScreen.theme"></label>
+          <select id="themeSelect" data-i18n-title="welcomeScreen.theme" title="Theme" data-choose-theme class="welcome-select">
+            <option value="lightbot">Lightbot</option>
+            <option value="light">light</option>
+            <option value="dark">dark</option>
+            <option value="cupcake">cupcake</option>
+            <option value="bumblebee">bumblebee</option>
+            <option value="emerald">emerald</option>
+            <option value="corporate">corporate</option>
+            <option value="synthwave">synthwave</option>
+            <option value="retro">retro</option>
+            <option value="cyberpunk">cyberpunk</option>
+            <option value="valentine">valentine</option>
+            <option value="halloween">halloween</option>
+            <option value="garden">garden</option>
+            <option value="forest">forest</option>
+            <option value="aqua">aqua</option>
+            <option value="lofi">lofi</option>
+            <option value="pastel">pastel</option>
+            <option value="wireframe">wireframe</option>
+            <option value="black">black</option>
+            <option value="luxury">luxury</option>
+            <option value="dracula">dracula</option>
+            <option value="cmyk">cmyk</option>
+            <option value="autumn">autumn</option>
+            <option value="business">business</option>
+            <option value="acid">acid</option>
+            <option value="lemonade">lemonade</option>
+            <option value="night">night</option>
+            <option value="coffee">coffee</option>
+            <option value="winter">winter</option>
+          </select>
+        </div>
+      </div>
+      <div id="credits" class="welcome-credits">
+        Developed by <a href="http://www.haan.lu" target="_blank">Laurent Haan</a>. Interface by <a
+          href="http://www.zententia.net">Zenobia Homan</a>. Robot by <a
+          href="http://www.pixeljoint.com/forum/member_profile.asp?PF=2146">surt</a>. Music by <a
+          href="http://hektikmusic.newgrounds.com/" target="_blank">hektikmusic</a>. Original concept: <a
+          href="http://lightbot.com/" target="_blank">lightbot.com</a>.
       </div>
     </div>
 
     <div id="achievementsScreen"
-      class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-6 flex flex-col gap-4">
-      <h1 class="text-3xl font-black uppercase" data-i18n="achievementsScreen.title"></h1>
-      <ul id="achievementsList" class="list bg-base-200 rounded-box shadow overflow-auto"></ul>
-      <div class="mt-auto">
-        <button class="mainMenuButton btn btn-sm gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5Z" />
-          </svg>
-          <span data-i18n="achievementsScreen.mainMenu"></span>
-        </button>
+      class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box shadow lb-menu-screen"
+      aria-labelledby="achievementsTitle">
+      <div class="lb-menu-shell">
+        <header class="lb-menu-header">
+          <h1 id="achievementsTitle" data-i18n="achievementsScreen.title"></h1>
+          <button class="mainMenuButton lb-menu-back">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H19v-2Z" />
+            </svg>
+            <span data-i18n="achievementsScreen.mainMenu"></span>
+          </button>
+        </header>
+        <div class="achievements-summary">
+          <p id="achievementSummary">
+            <span data-i18n="achievementsScreen.progress"></span>
+            <strong id="achievementCount"></strong>
+          </p>
+          <progress id="achievementProgress" max="8" value="0" aria-labelledby="achievementSummary"></progress>
+        </div>
+        <ul id="achievementsList" class="achievements-list" tabindex="0" aria-labelledby="achievementsTitle"></ul>
       </div>
     </div>
 
-    <div id="helpScreen" class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-6">
-      <div class="grid grid-cols-[1fr_12px_400px] gap-6 h-full">
-        <div id="helpScreenAccordion" class="space-y-2 overflow-auto pr-2 text-sm">
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="0">
-            <input type="radio" name="help-accordion" checked="checked" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.goal.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.goal.content"></p>
+    <div id="helpScreen" class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box shadow lb-menu-screen"
+      aria-labelledby="helpTitle">
+      <div class="lb-menu-shell">
+        <header class="lb-menu-header">
+          <h1 id="helpTitle" data-i18n="helpScreen.title"></h1>
+          <button class="mainMenuButton lb-menu-back">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H19v-2Z" />
+            </svg>
+            <span data-i18n="helpScreen.mainMenu"></span>
+          </button>
+        </header>
+        <div class="help-layout">
+          <div id="helpTopics" class="help-topics" role="group" aria-labelledby="helpTopicsTitle">
+            <h2 id="helpTopicsTitle" data-i18n="helpScreen.topicsTitle"></h2>
+            <div class="help-topic" data-video="0" data-help-topic="goal">
+              <input id="help-topic-goal" class="sr-only" type="radio" name="help-topic" checked />
+              <label for="help-topic-goal" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">01</span>
+                <span data-i18n="helpScreen.topics.goal"></span>
+              </label>
+            </div>
+            <div class="help-topic" data-video="1" data-help-topic="howTo">
+              <input id="help-topic-howTo" class="sr-only" type="radio" name="help-topic" />
+              <label for="help-topic-howTo" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">02</span>
+                <span data-i18n="helpScreen.topics.howTo"></span>
+              </label>
+            </div>
+            <div class="help-topic" data-video="2" data-help-topic="objects">
+              <input id="help-topic-objects" class="sr-only" type="radio" name="help-topic" />
+              <label for="help-topic-objects" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">03</span>
+                <span data-i18n="helpScreen.topics.objects"></span>
+              </label>
+            </div>
+            <div class="help-topic" data-video="3" data-help-topic="walkForward">
+              <input id="help-topic-walkForward" class="sr-only" type="radio" name="help-topic" />
+              <label for="help-topic-walkForward" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">04</span>
+                <span data-i18n="helpScreen.topics.walkForward"></span>
+              </label>
+            </div>
+            <div class="help-topic" data-video="4" data-help-topic="turnRight">
+              <input id="help-topic-turnRight" class="sr-only" type="radio" name="help-topic" />
+              <label for="help-topic-turnRight" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">05</span>
+                <span data-i18n="helpScreen.topics.turnRight"></span>
+              </label>
+            </div>
+            <div class="help-topic" data-video="5" data-help-topic="turnLeft">
+              <input id="help-topic-turnLeft" class="sr-only" type="radio" name="help-topic" />
+              <label for="help-topic-turnLeft" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">06</span>
+                <span data-i18n="helpScreen.topics.turnLeft"></span>
+              </label>
+            </div>
+            <div class="help-topic" data-video="6" data-help-topic="jump">
+              <input id="help-topic-jump" class="sr-only" type="radio" name="help-topic" />
+              <label for="help-topic-jump" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">07</span>
+                <span data-i18n="helpScreen.topics.jump"></span>
+              </label>
+            </div>
+            <div class="help-topic" data-video="7" data-help-topic="light">
+              <input id="help-topic-light" class="sr-only" type="radio" name="help-topic" />
+              <label for="help-topic-light" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">08</span>
+                <span data-i18n="helpScreen.topics.light"></span>
+              </label>
+            </div>
+            <div class="help-topic" data-video="8" data-help-topic="repeat">
+              <input id="help-topic-repeat" class="sr-only" type="radio" name="help-topic" />
+              <label for="help-topic-repeat" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">09</span>
+                <span data-i18n="helpScreen.topics.repeat"></span>
+              </label>
+            </div>
+            <div class="help-topic" data-video="9" data-help-topic="medals">
+              <input id="help-topic-medals" class="sr-only" type="radio" name="help-topic" />
+              <label for="help-topic-medals" class="help-topic-label">
+                <span class="help-topic-number" aria-hidden="true">10</span>
+                <span data-i18n="helpScreen.topics.medals"></span>
+              </label>
             </div>
           </div>
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="1">
-            <input type="radio" name="help-accordion" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.howTo.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.howTo.content"></p>
-            </div>
-          </div>
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="2">
-            <input type="radio" name="help-accordion" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.objects.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.objects.content"></p>
-            </div>
-          </div>
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="3">
-            <input type="radio" name="help-accordion" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.walkForward.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.walkForward.content"></p>
-            </div>
-          </div>
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="4">
-            <input type="radio" name="help-accordion" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.turnRight.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.turnRight.content"></p>
-            </div>
-          </div>
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="5">
-            <input type="radio" name="help-accordion" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.turnLeft.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.turnLeft.content"></p>
-            </div>
-          </div>
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="6">
-            <input type="radio" name="help-accordion" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.jump.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.jump.content"></p>
-            </div>
-          </div>
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="7">
-            <input type="radio" name="help-accordion" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.light.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.light.content"></p>
-            </div>
-          </div>
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="8">
-            <input type="radio" name="help-accordion" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.repeat.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.repeat.content"></p>
-            </div>
-          </div>
-          <div class="collapse collapse-arrow bg-base-200 rounded-box" data-video="9">
-            <input type="radio" name="help-accordion" />
-            <div class="collapse-title font-bold" data-i18n="helpScreen.medals.title"></div>
-            <div class="collapse-content">
-              <p data-i18n="helpScreen.medals.content"></p>
-            </div>
-          </div>
-        </div>
-        <div class="divider divider-horizontal m-0"></div>
-        <div class="flex flex-col h-full">
-          <div class="flex-1 flex items-center justify-center">
-            <div id="videoContainer" class="w-[402px]">
-              <video id="videoPlayer" class="w-[402px] h-[300px] bg-black rounded-box" width="400" height="300"
+          <div class="help-lesson">
+            <h2 id="helpDetailTitle" class="help-lesson-title" data-i18n="helpScreen.goal.title"></h2>
+            <div id="videoContainer" class="help-video">
+              <video id="videoPlayer" width="400" height="300" aria-labelledby="helpDetailTitle"
                 controls preload="metadata" playsinline></video>
             </div>
-          </div>
-          <div class="pt-4">
-            <button class="mainMenuButton btn btn-sm gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5Z" />
-              </svg>
-              <span data-i18n="helpScreen.mainMenu"></span>
-            </button>
+            <section id="helpDetail" class="help-detail" tabindex="0" aria-labelledby="helpDetailTitle"
+              aria-live="polite" aria-atomic="true">
+              <p id="helpDetailContent" data-i18n="helpScreen.goal.content"></p>
+            </section>
           </div>
         </div>
       </div>
     </div>
 
     <div id="levelSelectScreen"
-      class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box bg-base-100 shadow p-6 flex flex-col gap-4">
-      <h1 class="text-3xl font-black uppercase" data-i18n="levelSelectScreen.title"></h1>
-      <div id="levelList" class="flex flex-wrap gap-3 justify-start overflow-auto p-2"></div>
-      <div class="mt-auto">
-        <button class="mainMenuButton btn btn-sm gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5Z" />
-          </svg>
-          <span data-i18n="levelSelectScreen.mainMenu"></span>
-        </button>
+      class="lb-screen hidden absolute top-5 inset-x-0 bottom-4 rounded-box shadow lb-menu-screen"
+      aria-labelledby="levelSelectTitle">
+      <div class="lb-menu-shell">
+        <header class="lb-menu-header">
+          <h1 id="levelSelectTitle" data-i18n="levelSelectScreen.title"></h1>
+          <button class="mainMenuButton lb-menu-back">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H19v-2Z" />
+            </svg>
+            <span data-i18n="levelSelectScreen.mainMenu"></span>
+          </button>
+        </header>
+        <div class="level-summary">
+          <p id="levelCompletedCount"></p>
+        </div>
+        <div id="levelList" class="level-list" role="group" aria-labelledby="levelSelectTitle"></div>
       </div>
     </div>
 

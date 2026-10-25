@@ -5,6 +5,8 @@ export const LIGHTBOT_TRANSLATIONS_EN = {
     "stop": "Stop"
   },
   "welcomeScreen": {
+    "sound": "Sound",
+    "theme": "Theme",
     "start": "Start Game",
     "toggleAudio": "Toggle Audio",
     "help": "Help",
@@ -12,10 +14,20 @@ export const LIGHTBOT_TRANSLATIONS_EN = {
     "language": "Language"
   },
   "levelSelectScreen": {
+    "progress": "Completed: {{completed}} / {{total}}",
+    "level": "Level {{number}}",
+    "incomplete": "Incomplete",
+    "completed": "Completed",
+    "bronze": "Bronze",
+    "silver": "Silver",
+    "gold": "Gold",
     "title": "Level select",
     "mainMenu": "Main Menu"
   },
   "achievementsScreen": {
+    "progress": "Achievements unlocked",
+    "unlocked": "Unlocked",
+    "locked": "Locked",
     "title": "Achievements",
     "mainMenu": "Main Menu"
   },
@@ -54,6 +66,20 @@ export const LIGHTBOT_TRANSLATIONS_EN = {
     }
   },
   "helpScreen": {
+    "title": "How to play",
+    "topicsTitle": "Topics",
+    "topics": {
+      "goal": "Goal of the game",
+      "howTo": "Build a program",
+      "objects": "Game objects",
+      "walkForward": "Walk forward",
+      "turnRight": "Turn right",
+      "turnLeft": "Turn left",
+      "jump": "Jump",
+      "light": "Light",
+      "repeat": "Repeat",
+      "medals": "Medals"
+    },
     "mainMenu": "Main Menu",
     "goal": {
       "title": "Goal of the game",

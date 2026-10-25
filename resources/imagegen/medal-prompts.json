@@ -1,0 +1,14 @@
+{
+  "tool": "Built-in image_gen",
+  "intended_use": "Lightbot bronze, silver, and gold medal icons, on transparent backgrounds.",
+  "prompts": {
+    "gold": "Use case: stylized-concept. Asset type: a single GOLD medal icon for Lightbot, a retro arcade programming puzzle game with dark teal industrial robot artwork. Create a clean, compact octagonal metal token, front-facing and perfectly centered, with a thick beveled rim and one bold embossed lightning-bolt symbol in the middle. Restrained 1990s game sprite aesthetic: crisp stepped edges, chunky pixel-like shading, a small deliberate palette, strong silhouette, no fine texture. Gold is warm muted yellow metal with pale gold highlights and deep ochre shadows; a very dark teal outer edge makes it readable on both light and dark themes. Intended display size is 32 by 32 pixels, so simplify aggressively and keep the bolt large. Square canvas; token occupies 80 percent of width and height with equal transparent margins. True transparent background. No ribbon, no green tab, no text, no numbers, no stars, no laurel wreath, no sparkles, no floor, no cast shadow outside the token, no extra objects. Generate exactly one standalone icon.",
+    "silver": "Use case: precise-object-edit. Edit target: the attached gold Lightbot medal icon. Create its SILVER counterpart. Change ONLY the gold metal palette to cool silver: pale near-white highlights, clean light gray faces, slate-gray recessed shadows, subtly blue-gray midtones. Preserve the exact octagonal silhouette, lightning-bolt shape, bevel thickness, pixel-like stepped edges, scale, centered position, transparent margins, and dark teal outer outline. Same front-facing game sprite, no new details. Keep a genuinely transparent background and identical composition. No ribbon, text, extra objects, shine sparkles, or cast shadows.",
+    "bronze": "Use case: precise-object-edit. Edit target: the attached gold Lightbot medal icon. Create its BRONZE counterpart. Change ONLY the gold metal palette to warm copper bronze: light peach-copper highlights, rich orange-brown copper faces, warm dark brown recessed shadows. It must look distinctly bronze, not yellow gold. Preserve the exact octagonal silhouette, lightning-bolt shape, bevel thickness, pixel-like stepped edges, scale, centered position, transparent margins, and dark teal outer outline. Same front-facing game sprite, no new details. Keep a genuinely transparent background and identical composition. No ribbon, text, extra objects, shine sparkles, or cast shadows."
+  },
+  "files": {
+    "gold": "public/img/medals/gold.png",
+    "silver": "public/img/medals/silver.png",
+    "bronze": "public/img/medals/bronze.png"
+  }
+}

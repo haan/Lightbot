@@ -5,6 +5,8 @@ export const LIGHTBOT_TRANSLATIONS_FR = {
     "stop": "Arrêter"
   },
   "welcomeScreen": {
+    "sound": "Son",
+    "theme": "Thème",
     "start": "Démarrer le jeu",
     "toggleAudio": "Activer/Désactiver l'audio",
     "help": "Aide",
@@ -12,10 +14,20 @@ export const LIGHTBOT_TRANSLATIONS_FR = {
     "language": "Langue"
   },
   "levelSelectScreen": {
+    "progress": "Terminés : {{completed}} / {{total}}",
+    "level": "Niveau {{number}}",
+    "incomplete": "À terminer",
+    "completed": "Terminé",
+    "bronze": "Bronze",
+    "silver": "Argent",
+    "gold": "Or",
     "title": "Sélection du niveau",
     "mainMenu": "Menu principal"
   },
   "achievementsScreen": {
+    "progress": "Succès débloqués",
+    "unlocked": "Débloqué",
+    "locked": "Verrouillé",
     "title": "Succès",
     "mainMenu": "Menu principal"
   },
@@ -54,6 +66,20 @@ export const LIGHTBOT_TRANSLATIONS_FR = {
     }
   },
   "helpScreen": {
+    "title": "Comment jouer",
+    "topicsTitle": "Rubriques",
+    "topics": {
+      "goal": "But du jeu",
+      "howTo": "Créer un programme",
+      "objects": "Objets du jeu",
+      "walkForward": "Avancer",
+      "turnRight": "Tourner à droite",
+      "turnLeft": "Tourner à gauche",
+      "jump": "Sauter",
+      "light": "Éclairer",
+      "repeat": "Répéter",
+      "medals": "Médailles"
+    },
     "mainMenu": "Menu principal",
     "goal": {
       "title": "But du jeu",

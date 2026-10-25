@@ -5,6 +5,8 @@ export const LIGHTBOT_TRANSLATIONS_DE = {
     "stop": "Stopp"
   },
   "welcomeScreen": {
+    "sound": "Ton",
+    "theme": "Design",
     "start": "Spiel starten",
     "toggleAudio": "Audio umschalten",
     "help": "Hilfe",
@@ -12,10 +14,20 @@ export const LIGHTBOT_TRANSLATIONS_DE = {
     "language": "Sprache"
   },
   "levelSelectScreen": {
+    "progress": "Abgeschlossen: {{completed}} / {{total}}",
+    "level": "Level {{number}}",
+    "incomplete": "Offen",
+    "completed": "Abgeschlossen",
+    "bronze": "Bronze",
+    "silver": "Silber",
+    "gold": "Gold",
     "title": "Levelauswahl",
     "mainMenu": "Hauptmenü"
   },
   "achievementsScreen": {
+    "progress": "Erfolge freigeschaltet",
+    "unlocked": "Freigeschaltet",
+    "locked": "Gesperrt",
     "title": "Erfolge",
     "mainMenu": "Hauptmenü"
   },
@@ -54,6 +66,20 @@ export const LIGHTBOT_TRANSLATIONS_DE = {
     }
   },
   "helpScreen": {
+    "title": "Spielanleitung",
+    "topicsTitle": "Themen",
+    "topics": {
+      "goal": "Spielziel",
+      "howTo": "Programm erstellen",
+      "objects": "Spielobjekte",
+      "walkForward": "Vorwärts gehen",
+      "turnRight": "Rechts drehen",
+      "turnLeft": "Links drehen",
+      "jump": "Springen",
+      "light": "Licht",
+      "repeat": "Wiederholen",
+      "medals": "Medaillen"
+    },
     "mainMenu": "Hauptmenü",
     "goal": {
       "title": "Ziel des Spiels",
