@@ -93,20 +93,6 @@ If you prefer to build the game yourself (or modify the code):
 
    Open `dist/index.html` in your browser.
 
-### Runtime security
-
-Node.js 26.12.1 includes the fix for the Brotli decoder vulnerability
-[CVE-2026-111497](https://nodejs.org/en/blog/vulnerability/october-2026-security-releases).
-The Node engine requirement and `.npmrc` reject unsupported runtimes during dependency
-installation. After upgrading Node, restart development and preview servers so they
-use the patched runtime. `npm audit` checks package dependencies, not Node's bundled
-Brotli decoder.
-
-Lightbot's web and offline builds are static browser assets; the repository contains
-no Python application or Node production backend. This update protects the Node
-development, build, and CI environment. Any separately managed hosting software or
-reverse proxy needs its own vendor updates.
-
 ---
 
 ## Using Lightbot in teaching
