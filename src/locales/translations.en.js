@@ -87,7 +87,7 @@ export const LIGHTBOT_TRANSLATIONS_EN = {
     },
     "howTo": {
       "title": "How to play the game",
-      "content": "You can create a program by dragging instructions from the instruction list and dropping them into the program frame. The instructions will automatically be added to the bottom of the highlighted block.\nExecute your program by clicking the Run button. If you are not satisfied with your current program, you can interrupt the execution at any moment by clicking the Stop button. This will reset the robot to his initial position."
+      "content": "Click an instruction to add it to the end of your program, or drag it to the desired position, including inside a Repeat block. Drag instructions to rearrange them.\nClick Run to execute your program. The same button changes to Pause, then Resume, so you can pause and continue without losing your place. Use the separate Reset button to return the robot and lights to their starting state and edit your program. Reset keeps your instructions. When execution finishes, Run again restarts your program from the beginning."
     },
     "objects": {
       "title": "Game objects",

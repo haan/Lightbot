@@ -87,7 +87,7 @@ export const LIGHTBOT_TRANSLATIONS_DE = {
     },
     "howTo": {
       "title": "So spielst du",
-      "content": "Du kannst ein Programm erstellen, indem du Anweisungen aus der Anweisungsliste ziehst und in den Programmrahmen ablegst. Die Anweisungen werden automatisch am unteren Ende des markierten Blocks hinzugefügt.\nFühre dein Programm aus, indem du auf die Schaltfläche Start klickst. Wenn du mit deinem aktuellen Programm nicht zufrieden bist, kannst du die Ausführung jederzeit durch Klicken auf die Stopp-Schaltfläche unterbrechen. Dadurch wird der Roboter auf seine Ausgangsposition zurückgesetzt."
+      "content": "Klicke auf eine Anweisung, um sie am Ende deines Programms hinzuzufügen, oder ziehe sie an die gewünschte Stelle, auch in einen Wiederholungsblock. Ziehe Anweisungen, um ihre Reihenfolge zu ändern.\nKlicke auf Start, um dein Programm auszuführen. Dieselbe Schaltfläche wechselt zu Pause und dann zu Fortsetzen. So kannst du die Ausführung unterbrechen und an derselben Stelle fortsetzen. Mit der separaten Schaltfläche Zurücksetzen setzt du den Roboter und die Lichter in den Ausgangszustand zurück und kannst dein Programm bearbeiten. Deine Anweisungen bleiben erhalten. Nach dem Ende der Ausführung startet Neu starten dein Programm von vorn."
     },
     "objects": {
       "title": "Spielobjekte",

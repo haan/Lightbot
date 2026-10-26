@@ -360,11 +360,67 @@ test('pausing mid-animation freezes the frame and queue; resuming continues and 
   assert.deepEqual(m.bot.currentPos, position);
   m.bot.resume();
   m.bot.step();
-  assert.equal(m.bot.getCurrentStep(), frame + 1);
+  assert.equal(m.bot.getCurrentStep(), frame + 2);
   m.bot.pause();
   m.map.reset();
   assert.equal(m.bot.isPaused(), false);
   assert.equal(m.bot.isInExecutionMode(), false);
   assert.equal(m.bot.executionQueue.length, 0);
   assert.deepEqual(m.bot.currentPos, start);
+});
+
+test('speed changes preserve drawn position and sprite frame across pause/resume and during movement', t => {
+  const previousImage = globalThis.Image;
+  globalThis.Image = class {};
+  t.after(() => { if (previousImage) globalThis.Image = previousImage; else delete globalThis.Image; });
+  for (const movement of ['walk', 'jumpUp', 'jumpDown']) {
+    const m = model();
+    let drawn;
+    const app = {
+      speedMultiplier: 1,
+      projection: { project: (x, y, z) => ({ x: x - z, y: -y - z }) },
+      ctx: { drawImage(...args) { drawn = args.slice(1); } },
+    };
+    extendBoxView({ ...m, app });
+    extendBotView({ ...m, app, animations: createBotAnimations() });
+    const start = { ...m.bot.currentPos };
+    const tiles = m.map.getMapRef();
+    if (movement === 'jumpUp') tiles[start.x][start.y - 1].height = tiles[start.x][start.y].height + 1;
+    if (movement === 'jumpDown') tiles[start.x][start.y].height = tiles[start.x][start.y - 1].height + 2;
+    const command = movement === 'walk' ? new m.instructions.WalkInstruction() : new m.instructions.JumpInstruction();
+    m.bot.queueInstructions([command, new m.instructions.LightInstruction()]);
+    m.bot.execute();
+    m.bot.animate(m.bot.executeNextInstruction(), start, m.bot.currentPos);
+    assert.equal(m.bot.getAnimation().name, movement);
+    for (let tick = 0; tick < 10; tick++) m.bot.step();
+    m.bot.draw();
+    const beforePause = drawn;
+    m.bot.pause();
+    app.speedMultiplier = 0.5;
+    for (let tick = 0; tick < 10; tick++) m.bot.step();
+    m.bot.draw();
+    assert.deepEqual(drawn, beforePause, `${movement}: speed change while paused changed the image`);
+    m.bot.resume();
+    m.bot.draw();
+    assert.deepEqual(drawn, beforePause, `${movement}: resume changed the image before time advanced`);
+    m.bot.step();
+    assert.equal(m.bot.getCurrentStep(), 10.5);
+    m.bot.draw();
+    const beforeSpeedUp = drawn;
+    app.speedMultiplier = 3;
+    m.bot.draw();
+    assert.deepEqual(drawn, beforeSpeedUp, `${movement}: speed change during execution changed the image`);
+    m.bot.step();
+    assert.equal(m.bot.getCurrentStep(), 13.5);
+    const duration = m.bot.getAnimation().duration;
+    while (m.bot.getCurrentStep() < duration) m.bot.step();
+    assert.equal(m.bot.getCurrentStep(), duration, `${movement}: progress overshot the destination`);
+    m.bot.draw();
+    const destination = drawn.slice(4, 6);
+    m.bot.step();
+    assert.equal(m.bot.isReadyForNextInstruction(), true);
+    m.bot.draw();
+    assert.deepEqual(drawn.slice(4, 6), destination, `${movement}: completion moved the sprite`);
+    assert.equal(m.bot.executionQueue.length, 1);
+  }
 });

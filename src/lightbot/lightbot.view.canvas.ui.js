@@ -25,6 +25,7 @@ export function createUi(params) {
   }
 
   function hideAllScreens() {
+    media.pauseVideo();
     // hide all screens before showing the next one.
     var screens = document.querySelectorAll(".lb-screen");
     for (var i = 0; i < screens.length; i++) screens[i].classList.add("hidden");

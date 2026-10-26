@@ -269,11 +269,11 @@
         <section class="game-board" aria-labelledby="gameLevelTitle">
           <header class="game-board-header">
             <h1 id="gameLevelTitle"></h1>
-            <div class="game-navigation"><button class="levelSelectButton btn btn-sm game-back" data-i18n-title="gameScreen.back" title="Back">
+            <div class="game-navigation"><button class="levelSelectButton lb-button game-back" data-i18n-title="gameScreen.back" title="Back">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-current">
                 <path d="M19 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H19v-2Z" />
               </svg>
-            <span data-i18n="levelSelectScreen.title"></span></button><button class="audioToggleButton btn btn-sm btn-square" data-i18n-title="gameScreen.toggleAudio"
+            <span data-i18n="levelSelectScreen.title"></span></button><button class="audioToggleButton lb-button" data-i18n-title="gameScreen.toggleAudio"
               title="Toggle audio">
               <svg class="lb-audio-on hidden size-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                 fill="currentColor">
@@ -403,7 +403,7 @@
               <div class="game-program-header">
                 <h2 data-i18n="program.title"></h2>
                 <p id="gameRunStatus" class="game-hint" role="status" hidden></p>
-                <button id="clearButton" class="btn btn-sm btn-ghost" data-i18n-title="gameScreen.clear" title="Clear">
+                <button id="clearButton" class="lb-button" data-i18n-title="gameScreen.clear" title="Clear">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
                 <path fill-rule="evenodd"
                   d="M5 3.25V4H2.75a.75.75 0 0 0 0 1.5h.3l.815 8.15A1.5 1.5 0 0 0 5.357 15h5.285a1.5 1.5 0 0 0 1.493-1.35l.815-8.15h.3a.75.75 0 0 0 0-1.5H11v-.75A2.25 2.25 0 0 0 8.75 1h-1.5A2.25 2.25 0 0 0 5 3.25Zm2.25-.75a.75.75 0 0 0-.75.75V4h3v-.75a.75.75 0 0 0-.75-.75h-1.5ZM6.05 6a.75.75 0 0 1 .787.713l.275 5.5a.75.75 0 0 1-1.498.075l-.275-5.5A.75.75 0 0 1 6.05 6Zm3.9 0a.75.75 0 0 1 .712.787l-.275 5.5a.75.75 0 0 1-1.498-.075l.275-5.5a.75.75 0 0 1 .786-.711Z"
@@ -418,7 +418,7 @@
             </div>
           </div>
               <div id="buttonContainer" class="game-execution">
-                <button id="runButton" class="btn btn-primary game-run" data-i18n-title="gameScreen.run"
+                <button id="runButton" class="lb-button game-run" data-i18n-title="gameScreen.run"
               title="Run">
               <svg class="lb-run-icon size-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7-11-7Z" />
@@ -428,7 +428,7 @@
                 <path d="M6 4h4v16H6zM14 4h4v16h-4z" />
               </svg>
             <span class="lb-run-label" data-i18n="gameScreen.run"></span></button>
-                <button id="resetButton" type="button" class="btn btn-square game-reset" disabled data-i18n-title="gameScreen.reset">
+                <button id="resetButton" type="button" class="lb-button game-reset" disabled data-i18n-title="gameScreen.reset">
                   <svg class="size-4" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10a9 9 0 1 1 2 8M3 3v7h7" /></svg>
                   <span class="sr-only" data-i18n="gameScreen.reset"></span>
                 </button>
@@ -446,40 +446,39 @@
       <div style="float:left;"></div>
       <div style="float:right;"></div>
     </div>
-  </div>
-
-  <dialog id="levelCompleteDialog" class="modal">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg" data-i18n="dialogs.levelComplete.title"></h3>
-      <div class="py-4 flex gap-3 items-start">
+  <dialog id="levelCompleteDialog" class="lb-dialog" aria-labelledby="levelCompleteTitle">
+    <div class="lb-dialog-box">
+      <h3 id="levelCompleteTitle" data-i18n="dialogs.levelComplete.title"></h3>
+      <div class="lb-dialog-content">
         <span class="medal shrink-0"></span>
         <div class="flex-1">
           <p class="message" data-i18n="dialogs.levelComplete.message"></p>
           <p class="hint mt-2 text-sm opacity-80"></p>
         </div>
       </div>
-      <div class="modal-action">
+      <div class="lb-dialog-actions">
         <form method="dialog">
-          <button class="btn btn-sm">OK</button>
+          <button class="lb-button">OK</button>
         </form>
       </div>
     </div>
   </dialog>
 
-  <dialog id="achievementDialog" class="modal">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg" data-i18n="dialogs.achievement.title"></h3>
-      <div class="py-4 flex gap-3 items-start">
+  <dialog id="achievementDialog" class="lb-dialog" aria-labelledby="achievementTitle">
+    <div class="lb-dialog-box">
+      <h3 id="achievementTitle" data-i18n="dialogs.achievement.title"></h3>
+      <div class="lb-dialog-content">
         <span class="achievement shrink-0"></span>
         <p class="message flex-1"></p>
       </div>
-      <div class="modal-action">
+      <div class="lb-dialog-actions">
         <form method="dialog">
-          <button class="btn btn-sm">OK</button>
+          <button class="lb-button">OK</button>
         </form>
       </div>
     </div>
   </dialog>
+  </div>
 </body>
 
 </html>
