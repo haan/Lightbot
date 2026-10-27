@@ -647,6 +647,8 @@
 
   .lb-repeat-body-inner>ul {
     min-height: 2.5rem;
+    /* Keep an append target owned by this list below its final nested repeat. */
+    padding-bottom: 1rem;
   }
 
   /* Gameplay is a fixed workspace: only the program itself scrolls. */
