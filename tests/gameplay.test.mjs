@@ -157,7 +157,7 @@ test('Run, Pause, Resume, Run again and Reset stay in sync in every language', a
     assert.equal(elements.runLabel.textContent, i18next.t('gameScreen.pause'));
     elements.clearButton.handlers.click();
     assert.equal(list.textContent, 'program');
-    while (m.bot.hasNextInstruction()) ui.onInstruction(m.bot.executeNextInstruction(), false);
+    while (m.bot.hasNextInstruction()) ui.onInstruction(m.bot.executeNextInstruction());
     assert.equal(m.map.getMapRef()[4][3].lightOn, true);
     ui.onProgramFinished();
     assert.equal(elements.runLabel.textContent, i18next.t('gameScreen.runAgain'));
@@ -176,13 +176,22 @@ test('Run, Pause, Resume, Run again and Reset stay in sync in every language', a
     assert.equal(m.map.getMapRef()[4][3].lightOn, false);
     assert.equal(elements.gameRunStatus.textContent, '');
     assert.equal(elements.gameRunStatus.hidden, true);
-    ui.onInstruction({}, true);
+    // Moves beyond the board leave the robot in place and finish normally.
+    editor.getProgramInstructions = () => [new m.instructions.WalkInstruction(), new m.instructions.JumpInstruction()];
+    elements.runButton.handlers.click();
+    m.bot.currentPos = { x: 0, y: 0 };
+    m.bot.direction = createDirections().se;
+    while (m.bot.hasNextInstruction()) {
+      ui.onInstruction(m.bot.executeNextInstruction());
+      assert.deepEqual(m.bot.currentPos, { x: 0, y: 0 });
+      assert.equal(elements.gameRunStatus.textContent, i18next.t('gameScreen.status.running'));
+    }
     ui.onProgramFinished();
-    assert.equal(elements.gameRunStatus.textContent, i18next.t('gameScreen.status.blocked'));
+    assert.equal(elements.gameRunStatus.textContent, i18next.t('gameScreen.status.finished'));
   }
 });
 
-test('execution locks the palette and program, and reset removes active and blocked markers', () => {
+test('execution locks the palette and program, and reset removes the active marker', () => {
   const m = model();
   const row = element();
   const list = element();
@@ -192,17 +201,15 @@ test('execution locks the palette and program, and reset removes active and bloc
   documentFor({ programContainer: container, instructionsContainer: palette }, list, [row]);
   const editor = createEditor({ ...m, storage: {} });
   editor.setExecuting(true);
-  editor.highlightInstruction({ sourceElement: row }, true);
+  editor.highlightInstruction({ sourceElement: row });
   assert.equal(list.inert, true);
   assert.equal(palette.inert, true);
   assert.equal(row.classList.contains('is-active'), true);
-  assert.equal(row.classList.contains('is-blocked'), true);
   assert.equal(row.attrs['aria-current'], 'step');
   editor.setExecuting(false);
   assert.equal(list.inert, false);
   assert.equal(palette.inert, false);
   assert.equal(row.classList.contains('is-active'), false);
-  assert.equal(row.classList.contains('is-blocked'), false);
   assert.equal(row.attrs['aria-current'], undefined);
 });
 
@@ -257,7 +264,7 @@ test('repeat expansion and its body execute separately with exactly one active r
   for (const expected of rows) {
     const instruction = m.bot.executeNextInstruction();
     assert.equal(instruction.sourceElement, expected);
-    editor.highlightInstruction(instruction, false);
+    editor.highlightInstruction(instruction);
     assert.deepEqual(rows.filter(row => row.classList.contains('is-active')), [expected]);
     if (instruction.name === 'repeat') assert.deepEqual(m.bot.currentPos, start);
   }

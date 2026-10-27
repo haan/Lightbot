@@ -198,14 +198,14 @@ export function createEditor(params) {
       this._programSortables.forEach(function (sortable) { sortable.option("disabled", executing); });
       if (!executing) {
         this._activeRow = null;
-        document.querySelectorAll("#programContainer .is-active, #programContainer .is-blocked").forEach(function (row) {
-          row.classList.remove("is-active", "is-blocked");
+        document.querySelectorAll("#programContainer .is-active").forEach(function (row) {
+          row.classList.remove("is-active");
           row.removeAttribute("aria-current");
         });
       }
     },
 
-    highlightInstruction: function (instruction, blocked) {
+    highlightInstruction: function (instruction) {
       if (this._activeRow) {
         this._activeRow.classList.remove("is-active");
         this._activeRow.removeAttribute("aria-current");
@@ -215,7 +215,6 @@ export function createEditor(params) {
       if (!row) return;
       row.classList.add("is-active");
       row.setAttribute("aria-current", "step");
-      if (blocked) row.classList.add("is-blocked");
       var scrollBox = document.querySelector(".game-program-scroll");
       if (scrollBox) {
         var bounds = scrollBox.getBoundingClientRect();

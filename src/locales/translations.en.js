@@ -128,7 +128,7 @@ export const LIGHTBOT_TRANSLATIONS_EN = {
   "gameScreen": {
     "decreaseRepeat": "Decrease repeat count",
     "increaseRepeat": "Increase repeat count",
-    "status": { "running": "Running…", "paused": "Paused", "finished": "Finished", "blocked": "Blocked" },
+    "status": { "running": "Running…", "paused": "Paused", "finished": "Finished" },
     "pause": "Pause",
     "resume": "Resume",
     "runAgain": "Run again",
@@ -137,7 +137,6 @@ export const LIGHTBOT_TRANSLATIONS_EN = {
     "ready": "Ready to run",
     "running": "Running…",
     "finished": "Program ended · Reset to edit",
-    "blocked": "Move blocked · Check the highlighted step",
     "reset": "Reset",
     "remove": "Remove instruction",
     "commands": {

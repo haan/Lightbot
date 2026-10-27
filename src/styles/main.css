@@ -752,7 +752,6 @@
   #programContainer .lb-instruction:has(> .repeat) { border: 0; border-left: 2px solid var(--color-base-300); border-radius: 0; background: transparent; }
   #programContainer .lb-repeat-body-inner { margin: 0 0 0 10px; padding: 5px 0 0 4px; border: 0; border-radius: 0; background: transparent; }
   #programContainer .lb-instruction-row.is-active { background: color-mix(in srgb, var(--color-primary) 28%, var(--color-base-200)); }
-  #programContainer .lb-instruction-row.is-blocked { border-color: var(--color-warning); }
   .game-screen.is-executing #instructionsContainer { opacity: .45; }
   .game-screen.is-executing .lb-instruction-row { cursor: default; }
   .game-screen.is-executing .lb-instruction-delete { visibility: hidden; }

@@ -31,10 +31,7 @@ export function canvasView(app, canvas) {
       var newPos = lightBot.bot.currentPos; // get the new position
       if (instruction) {
         lightBot.bot.animate(instruction, oldPos, newPos);
-        var blocked = (instruction.name === lightBot.bot.instructions.WalkInstruction.instructionName ||
-          instruction.name === lightBot.bot.instructions.JumpInstruction.instructionName) &&
-          oldPos.x === newPos.x && oldPos.y === newPos.y;
-        lightBot.ui.onInstruction(instruction, blocked);
+        lightBot.ui.onInstruction(instruction);
       }
     }
     // check if map has been completed here

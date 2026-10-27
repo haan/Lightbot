@@ -58,7 +58,6 @@ export function createUi(params) {
     dialogs: dialogs,
     media: media,
     editor: editor,
-    _executionBlocked: false,
     _programFinished: false,
 
     _setGameStatus: function (key) {
@@ -79,16 +78,15 @@ export function createUi(params) {
       status.textContent = i18next.t("gameScreen.status." + key);
     },
 
-    onInstruction: function (instruction, blocked) {
-      editor.highlightInstruction(instruction, blocked);
-      if (blocked) ui._executionBlocked = true;
-      ui._setGameStatus(blocked ? "blocked" : "running");
+    onInstruction: function (instruction) {
+      editor.highlightInstruction(instruction);
+      ui._setGameStatus("running");
     },
 
     onProgramFinished: function () {
       if (ui._programFinished) return;
       ui._programFinished = true;
-      ui._setGameStatus(ui._executionBlocked ? "blocked" : "finished");
+      ui._setGameStatus("finished");
       ui._updateExecutionButton();
     },
 
@@ -126,7 +124,6 @@ export function createUi(params) {
       var clear = document.getElementById("clearButton");
       if (clear) clear.disabled = isRunning;
       editor.setExecuting(isRunning);
-      ui._executionBlocked = false;
       ui._programFinished = false;
       ui._setGameStatus(isRunning ? "running" : "ready");
       ui._updateExecutionButton();
