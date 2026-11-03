@@ -3,6 +3,7 @@ import i18next from "i18next";
 import { LIGHTBOT_TRANSLATIONS_DE } from "../locales/translations.de.js";
 import { LIGHTBOT_TRANSLATIONS_EN } from "../locales/translations.en.js";
 import { LIGHTBOT_TRANSLATIONS_FR } from "../locales/translations.fr.js";
+import { LIGHTBOT_TRANSLATIONS_SRB_CIR } from "../locales/translations.srb_cir.js";
 
 var LANGUAGE_STORAGE_KEY = "lightbot_language";
 var FALLBACK_LANGUAGE = "en";
@@ -16,6 +17,10 @@ var TRANSLATION_RESOURCES = {
   fr: {
     translation: LIGHTBOT_TRANSLATIONS_FR,
   },
+  srb_cir: {
+    translation: LIGHTBOT_TRANSLATIONS_SRB_CIR,
+  },
+
 };
 
 function applyTranslations() {
