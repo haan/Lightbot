@@ -16,6 +16,8 @@ import { createBotAnimations } from '../src/lightbot/lightbot.view.canvas.bot.an
 import { LIGHTBOT_TRANSLATIONS_EN as en } from '../src/locales/translations.en.js';
 import { LIGHTBOT_TRANSLATIONS_DE as de } from '../src/locales/translations.de.js';
 import { LIGHTBOT_TRANSLATIONS_FR as fr } from '../src/locales/translations.fr.js';
+import { LIGHTBOT_TRANSLATIONS_SRB_LAT as srLatn } from '../src/locales/translations.srb_lat.js';
+import { LIGHTBOT_TRANSLATIONS_SRB_CIR as srCyrl } from '../src/locales/translations.srb_cir.js';
 
 function model() {
   const Box = createBox();
@@ -120,8 +122,8 @@ test('all 16 levels fit the canvas with space for the robot above every tile', (
 });
 
 test('Run, Pause, Resume, Run again and Reset stay in sync in every language', async () => {
-  await i18next.init({ lng: 'en', resources: { en: { translation: en }, de: { translation: de }, fr: { translation: fr } } });
-  for (const language of ['en', 'de', 'fr']) {
+  await i18next.init({ lng: 'en', resources: { en: { translation: en }, de: { translation: de }, fr: { translation: fr }, 'sr-Latn': { translation: srLatn }, 'sr-Cyrl': { translation: srCyrl } } });
+  for (const language of ['en', 'de', 'fr', 'sr-Latn', 'sr-Cyrl']) {
     await i18next.changeLanguage(language);
     const m = model();
     const elements = Object.fromEntries(['runButton', 'resetButton', 'runLabel', 'clearButton', 'gameScreen', 'gameRunStatus'].map(id => [id, element()]));
