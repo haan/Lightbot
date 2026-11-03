@@ -4,6 +4,7 @@ import { LIGHTBOT_TRANSLATIONS_DE } from "../locales/translations.de.js";
 import { LIGHTBOT_TRANSLATIONS_EN } from "../locales/translations.en.js";
 import { LIGHTBOT_TRANSLATIONS_FR } from "../locales/translations.fr.js";
 import { LIGHTBOT_TRANSLATIONS_SRB_LAT } from "../locales/translations.srb_lat.js";
+import { LIGHTBOT_TRANSLATIONS_SRB_CIR } from "../locales/translations.srb_cir.js";
 
 var LANGUAGE_STORAGE_KEY = "lightbot_language";
 var FALLBACK_LANGUAGE = "en";
@@ -19,6 +20,9 @@ var TRANSLATION_RESOURCES = {
   },
   "sr-Latn": {
     translation: LIGHTBOT_TRANSLATIONS_SRB_LAT,
+  },
+  "sr-Cyrl": {
+    translation: LIGHTBOT_TRANSLATIONS_SRB_CIR,
   },
 };
 
