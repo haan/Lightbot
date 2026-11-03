@@ -35,6 +35,9 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Test
+        run: node --test tests/*.test.mjs
+
       - name: Build offline bundle
         run: npm run build
 

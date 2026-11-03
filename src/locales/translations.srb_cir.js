@@ -1,4 +1,5 @@
 // i18n resource table used by i18next. Keys match `data-i18n` / `data-i18n-title` attributes in `index.html`.
+// Serbian (Cyrillic). Count-based messages use i18next plural suffixes (_one / _few / _other).
 export const LIGHTBOT_TRANSLATIONS_SRB_CIR = {
   "controls": {
     "run": "Покрени",
@@ -169,10 +170,18 @@ export const LIGHTBOT_TRANSLATIONS_SRB_CIR = {
   "dialogs": {
     "levelComplete": {
       "title": "Ниво завршен",
-      "message": "Честитамо! Завршио си овај ниво са {{count}} инструкција!",
-      "bronzeMedalHint": "Заврши ниво са {{count}} или мање инструкција да освојиш бронзану медаљу.",
-      "silverMedalHint": "Заврши ниво са {{count}} или мање инструкција да освојиш сребрну медаљу.",
-      "goldMedalHint": "Заврши ниво са {{count}} или мање инструкција да освојиш златну медаљу."
+      "message_one": "Честитамо! Завршио си овај ниво са {{count}} инструкцијом!",
+      "message_few": "Честитамо! Завршио си овај ниво са {{count}} инструкције!",
+      "message_other": "Честитамо! Завршио си овај ниво са {{count}} инструкција!",
+      "bronzeMedalHint_one": "Заврши ниво са највише {{count}} инструкцијом да освојиш бронзану медаљу.",
+      "bronzeMedalHint_few": "Заврши ниво са највише {{count}} инструкције да освојиш бронзану медаљу.",
+      "bronzeMedalHint_other": "Заврши ниво са највише {{count}} инструкција да освојиш бронзану медаљу.",
+      "silverMedalHint_one": "Заврши ниво са највише {{count}} инструкцијом да освојиш сребрну медаљу.",
+      "silverMedalHint_few": "Заврши ниво са највише {{count}} инструкције да освојиш сребрну медаљу.",
+      "silverMedalHint_other": "Заврши ниво са највише {{count}} инструкција да освојиш сребрну медаљу.",
+      "goldMedalHint_one": "Заврши ниво са највише {{count}} инструкцијом да освојиш златну медаљу.",
+      "goldMedalHint_few": "Заврши ниво са највише {{count}} инструкције да освојиш златну медаљу.",
+      "goldMedalHint_other": "Заврши ниво са највише {{count}} инструкција да освојиш златну медаљу."
     },
     "achievement": {
       "title": "Достигнуће откључано!"
