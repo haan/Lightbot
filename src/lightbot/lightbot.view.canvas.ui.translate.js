@@ -17,9 +17,9 @@ var TRANSLATION_RESOURCES = {
   fr: {
     translation: LIGHTBOT_TRANSLATIONS_FR,
   },
-  srb_lat: {
+  "sr-Latn": {
     translation: LIGHTBOT_TRANSLATIONS_SRB_LAT,
-  }
+  },
 };
 
 function applyTranslations() {
@@ -36,11 +36,20 @@ function applyTranslations() {
 
 function resolveLanguage(language) {
   if (!language) return null;
-  // normalize "en-US" to "en" when we only have base language keys.
-  var normalized = String(language).toLowerCase();
-  if (TRANSLATION_RESOURCES[normalized]) return normalized;
-  var shortCode = normalized.split("-")[0];
-  if (TRANSLATION_RESOURCES[shortCode]) return shortCode;
+  // Retain saved selections from the original Serbian contributions.
+  var aliases = { srb_lat: "sr-Latn", srb_cir: "sr-Cyrl" };
+  var normalized = String(language).trim().toLowerCase();
+  if (aliases[normalized] && TRANSLATION_RESOURCES[aliases[normalized]]) return aliases[normalized];
+  try {
+    // Preserve the script when normalizing regional tags such as sr-Latn-RS.
+    var locale = new Intl.Locale(normalized);
+    var languageAndScript = locale.language + (locale.script ? "-" + locale.script : "");
+    if (TRANSLATION_RESOURCES[languageAndScript]) return languageAndScript;
+    if (locale.language === "sr" && !locale.script && TRANSLATION_RESOURCES["sr-Cyrl"]) return "sr-Cyrl";
+    if (TRANSLATION_RESOURCES[locale.language]) return locale.language;
+  } catch (e) {
+    // Invalid stored language tags use the normal fallback language.
+  }
   return null;
 }
 

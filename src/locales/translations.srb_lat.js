@@ -1,6 +1,6 @@
 // i18n resource table used by i18next. Keys match `data-i18n` / `data-i18n-title` attributes in `index.html`.
 // Serbian (Latin). Count-based messages use i18next v21+ plural suffixes (_one / _few / _other).
-export const LIGHTBOT_TRANSLATIONS_SR = {
+export const LIGHTBOT_TRANSLATIONS_SRB_LAT = {
   "controls": {
     "run": "Pokreni",
     "stop": "Zaustavi"
