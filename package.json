@@ -20,9 +20,9 @@
     "@tailwindcss/vite": "^4.3.4",
     "daisyui": "^5.7.50",
     "eslint": "10.14.0",
-    "rimraf": "^6.1.3",
+    "rimraf": "^6.1.4",
     "tailwindcss": "^4.3.4",
-    "vite": "^8.3.5",
+    "vite": "^8.3.6",
     "vite-plugin-singlefile": "^2.3.4"
   },
   "repository": {
@@ -40,7 +40,7 @@
     }
   },
   "dependencies": {
-    "i18next": "^26.7.1",
+    "i18next": "^26.7.2",
     "sortablejs": "^1.15.6",
     "theme-change": "^3.0.4"
   }
